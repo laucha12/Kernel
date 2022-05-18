@@ -5,4 +5,8 @@ comp.sh
 .gdbinit
 .bash_history
 .gdb_history
-Image/x64BareBonesImage.vmdk
+*.vmdk
+*.o
+*.elf
+*.ld
+*.bin
