@@ -1,12 +1,10 @@
+# build files of each user
 build.sh
-.gdbinit
 run-tpe
 comp.sh
+
 .gdbinit
+
+# Files due to bash and gdb
 .bash_history
 .gdb_history
-*.vmdk
-*.o
-*.elf
-*.ld
-*.bin
