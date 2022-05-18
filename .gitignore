@@ -1,4 +1,6 @@
 build.sh
+.gdbinit
+run-tpe
 comp.sh
 .gdbinit
 .bash_history
