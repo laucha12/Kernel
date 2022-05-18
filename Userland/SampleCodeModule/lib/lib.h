@@ -1,10 +1,37 @@
+#ifndef LIB_H
+#define LIB_H
+
 #include "../WindowsEngine/Windows.h"
 
+#define BACKSPACE '\b'
+#define ENTER '\n'
 
 /*
  * Recibe una cadena de caracteres y las imprima 
  */
 void puts(char * string, Window window);
+
+/*
+ * Recibe un caracter y lo imprime 
+ */
+void putc(char c, Window window);
+
+/*
+ * Recibe una ventana a la cual borrara el ultimo caracter
+ */
+void deleteChar(Window window);
+
+/*
+ * Recibe una ventana donde leera el buffer de teclado, y en el caso de no 
+ * haber nada, lo esperara, solo retorna caracteres.
+char getChar(Window window);
+*/
+
+/*
+ * Recibe una ventana donde leera el buffer de teclado, y en el caso de no 
+ * haber nada, lo esperara.
+ */
+char getKey(Window window);
 
 /*
  * Retorna un entero con la hora del sistema (syscall)
@@ -61,3 +88,5 @@ R14	R14D	R14W	N/A	R14B	General purpose
 R15	R15D	R15W	N/A	R15B	General purpose
 
 */
+
+#endif
