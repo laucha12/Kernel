@@ -4,3 +4,9 @@ run-tpe
 comp.sh
 .gdbinit
 .bash_history
+.gdb_history
+*.vmdk
+*.o
+*.elf
+*.ld
+*.bin
