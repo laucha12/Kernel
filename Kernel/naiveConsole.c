@@ -21,6 +21,16 @@ void ncPrintChar(char character)
 	*currentVideo = character;
 	currentVideo += 2;
 }
+void ncPrintCharWithColor(char character,int colorFont,int backColor){
+	*currentVideo = character ;
+	currentVideo++;
+	 int colors = 0;
+	 colors = backColor;		  // en la posicion alta pongo el color del fondo
+	 colors <<= 4;
+	 colors |= colorFont;     // en la posicion mas baja pongo el color de la letra
+	*currentVideo =colors;
+	currentVideo++;
+}
 
 void ncNewline()
 {
