@@ -15,3 +15,4 @@ Image/packedKernel.bin
 Image/x64BareBonesImage.img
 Image/x64BareBonesImage.qcow2
 Userland/0001-sampleDataModule.bin
+Image/x64BareBonesImage.vmdk
