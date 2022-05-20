@@ -1,5 +1,7 @@
 GLOBAL sysWriteTest
 GLOBAL sysReadTest
+GLOBAL sysTimeTest
+
 section .data
     hola db "hola como va",0
 section .text
@@ -12,7 +14,7 @@ section .text
 sysWriteTest:
     mov rsi,rdi
     mov rax,1
-    mov rdi,2
+    mov rdi,0
     mov rdx,4
     int 80h
     ret
@@ -27,5 +29,13 @@ sysReadTest:
     mov rax,0
     mov rdi,2
     mov rdx,4
+    int 80h
+    ret
+
+sysTimeTest:
+   mov rsi,rdi
+    mov rax,120
+;    mov rdi,2
+;    mov rdx,4
     int 80h
     ret

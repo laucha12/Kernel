@@ -83,7 +83,7 @@ extern int get_rtc_minutes();
 extern int get_rtc_hours();
 extern int get_rtc_weekday();
 extern int get_rtc_day();
-extern int  get_rtc_month();
+extern int get_rtc_month();
 extern int get_rtc_year();
 
 int bcd_decimal(uint8_t hex)
