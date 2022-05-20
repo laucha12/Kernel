@@ -12,16 +12,12 @@ int main() {
 	*v = 'X';
 	*(v+1) = 0x74;
 	
-	char buffer[2] = "a";
-	sysWriteTest(buffer);
 
-	/*char date[24];
+	char date[24];
 	sysTimeTest(date);	
+	sysWriteTest(date);
 
-	for(int i = 0; date[i] != 0; i++){
-		sysWriteTest(date[i]);
-	}
-
+/*
 	char c[2] ;
 	c[1] = 0;
 	while (1)

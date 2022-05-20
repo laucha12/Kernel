@@ -8,10 +8,6 @@ GLOBAL get_rtc_weekday
 GLOBAL get_rtc_month
 GLOBAL get_rtc_year
 
-<<<<<<< HEAD
-
-=======
->>>>>>> e718732cefd42057a0f9e96fdd8ea49055246d5c
 section .text
 	
 cpuVendor:
@@ -250,7 +246,3 @@ get_rtc_year:
 	pop rbp         ; Stack frame
 
     ret
-<<<<<<< HEAD
-=======
-
->>>>>>> e718732cefd42057a0f9e96fdd8ea49055246d5c
