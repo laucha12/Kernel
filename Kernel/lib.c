@@ -48,3 +48,9 @@ void * memcpy(void * destination, const void * source, uint64_t length)
 
 	return destination;
 }
+
+void itoa(char* string, int num, int digits){
+	for(int i = digits; i != 0; i--, num /= 10){
+		string[i - 1] = (num % 10) + '0';
+	}
+}
