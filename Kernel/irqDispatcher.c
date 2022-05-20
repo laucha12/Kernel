@@ -68,7 +68,23 @@ void syscalls(int fd,char * sysBuffer,int count,int num){
 		default:
 			break;
 		}
-			
-		
 		
 }
+
+// Funciones de libasm.asm
+extern int get_rtc_seconds();
+extern int get_rtc_minutes();
+extern int get_rtc_hours();
+extern int get_rtc_weekday();
+extern int  get_rtc_month();
+extern int get_rtc_year();
+
+void time_syscall(){
+	int seconds = get_rtc_seconds();
+	int minutes = get_rtc_minutes();
+	int hours = get_rtc_hours();
+	
+
+
+}
+

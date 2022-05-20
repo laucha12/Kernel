@@ -56,7 +56,7 @@ readKey:
 	pop rbp
 	ret
 
-	;---------------------------------------------------
+;---------------------------------------------------
 ;	Funcion la cual retorna los segundos del sistema
 ;	mediante el rtc (real time clock)
 ;---------------------------------------------------
