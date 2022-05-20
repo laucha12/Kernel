@@ -42,6 +42,11 @@ void syscalls(int fd,char * sysBuffer,int count,int num){
 
 		switch (num)
 		{
+		
+		case 120:
+			
+			break;
+
 		case 1:
 			if (fd == 0)
 			{
@@ -76,6 +81,7 @@ extern int get_rtc_seconds();
 extern int get_rtc_minutes();
 extern int get_rtc_hours();
 extern int get_rtc_weekday();
+extern int get_rtc_day();
 extern int  get_rtc_month();
 extern int get_rtc_year();
 
@@ -83,6 +89,10 @@ void time_syscall(){
 	int seconds = get_rtc_seconds();
 	int minutes = get_rtc_minutes();
 	int hours = get_rtc_hours();
+	int weekday = get_rtc_weekday();
+	int day = get_rtc_day();
+	int month = get_rtc_month();
+	int year = get_rtc_year();
 	
 
 
