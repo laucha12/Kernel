@@ -9,6 +9,7 @@ void listen(char * command, Window window){
     int c;
 
     //IMPORANTE CLEAR BUFFER TODO
+    //clearKeyboardBuffer();?
 
     // Se imprime la leyenda que indica el usuario y el dispositivo
     printShellLegend(window);
@@ -33,7 +34,6 @@ void windowStart(Window window){
 
     // Arreglo de caracteres donde tendre mi comando
     char command[MAX_COMMAND_SIZE];
-
 
     while(1){
         //Se escucha lo que el usuario escriba hasta el enter
