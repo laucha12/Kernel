@@ -5,12 +5,11 @@
 #define MAXBUFFER 255
 static void int_20();
 static void int_21();
-static char buffer [MAXBUFFER];
-static int size = 0;
-static int actualPos = 0;
+static char buffer [MAXBUFFER] = {0};
+static unsigned int size = 0;
+static unsigned int actualPos = 0;
 
 void irqDispatcher(uint64_t irq) {
-		ncPrintChar('H');
 
 	switch (irq) {
 		case 0:
@@ -23,10 +22,12 @@ void irqDispatcher(uint64_t irq) {
 	return;
 }
 void int_21(){
-	ncPrintChar(scancodeLToAscii[readKey()]);
-	buffer[size] = scancodeLToAscii[readKey()];
-	size = (size == 254)? 0 : size++;
-	
+	char c = readKey();
+	if (c > 0)
+	{
+		buffer[size] = scancodeLToAscii[c];
+		size = (size == 254)? 0 : (size+1);
+	}
 }
 void int_20() {
 	//timer_handler();
@@ -38,17 +39,20 @@ void syscalls(int fd,char * sysBuffer,int count,int num){
 		case 1:
 			if (fd == 1)
 			{
-				ncPrint(sysBuffer);             // hay que cambiarlo
+				ncPrintChar(*sysBuffer);             // hay que cambiarlo
 
 			}
 			if (fd == 2)
 			{
-				ncPrint(sysBuffer);             // hay que cambiarlo
+				ncPrintChar(*sysBuffer);             // hay que cambiarlo
 			}	
 			break;
 		case 0:
-			*sysBuffer = buffer[actualPos];
-			actualPos = (actualPos == 254)? 0 : actualPos++;
+			sysBuffer[0] = buffer[actualPos];
+			if(buffer[actualPos] != 0){
+				buffer[actualPos] = 0;
+				actualPos = (actualPos == 254)? 0 : (actualPos+1);
+			}
 			break;
 		default:
 			break;

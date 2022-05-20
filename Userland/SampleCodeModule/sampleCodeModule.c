@@ -13,6 +13,11 @@ int main() {
 	char c = 'H';
 	while (1)
 	{		
+		sysReadTest(&c);
+		if (c != 0)
+		{
+			sysWriteTest(&c);
+		}
 		
 	}
 	

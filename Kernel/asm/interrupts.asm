@@ -63,6 +63,7 @@ SECTION .text
     mov r8,%1
 	cmp  r8,6
 	je .syscallsJump
+	mov rdi,r8
 	call irqDispatcher
 	jmp .fin
 .syscallsJump:
