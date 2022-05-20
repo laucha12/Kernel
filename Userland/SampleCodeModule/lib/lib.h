@@ -3,8 +3,16 @@
 
 #include "../WindowsEngine/Windows.h"
 
+#define IS_NUM(c)  ((c) >= '0' && (c)<='9')
+#define IS_DIGIT(c) (((c) >= 'a' && (c)<='z') || ((c) >= 'A' && (c)<='Z'))
+
+#define NULL 0L //https://www.tutorialspoint.com/c_standard_library/c_macro_null.htm
+
 #define BACKSPACE '\b'
 #define ENTER '\n'
+#define TAB '   '
+#define SPACE ' '
+#define PIPE '|'
 
 /*
  * Recibe una cadena de caracteres y las imprima 
