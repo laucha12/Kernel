@@ -63,7 +63,6 @@ SECTION .text
     mov r8,%1
 	cmp  r8,6
 	je .syscallsJump
-	mov r8, %1 ; pasaje de parametro
 	call irqDispatcher
 	jmp .fin
 .syscallsJump:

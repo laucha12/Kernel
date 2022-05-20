@@ -30,7 +30,6 @@ void load_idt() {
   setup_IDT_entry (0x80, (uint64_t)&_irq06Handler);
 
 
-	//Solo interrupcion timer tick habilitadas
 	picMasterMask(0xFF); 
 	picSlaveMask(0xFF);
         

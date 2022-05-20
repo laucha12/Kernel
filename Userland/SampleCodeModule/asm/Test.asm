@@ -1,12 +1,31 @@
-GLOBAL chau
+GLOBAL sysWriteTest
+GLOBAL sysReadTest
 section .data
     hola db "hola como va",0
 section .text
-
-chau:
-    mov rax,4
+;-----------------------------
+;   Funcion para testear la syscalls de write
+;-----------------------------
+;   Argumentos: char [] buffer
+;   Return: void
+;-----------------------------
+sysWriteTest:
+    mov rsi,rdi
+    mov rax,1
     mov rdi,2
-    mov rsi,hola
+    mov rdx,4
+    int 80h
+    ret
+;----------------------------
+;   Funcion para testear la syscall de read
+;----------------------------
+;   Argumentos: Putero a char
+;   Retorno: void
+;----------------------------
+sysReadTest:
+    mov rsi,rdi
+    mov rax,0
+    mov rdi,2
     mov rdx,4
     int 80h
     ret

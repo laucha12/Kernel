@@ -2,12 +2,16 @@
 #include <stdint.h>
 #include <keyBoard.h>
 #include <naiveConsole.h>
+#define MAXBUFFER 255
 static void int_20();
 static void int_21();
+static char buffer [MAXBUFFER];
+static int size = 0;
+static int actualPos = 0;
 
-char * v = (char*)0xB8000 + 79 * 2;
 void irqDispatcher(uint64_t irq) {
-	
+		ncPrintChar('H');
+
 	switch (irq) {
 		case 0:
 			int_20();
@@ -19,24 +23,37 @@ void irqDispatcher(uint64_t irq) {
 	return;
 }
 void int_21(){
-	//saveBuffer('c');
+	ncPrintChar(scancodeLToAscii[readKey()]);
+	buffer[size] = scancodeLToAscii[readKey()];
+	size = (size == 254)? 0 : size++;
+	
 }
 void int_20() {
 	//timer_handler();
 }
-void syscalls(int fd,const char * buffer,int count,int num){
+void syscalls(int fd,char * sysBuffer,int count,int num){
 
-		if (num == 4)
+		switch (num)
 		{
+		case 1:
 			if (fd == 1)
 			{
-				ncPrint(buffer);             // hay que cambiarlo
+				ncPrint(sysBuffer);             // hay que cambiarlo
 
 			}
 			if (fd == 2)
 			{
-				ncPrint(buffer);             // hay que cambiarlo
+				ncPrint(sysBuffer);             // hay que cambiarlo
 			}	
+			break;
+		case 0:
+			*sysBuffer = buffer[actualPos];
+			actualPos = (actualPos == 254)? 0 : actualPos++;
+			break;
+		default:
+			break;
 		}
+			
+		
 		
 }
