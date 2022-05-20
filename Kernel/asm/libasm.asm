@@ -8,6 +8,10 @@ GLOBAL get_rtc_weekday
 GLOBAL get_rtc_month
 GLOBAL get_rtc_year
 
+<<<<<<< HEAD
+
+=======
+>>>>>>> e718732cefd42057a0f9e96fdd8ea49055246d5c
 section .text
 	
 cpuVendor:
@@ -33,7 +37,7 @@ cpuVendor:
 	mov rsp, rbp
 	pop rbp
 	ret
-	
+
 ;------------------------------------------------
 ;	Funcion la cual lee de la memoria de teclado
 ;	la tecla por la cual se interrumpio
@@ -246,4 +250,7 @@ get_rtc_year:
 	pop rbp         ; Stack frame
 
     ret
+<<<<<<< HEAD
+=======
 
+>>>>>>> e718732cefd42057a0f9e96fdd8ea49055246d5c
