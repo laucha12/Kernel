@@ -6,7 +6,7 @@ static char buffer[64] = { '0' };
 static uint8_t * const video = (uint8_t*)0xB8000;
 static uint8_t * currentVideoFD0 = (uint8_t*)0xB8000;
 static uint8_t * currentVideoFD1 = (uint8_t*)0xB8000;
-static uint8_t * currentVideoFD2 = (uint8_t*)0xB8000 + 80;
+static uint8_t * currentVideoFD2 = (uint8_t*)0xB8000 + 82;
 
 void resetVideo();
 void printFD0Char(char character);
@@ -75,6 +75,7 @@ void printFD2Char(char character){
 		resetVideo();
 	}
 }
+
 void resetVideo(){
 	for (int i = 0; i < 3840; i++)
 	{
