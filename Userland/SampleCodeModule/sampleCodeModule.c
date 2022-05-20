@@ -10,13 +10,14 @@ int main() {
 	//All the following code may be removed 
 	*v = 'X';
 	*(v+1) = 0x74;
-	char c = 'H';
+	char c[2] ;
+	c[1] = 0;
 	while (1)
 	{		
-		sysReadTest(&c);
+		sysReadTest(c);
 		if (c != 0)
 		{
-			sysWriteTest(&c);
+			sysWriteTest(c);
 		}
 		
 	}

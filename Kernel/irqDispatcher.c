@@ -26,7 +26,7 @@ void int_21(){
 	if (c > 0)
 	{
 		buffer[size] = scancodeLToAscii[c];
-		size = (size == 254)? 0 : (size+1);
+		size = (size == 254)? 0 : size++;
 	}
 }
 void int_20() {
@@ -37,21 +37,26 @@ void syscalls(int fd,char * sysBuffer,int count,int num){
 		switch (num)
 		{
 		case 1:
+			if (fd == 0)
+			{
+				ncPrintFD0(sysBuffer);             // hay que cambiarlo a la del 
+
+			}
 			if (fd == 1)
 			{
-				ncPrintChar(*sysBuffer);             // hay que cambiarlo
-
+				ncPrintFD1(sysBuffer);
 			}
 			if (fd == 2)
 			{
-				ncPrintChar(*sysBuffer);             // hay que cambiarlo
-			}	
+				ncPrintFD2(sysBuffer);
+			}
+				
 			break;
 		case 0:
 			sysBuffer[0] = buffer[actualPos];
 			if(buffer[actualPos] != 0){
 				buffer[actualPos] = 0;
-				actualPos = (actualPos == 254)? 0 : (actualPos+1);
+				actualPos = (actualPos == 254)? 0 : actualPos++;
 			}
 			break;
 		default:
