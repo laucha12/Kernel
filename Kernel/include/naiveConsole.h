@@ -2,7 +2,8 @@
 #define NAIVE_CONSOLE_H
 
 #include <stdint.h>
-
+// hacer bien los comments
+void ncPrintFD0(char * string);
 void ncPrint(const char * string);
 void ncPrintChar(char character);
 void ncNewline();
