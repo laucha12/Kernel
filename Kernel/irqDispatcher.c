@@ -2,9 +2,12 @@
 #include <stdint.h>
 #include <keyBoard.h>
 #include <naiveConsole.h>
+
 #define MAXBUFFER 255
+
 static void int_20();
 static void int_21();
+
 static char buffer [MAXBUFFER] = {0};
 static unsigned int size = 0;
 static unsigned int actualPos = 0;
@@ -21,6 +24,7 @@ void irqDispatcher(uint64_t irq) {
 	}
 	return;
 }
+
 void int_21(){
 	char c = readKey();
 	if (c > 0)
@@ -29,9 +33,11 @@ void int_21(){
 		size = (size == 254)? 0 : (size+1);
 	}
 }
+
 void int_20() {
 	//timer_handler();
 }
+
 void syscalls(int fd,char * sysBuffer,int count,int num){
 
 		switch (num)

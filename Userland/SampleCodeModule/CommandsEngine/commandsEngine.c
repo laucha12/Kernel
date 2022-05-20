@@ -22,7 +22,9 @@ static void commandsEngineRunPipe(char * command, Window window) {
 
 }
 
-static void commandsEngineRun(char * command, Window window);
+static void commandsEngineRun(char * command, Window window) {
+    
+}
 
 
 static int isPipeCommand(char * command) {
