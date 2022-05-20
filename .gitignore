@@ -5,6 +5,13 @@ comp.sh
 
 .gdbinit
 
-# Files due to bash and gdb
+# files due to bash and gdb
 .bash_history
 .gdb_history
+
+# files linked due to qemu
+Image/packedKernel.bin
+Image/packedKernel.bin
+Image/x64BareBonesImage.img
+Image/x64BareBonesImage.qcow2
+Userland/0001-sampleDataModule.bin
