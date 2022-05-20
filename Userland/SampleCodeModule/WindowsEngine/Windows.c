@@ -11,7 +11,7 @@ void listen(char * command, Window window){
     //IMPORANTE CLEAR BUFFER TODO
 
     // Se imprime la leyenda que indica el usuario y el dispositivo
-    printShellLegend(window);
+    puts(SHELL_LEGEND, window);
 
     //Por cada letra, la guardo en el string command y valido que no sea enter, si no, termine con mi comando
     while((c = getKey(window)) != '\n' && count <  MAX_COMMAND_SIZE){

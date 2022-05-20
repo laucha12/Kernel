@@ -4,11 +4,15 @@
 #include "../lib/lib.h"
 
 #define MAX_COMMAND_SIZE 120
+#define SHELL_LEGEND "user@device: ~$ "
 
 /*
  * Enumerador con los tipos de ventanas posibles.
+ * (Obs: comienzo en 1 el enum para poder hacer el chequeo
+ * de null y mantener un estilo constante a traves todo el
+ * codigo)
  */
-enum window_ {MAIN_WINDOW = 0, LEFT_WINDOW, RIGHT_WINDOW};
+enum window_ {MAIN_WINDOW = 1, LEFT_WINDOW, RIGHT_WINDOW};
 typedef enum window_ Window;
 
 
@@ -22,11 +26,6 @@ void listen(char* command, Window window);
  * Recibe una ventana en la cual inicializara una terminal de comandos
  */
 void windowStart(Window window);
-
-
-static void printShellLegend(Window window){
-    puts("user@device: ~$ ", window);
-}
 
 
 #endif
