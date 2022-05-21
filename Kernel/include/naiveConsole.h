@@ -22,4 +22,6 @@ void ncPrintFD1(char * string);
 void ncPrintFD2(char * string);
 void printFD2Char(char character);
 int checkEnter(char c, int FD);
+void open(int fd);
+void close(int fd);
 #endif

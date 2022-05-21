@@ -1,7 +1,8 @@
 GLOBAL sysWriteTest
 GLOBAL sysReadTest
 GLOBAL sysTimeTest
-
+GLOBAL sysOpen
+GLOBAL sysExit
 section .data
     hola db "hola como va",0
 section .text
@@ -12,9 +13,7 @@ section .text
 ;   Return: void
 ;-----------------------------
 sysWriteTest:
-    mov rsi,rdi
     mov rax,1
-    mov rdi,2
     mov rdx,4
     int 80h
     ret
@@ -31,7 +30,14 @@ sysReadTest:
     mov rdx,4
     int 80h
     ret
-
+sysOpen:
+    mov rax,2
+    int 80h
+    ret
+sysExit:
+    mov rax,3
+    int 80h
+    ret
 sysTimeTest:
    mov rsi,rdi
     mov rax,120

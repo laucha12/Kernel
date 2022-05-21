@@ -60,6 +60,12 @@ void syscalls(int fd,char * sysBuffer,int count,int num){
 		case 0:
 			getBufferChar(sysBuffer);
 			break;
+		case 2:
+			open(fd);
+			break;
+		case 3:
+			close(fd);
+			break;
 		default:
 			break;
 		}

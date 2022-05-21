@@ -69,16 +69,16 @@ SECTION .text
 .syscallsJump:
 	mov rcx,rax
 	cmp rax,8
-	je .loadtask
+;	je .loadtask
 	call syscalls
 	jmp .fin
-.loadtask:
-	cmp rsi,2
-	je .loadTask2
-	mov [context_Prim+40],rsi
-	mov [context_Prim+32], rdx
-	mov [context_Prim+24], rcx
-	
+.;loadtask:
+;	cmp rsi,2
+;	je .loadTask2
+;	mov [context_Prim+40],rsi
+;	mov [context_Prim+32], rdx
+;	mov [context_Prim+24], rcx
+
 
 .fin:
 	; signal pic EOI (End of Interrupt)
@@ -100,7 +100,7 @@ SECTION .text
 	iretq
 %endmacro
 
-%macro scheduler
+%macro scheduler 1
 	cmp DWORD [last],2
 	je .pushSegunda
 	mov [context_Prim], rax
