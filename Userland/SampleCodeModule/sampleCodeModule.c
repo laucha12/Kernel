@@ -11,7 +11,6 @@ int main() {
 	//All the following code may be removed 
 	*v = 'X';
 	*(v+1) = 0x74;
-	
 
 /* 	char date[24];
 	sysTimeTest(date);	
