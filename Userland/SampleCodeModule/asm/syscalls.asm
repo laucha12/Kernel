@@ -63,7 +63,7 @@ sysTime:
     push rbx        ; Preservar rbx
 
     mov rsi, rdi
-    mov
+    mov rax, 120    ; Numero de syscall
     
     pop rbx         ; Preservar rbx
 
