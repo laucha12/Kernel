@@ -1,6 +1,22 @@
-#include "Windows.h"
-#include "../CommandsEngine/commands.h"
-#include "../CommandsEngine/commandsEngine.h"
+#include "./WindowsEngine/Windows.h"
+#include "./lib/lib.h"
+//#include "./CommandsEngine/commands.h"
+//#include "./CommandsEngine/commandsEngine.h"
+
+void welcomeScreen(Window window){
+    puts("------------------------------- GDH OS -----------------------------------\n", window);
+    char buffer[27];
+    getTime(buffer);
+    puts(buffer, window);
+    puts("\n", window);
+    puts("Presione entener para comenzar\n", window);
+    puts("------------------------------- GDH OS -----------------------------------\n", window);
+    char c = -1;
+    while((c = getKey(window)) != '\n'){
+    
+    }
+}
+
 
 void listen(char * command, Window window){
     // Contador de caracteres ingresados por el usuario
@@ -20,11 +36,12 @@ void listen(char * command, Window window){
         // Si es backspace, borramos la letra
         if(c == '\b'){
             deleteChar(window);
-        }else{ // En caso contrario, se agrega la letra al comando y se la imprime en pantalla
+        }else if(c != 0){ // En caso contrario, se agrega la letra al comando y se la imprime en pantalla
             command[count++] = c;
             putc(c, window);
         }
     }
+    command[count++] = 0;
     // El enter ingresado:
     putc('\n', window);
 }
@@ -41,6 +58,7 @@ void windowStart(Window window){
         //Se escucha lo que el usuario escriba hasta el enter
         listen(command, window);
         //Se pasa el comando, y este decidira que hacer con tal comando, si es que es valido.
-        commandsEngineHandle(command, window);
+        
+        //commandsEngineHandle(command, window);
     }
 }

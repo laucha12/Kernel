@@ -1,4 +1,6 @@
-#include "lib.h"
+#include "./lib/lib.h"
+#include "./WindowsEngine/Windows.h"
+
 
 extern void sysWrite(int fd, char * buffer);
 extern void sysRead(int fd, char * buffer);
@@ -16,8 +18,8 @@ void puts(char * string, Window window){
  * Recibe un caracter y lo imprime 
  */
 void putc(char c, Window window){
-    char * character[2] = {c, 0};
-    sysWrite(window, c);
+    char character[2] = {c, 0};
+    sysWrite(window, character);
 }
 
 /*
@@ -38,7 +40,7 @@ char getChar(Window window);
  * haber nada, lo esperara.
  */
 char getKey(Window window){
-    char * buffer[2] = {0};
+    char buffer[2] = {0};
     sysRead(window, buffer);
     return buffer[0];
 }
@@ -47,28 +49,28 @@ char getKey(Window window){
  * Retorna un entero con la hora del sistema (syscall)
  */
 int getHour(){
-
+    return 1;
 }
 
 /*
  * Retorna un entero con los minutos del sistema (syscall)
  */
 int getMinutes(){
-
+return 1;
 }
 
 /*
  * Retorna un entero con los segundos del sistema (syscall)
  */
 int getSeconds(){
-
+return 1;
 }
 
 /*
  * Retorna un entero con el dia del sistema (syscall)
  */
 int getDay(){
-
+return 1;
 }
 
 void getTime(char * buffer){
@@ -80,7 +82,7 @@ void getTime(char * buffer){
  * como un arreglo de caractres.
  */
 char * readMem(int * from){
-    
+    return 1;
 }
 
 /*
@@ -89,5 +91,5 @@ char * readMem(int * from){
  * este archivo
  */
 char * readRegs(){
-    
+    return 1;
 }

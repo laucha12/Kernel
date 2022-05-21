@@ -1,6 +1,6 @@
-#include "../WindowsEngine/Windows.h"
-#include "../WindowsEngine/WindowsEngine.h"
-#include "../lib/lib.h"
+/*#include "./WindowsEngine/Windows.h"
+#include "./WindowsEngine/WindowsEngine.h"
+#include "./lib/lib.h"
 
 void commandsEngineHandle(char * command, Window window){
 
@@ -56,4 +56,4 @@ static int isValidCommand(char * command) {
             return 0;
     
     return 1;
-}
+}*/

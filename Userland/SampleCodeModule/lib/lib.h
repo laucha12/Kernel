@@ -62,6 +62,11 @@ int getSeconds();
 int getDay();
 
 /*
+ * Retorna un string con la hora
+*/
+void getTime(char * buffer);
+
+/*
  * Retorna una copia de los primeros 32 bytes desde la posicion de memoria from 
  * como un arreglo de caractres.
  */
@@ -74,6 +79,7 @@ char * readMem(int * from);
  *  "R8 ", "R9 ", "R10", "R11", "R12", "R13", "R14", "R15"};
  */
 char * readRegs();
+
 
 
 
