@@ -25,6 +25,8 @@ void listen(char * command, Window window){
             putc(c, window);
         }
     }
+    // El enter ingresado:
+    putc('\n', window);
 }
 
 

@@ -1,5 +1,10 @@
 #include "lib.h"
 
+extern void sysWrite(int fd, char * buffer);
+extern void sysRead(int fd, char * buffer);
+extern void sysTime(char * buffer);
+
+
 /*
  * Recibe una cadena de caracteres y las imprima 
  */
