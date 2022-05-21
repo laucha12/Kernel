@@ -70,7 +70,8 @@ sysTime:
 
     mov rsi, rdi    ; El primer parametro de la funcion lo paso por rsi
     mov rax, 120    ; Numero de syscall
-    
+    int 80h         ; "Che Kernel"
+
     pop rbx         ; Preservar rbx
 
     mov rsp, rbp    ; Stack frame

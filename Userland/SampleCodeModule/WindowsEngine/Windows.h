@@ -1,7 +1,6 @@
 #ifndef WINDOWS_H
 #define WINDOWS_H
 
-#include "../lib/lib.h"
 
 #define MAX_COMMAND_SIZE 120
 #define SHELL_LEGEND "user@device: ~$ "
@@ -12,8 +11,8 @@
  * de null y mantener un estilo constante a traves todo el
  * codigo)
  */
-enum window_ {MAIN_WINDOW = 1, LEFT_WINDOW, RIGHT_WINDOW};
-typedef enum window_ Window;
+typedef enum window_ {MAIN_WINDOW = 0, LEFT_WINDOW, RIGHT_WINDOW} Window;
+
 
 
 /*
