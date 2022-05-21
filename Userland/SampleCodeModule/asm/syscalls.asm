@@ -1,5 +1,6 @@
 GLOBAL sysWrite
 GLOBAL sysRead
+GLOBAL sysTime
 
 section .text
 
@@ -56,13 +57,18 @@ sysRead:
     
     ret
 
+
+;------------------------------
+;   Rutina de asm que realiza 
+;   la syscall de obtener la fecha en string buffer
+;------------------------------
 sysTime:
     push rbp        ; Stack frame
     mov rbp, rsp    ; Stack frame
 
     push rbx        ; Preservar rbx
 
-    mov rsi, rdi
+    mov rsi, rdi    ; El primer parametro de la funcion lo paso por rsi
     mov rax, 120    ; Numero de syscall
     
     pop rbx         ; Preservar rbx
