@@ -13,11 +13,11 @@ int main() {
 	*(v+1) = 0x74;
 	
 
-	char date[24];
+/* 	char date[24];
 	sysTimeTest(date);	
 	sysWriteTest(date);
+ */
 
-/*
 	char c[2] ;
 	c[1] = 0;
 	while (1)
@@ -29,7 +29,7 @@ int main() {
 		}
 		
 	}
-	*/
+	
 
 
 	//Test if BSS is properly set up

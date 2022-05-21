@@ -14,7 +14,7 @@ section .text
 sysWriteTest:
     mov rsi,rdi
     mov rax,1
-    mov rdi,0
+    mov rdi,2
     mov rdx,4
     int 80h
     ret
