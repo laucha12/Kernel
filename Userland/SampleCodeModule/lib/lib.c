@@ -9,14 +9,15 @@ extern void sysTime(char * buffer);
  * Recibe una cadena de caracteres y las imprima 
  */
 void puts(char * string, Window window){
-
+    sysWrite(window, string);
 }
 
 /*
  * Recibe un caracter y lo imprime 
  */
 void putc(char c, Window window){
-
+    char * character[2] = {c, 0};
+    sysWrite(window, c);
 }
 
 /*
@@ -37,7 +38,9 @@ char getChar(Window window);
  * haber nada, lo esperara.
  */
 char getKey(Window window){
-
+    char * buffer[2] = {0};
+    sysRead(window, buffer);
+    return buffer[0];
 }
 
 /*
@@ -66,6 +69,10 @@ int getSeconds(){
  */
 int getDay(){
 
+}
+
+void getTime(char * buffer){
+    sysTime(buffer);
 }
 
 /*
