@@ -1,33 +1,33 @@
-#ifndef LIB_H
-#define LIB_H
+#include "./lib/lib.h"
+#include "./WindowsEngine/Windows.h"
 
-#include "../WindowsEngine/Windows.h"
 
-#define IS_NUM(c)  ((c) >= '0' && (c)<='9')
-#define IS_DIGIT(c) (((c) >= 'a' && (c)<='z') || ((c) >= 'A' && (c)<='Z'))
+extern void sysWrite(int fd, char * buffer);
+extern void sysRead(int fd, char * buffer);
+extern void sysTime(char * buffer);
 
-#define NULL 0L //https://www.tutorialspoint.com/c_standard_library/c_macro_null.htm
-
-#define BACKSPACE '\b'
-#define ENTER '\n'
-#define TAB '   '
-#define SPACE ' '
-#define PIPE '|'
 
 /*
  * Recibe una cadena de caracteres y las imprima 
  */
-void puts(char * string, Window window);
+void puts(char * string, Window window){
+    sysWrite(window, string);
+}
 
 /*
  * Recibe un caracter y lo imprime 
  */
-void putc(char c, Window window);
+void putc(char c, Window window){
+    char character[2] = {c, 0};
+    sysWrite(window, character);
+}
 
 /*
  * Recibe una ventana a la cual borrara el ultimo caracter
  */
-void deleteChar(Window window);
+void deleteChar(Window window){
+
+}
 
 /*
  * Recibe una ventana donde leera el buffer de teclado, y en el caso de no 
@@ -39,48 +39,57 @@ char getChar(Window window);
  * Recibe una ventana donde leera el buffer de teclado, y en el caso de no 
  * haber nada, lo esperara.
  */
-char getKey(Window window);
+char getKey(Window window){
+    char buffer[2] = {0};
+    sysRead(window, buffer);
+    return buffer[0];
+}
 
 /*
  * Retorna un entero con la hora del sistema (syscall)
  */
-int getHour();
+int getHour(){
+    return 1;
+}
 
 /*
  * Retorna un entero con los minutos del sistema (syscall)
  */
-int getMinutes();
+int getMinutes(){
+return 1;
+}
 
 /*
  * Retorna un entero con los segundos del sistema (syscall)
  */
-int getSeconds();
+int getSeconds(){
+return 1;
+}
 
 /*
  * Retorna un entero con el dia del sistema (syscall)
  */
-int getDay();
+int getDay(){
+return 1;
+}
 
-/*
- * Retorna un string con la hora
-*/
-void getTime(char * buffer);
+void getTime(char * buffer){
+    sysTime(buffer);
+}
 
 /*
  * Retorna una copia de los primeros 32 bytes desde la posicion de memoria from 
  * como un arreglo de caractres.
  */
-char * readMem(int * from);
+char * readMem(int * from){
+    return 1;
+}
 
 /*
  * Retorna una copia de los valores de los registros, 
- * como un arreglo de caracteres. En el orden definido por    
- *  {"RIP", "RAX", "RBX", "RCX", "RDX", "RSI", "RDI", "RBP", "RSP",
- *  "R8 ", "R9 ", "R10", "R11", "R12", "R13", "R14", "R15"};
+ * como un arreglo de caracteres. En el orden definido por la tabla abajo de 
+ * este archivo
  */
-char * readRegs();
-
-
-
-
-#endif
+char * readRegs(){
+    return 1;
+}

@@ -17,6 +17,16 @@ void saveBuffer(char c);
     Return: la tecla que fue apretada en hexa
 */
 extern char readKey();
+
+/*
+    Funcion la cual es llamada desde la syscall de read que lo que hace es devolver
+    el proximo char del buffer
+
+    Argumentos: buffer en donde va a copiar dicho caracter
+    Return: void
+*/
+void getBufferChar(char * sysBuffer);
+
 /*
     Tabla la cual segun el valor que se ingresa devuelve el 
     valor en ascii
