@@ -59,6 +59,15 @@ void syscalls(int fd,char * sysBuffer,int count,int num){
 			break;
 		case 0:
 			getBufferChar(sysBuffer);
+<<<<<<< HEAD
+=======
+			break;
+		case 2:
+			open(fd);
+			break;
+		case 3:
+			close(fd);
+>>>>>>> 46869e9facb873856a1d8eb62290303247a5ea78
 			break;
 		default:
 			break;
