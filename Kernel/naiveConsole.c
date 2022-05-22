@@ -45,7 +45,11 @@ void printFD0Char(char character)
 	{
 		currentVideoFD0 += COLUMS - ((currentVideoFD0 - video) % COLUMS);
 	}
-	else
+	else if(character == '\b'){
+		if(currentVideoFD0 != video)
+			currentVideoFD0 -= 2;
+			*currentVideoFD0 = ' ';
+	} else
 	{
 		*currentVideoFD0 = character;
 		currentVideoFD0 += 2;

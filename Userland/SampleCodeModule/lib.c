@@ -169,7 +169,7 @@ void putc_(char c, Window window){
 
 
 void deleteChar(Window window){
-
+    putc_('\b', window);
 }
 
 
