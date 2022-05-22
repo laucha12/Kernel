@@ -4,7 +4,7 @@
 
 
 #define INVALID_NUMBER_COMMANDS "No ingreso el numero de argumentos validos \n"
-#define TIME_BUFFER 20
+#define TIME_BUFFER 50
 #define MEM_BUFFER 120
 #define REGS_BUFFER 150
 
@@ -37,6 +37,8 @@ void diaYHora(Window window, int argc, char argv[MAX_ARGUMENT_COUNT][MAX_ARGUMEN
 
     char buffer[TIME_BUFFER];
     getTime(buffer);
+    puts_(buffer, window);
+    puts_("\n", window);
 }
 
 void divideByZero(Window window, int argc, char argv[MAX_ARGUMENT_COUNT][MAX_ARGUMENT]) {
