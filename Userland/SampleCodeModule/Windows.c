@@ -1,17 +1,16 @@
 #include "include/Windows.h"
 #include "include/lib.h"
-//#include "./CommandsEngine/commands.h"
 #include "include/commandsEngine.h"
 
 
 void welcomeScreen(Window window){
-    puts("---------------------------------- GDH OS --------------------------------------\n", window);
+    puts_("---------------------------------- GDH OS --------------------------------------\n", window);
     char buffer[27];
     getTime(buffer);
-    puts(buffer, window);
-    puts("\n", window);
-    puts("Presione entener para comenzar\n", window);
-    puts("---------------------------------- GDH OS --------------------------------------\n", window);
+    puts_(buffer, window);
+    puts_("\n", window);
+    puts_("Presione entener para comenzar\n", window);
+    puts_("---------------------------------- GDH OS --------------------------------------\n", window);
     char c = -1;
     while((c = getKey(window)) != '\n'){
     
