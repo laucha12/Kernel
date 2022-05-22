@@ -1,6 +1,10 @@
 GLOBAL sysWrite
 GLOBAL sysRead
 GLOBAL sysTime
+GLOBAL sysMemFrom
+GLOBAL sysRegs
+GLOBAL generateDivByZero
+GLOBAL generateInvalidOpCode
 
 section .text
 
