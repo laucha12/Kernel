@@ -6,10 +6,9 @@ static char buffer[64] = { '0' };
 static uint8_t * const video = (uint8_t*)0xB8000;
 static uint8_t * currentVideoFD0 = (uint8_t*)0xB8000;
 static uint8_t * currentVideoFD1 = (uint8_t*)0xB8000;
-static uint8_t * currentVideoFD2 = (uint8_t*)0xB8000 + 80;
+static uint8_t * currentVideoFD2 = (uint8_t*)0xB8000 + 82;
 
-void resetVideo();
-void printFD0Char(char character);
+
 static const uint32_t width = 80;
 static const uint32_t height = 25 ;
 
@@ -32,9 +31,16 @@ void ncPrintFD0(char * string){
 		printFD0Char(string[i]);
 }
 void printFD0Char(char character){
-	*currentVideoFD0 = character;
-	currentVideoFD0 += 2;
-	if ((currentVideoFD0 - video) == 4000)
+	if (character == '\n')
+	{
+		currentVideoFD0 += COLUMS - ((currentVideoFD0 - video) % COLUMS);
+	}else{
+		*currentVideoFD0 = character;
+		 currentVideoFD0 += 2;
+	}
+	// es mayor o igual pues si se pone un enter se fija si es mayor
+	// asi chequeamos que se borre una linea
+	if ((currentVideoFD0 - video) >= 4000)
 	{
 		resetVideo();
 	}
@@ -45,14 +51,20 @@ void ncPrintFD1(char * string){
 		printFD1Char(string[i]);
 }
 void printFD1Char(char character){
-	*currentVideoFD1 = character;
-	currentVideoFD1 += 2;
-	if (!((currentVideoFD2-video)%80))
+	if (character == '\n')
 	{
-		currentVideoFD2 += 80;
+		currentVideoFD1 += OFFSET - ((currentVideoFD1 - video) % OFFSET);
+	}else{
+		*currentVideoFD1 = character;
+		 currentVideoFD1 += 2;
+	}
+
+	if (!((currentVideoFD1-video )% OFFSET))
+	{
+		currentVideoFD1 += OFFSET;
 	}
 	
-	if ((currentVideoFD2 - video) == 3920)
+	if ((currentVideoFD1 - video) >= 3920)
 	{
 		resetVideo();
 	}
@@ -63,14 +75,19 @@ void ncPrintFD2(char * string){
 		printFD2Char(string[i]);
 }
 void printFD2Char(char character){
-	*currentVideoFD2 = character;
-	currentVideoFD2 += 2;
-	if (!((currentVideoFD2 - video) % 80))
+	if (character == '\n')
 	{
-		currentVideoFD2 += 80;
+		currentVideoFD2 += OFFSET - ((currentVideoFD2 - video) % OFFSET) ;
+	}else{
+		*currentVideoFD2 = character;
+		 currentVideoFD2 += 2;
+	}
+	if (!((currentVideoFD2 - video) % OFFSET))
+	{
+		currentVideoFD2 += OFFSET + 2;
 	}
 	
-	if ((currentVideoFD1 - video) == 4000)
+	if ((currentVideoFD1 - video) >= 4000)
 	{
 		resetVideo();
 	}
@@ -78,17 +95,18 @@ void printFD2Char(char character){
 void resetVideo(){
 	for (int i = 0; i < 3840; i++)
 	{
-		*(video+i) = *(video+i+160);
+		*(video+i) = *(video+i+COLUMS);
 	}
-	for (int i = 0; i < 80; i++)
+	for (int i = 0; i < OFFSET; i++)
 	{
 		*(video+3840 + i*2) = ' ';
 	}
-	currentVideoFD0 = currentVideoFD0 - 160;
-	currentVideoFD1 = currentVideoFD1 - 80;
-	currentVideoFD2 = currentVideoFD1 - 80;
+	currentVideoFD0 = currentVideoFD0 - COLUMS;
+	currentVideoFD1 = currentVideoFD1 - OFFSET;
+	currentVideoFD2 = currentVideoFD1 - OFFSET;
 
 }
+
 void ncNewline(int FD)
 {
 	do

@@ -1,5 +1,9 @@
 /* sampleCodeModule.c */
 
+//#include "./WindowsEngine/Windows.h"
+#include "./WindowsEngine/WindowsEngine.h"
+
+
 char * v = (char*)0xB8000 + 79 * 2;
 
 static int var1 = 0;
@@ -11,16 +15,11 @@ int main() {
 	//All the following code may be removed 
 	*v = 'X';
 	*(v+1) = 0x74;
-	
-	char buffer[2] = "a";
-	sysWriteTest(buffer);
 
-	/*char date[24];
+ /*	char date[24];
 	sysTimeTest(date);	
+	sysWriteTest(date);
 
-	for(int i = 0; date[i] != 0; i++){
-		sysWriteTest(date[i]);
-	}
 
 	char c[2] ;
 	c[1] = 0;
@@ -33,8 +32,8 @@ int main() {
 		}
 		
 	}
-	*/
-
+*/	
+	windowsEngineInitialize();
 
 	//Test if BSS is properly set up
 	if (var1 == 0 && var2 == 0)
