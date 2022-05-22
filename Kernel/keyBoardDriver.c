@@ -1,13 +1,38 @@
 #include <keyBoard.h>
+#include <stdint.h>
 #define MAXBUFFER 255
 static char buffer[MAXBUFFER] = {0};
 static unsigned int size = 0;
 static unsigned int actualPos = 0;
+static uint8_t *keyMap[] = {scancodeLToAscii, scancodeUToAscii};
+#define LEFT_SHIFT 0x2A
+#define RIGHT_SHIFT 0x36
+static char keyMapRow = 0;
 
-void saveBuffer(char c)
+void saveBuffer(char code)
 {
-	buffer[size] = scancodeLToAscii[c];
-	size = (size == 254) ? 0 : size++;
+
+	if (code < 0x80 && code > 0)
+	{ // Key pressed
+		if (code == LEFT_SHIFT || code == RIGHT_SHIFT)
+		{
+			keyMapRow |= 0x01;
+		}
+		else if (keyMap[keyMapRow][code] != 0)
+		{
+			buffer[size] = keyMap[keyMapRow][code];
+			size = (size == 254) ? 0 : size++;
+		}
+	}
+	else
+	{  
+		 // Key released
+		code -= 0x80;
+		if (code == LEFT_SHIFT || code == RIGHT_SHIFT)
+		{
+			keyMapRow = 0;
+		}
+	}
 }
 void getBufferChar(char *sysBuffer)
 {

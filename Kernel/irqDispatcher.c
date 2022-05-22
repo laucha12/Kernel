@@ -30,10 +30,8 @@ void int_21()
 	// Llamamos al driver del teclado para que guarde en su buffer
 	// la tecla leida desde la interrupcion del mismo
 	char c = readKey();
-	if (c > 0)
-	{
-		saveBuffer(c);
-	}
+	saveBuffer(c);
+	
 }
 
 void int_20()
