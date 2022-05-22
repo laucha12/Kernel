@@ -30,7 +30,7 @@ void listen(char * command, Window window){
         // Si es backspace, borramos la letra
         if(c == '\b'){
             deleteChar(window);
-        }else if(c != 0){ // En caso contrario, se agrega la letra al comando y se la imprime en pantalla
+        } else if(c != 0){ // En caso contrario, se agrega la letra al comando y se la imprime en pantalla
             command[count++] = c;
             putc_(c, window);
         }

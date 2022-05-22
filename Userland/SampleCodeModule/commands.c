@@ -2,13 +2,19 @@
 #include "include/commandsEngine.h"
 #include "include/lib.h"
 
+
 #define INVALID_NUMBER_COMMANDS "No ingreso el numero de argumentos validos \n"
+#define TIME_BUFFER 20
+#define MEM_BUFFER 120
+#define REGS_BUFFER 150
+
+
 
 void man(Window window, int argc, char argv[MAX_ARGUMENT_COUNT][MAX_ARGUMENT]) {
-    /*if(argc != 2) {
+    if(argc != 2) {
         puts_(INVALID_NUMBER_COMMANDS, window);
         return;
-    }*/  
+    }
 
     puts_("Todavia no tenemos soporte de man :) \n", window);
 }
@@ -20,7 +26,7 @@ void help(Window window, int argc, char argv[MAX_ARGUMENT_COUNT][MAX_ARGUMENT]) 
     }
 
     puts_("La lista de los comandos disponibles es: \n", window);
-    //commandsEngineDisplayCommands(window);
+    commandsEngineDisplayCommands(window);
 }
 
 void diaYHora(Window window, int argc, char argv[MAX_ARGUMENT_COUNT][MAX_ARGUMENT]) {
@@ -28,9 +34,9 @@ void diaYHora(Window window, int argc, char argv[MAX_ARGUMENT_COUNT][MAX_ARGUMEN
         puts_(INVALID_NUMBER_COMMANDS, window);
         return;
     }
-    // putInteger(getDay(), window);
-    puts_(" : ", window);
-    // putInteger(getHour(), window);
+
+    char buffer[TIME_BUFFER];
+    getTime(buffer);
 }
 
 void divideByZero(Window window, int argc, char argv[MAX_ARGUMENT_COUNT][MAX_ARGUMENT]) {
@@ -38,7 +44,7 @@ void divideByZero(Window window, int argc, char argv[MAX_ARGUMENT_COUNT][MAX_ARG
         puts_(INVALID_NUMBER_COMMANDS, window);
         return;
     }
-    // llamar a funcion en asm
+    //generateDivByZero();
 }
 
 void invalidOpCode(Window window, int argc, char argv[MAX_ARGUMENT_COUNT][MAX_ARGUMENT]) {
@@ -46,7 +52,7 @@ void invalidOpCode(Window window, int argc, char argv[MAX_ARGUMENT_COUNT][MAX_AR
         puts_(INVALID_NUMBER_COMMANDS, window);
         return;
     }
-    //llamar a funcion en asm
+    //generateInvalidOpCode();
 }
 
 void printMem(Window window, int argc, char argv[MAX_ARGUMENT_COUNT][MAX_ARGUMENT]) {
@@ -60,6 +66,11 @@ void printMem(Window window, int argc, char argv[MAX_ARGUMENT_COUNT][MAX_ARGUMEN
     puts_("La informacion desde la posicion de memoria ", window);
     puts_(argv[1], window);
     newLine(window);
+
+    char buffer[MEM_BUFFER];
+    //readMem(buffer, (int *) atoi_((argv[1])));
+    
+    puts_(buffer, window);
 }
 
 
@@ -75,7 +86,11 @@ void infoReg(Window window, int argc, char argv[MAX_ARGUMENT_COUNT][MAX_ARGUMENT
     };
 
     puts_("Los registros tienen los valores: ", window);
-    // puts_(readRegs(), window);
+
+    char buffer[REGS_BUFFER];
+    //readRegs(buffer);
+    puts_(buffer, window);
+    
     puts_("/n", window);
 }
 
@@ -99,8 +114,7 @@ void fibonacci(Window window, int argc, char argv[MAX_ARGUMENT_COUNT][MAX_ARGUME
         return;
     }
 
-    //Computo los numeros fibonacci con programacion
-    //dinamica
+    //Computo los numeros fibonacci con programacion dinamica
 
     int previousLast = 0, last = 1, current;
 
@@ -118,16 +132,3 @@ void fibonacci(Window window, int argc, char argv[MAX_ARGUMENT_COUNT][MAX_ARGUME
         newLine(window);
     }
 }
-
-/*
-void welcomeScreen(Window window, int argc, char argv[MAX_ARGUMENT_COUNT][MAX_ARGUMENT]) {
-    if (argc != 0) {
-        puts_(INVALID_NUMBER_COMMANDS, window);
-        return;
-    }
-
-    puts_("Hola! Bienvenido a GDHOS, aca hay una lista de los comandos que puedes ejecutar: \n", window);
-    commandsEngineDisplayCommands(window);
-    newLine(window);
-    puts_("Para mas informacion de cada comando ejecutar el comando man seguido del comando en cuestion \n", window);
-}*/
