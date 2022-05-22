@@ -14,6 +14,17 @@
 #define SPACE ' '
 #define PIPE '|'
 
+extern void sysWrite(int fd, char * buffer);
+extern void sysRead(int fd, char * buffer);
+extern void sysTime(char * buffer);
+/*
+extern void sysRegs(char * buffer);
+extern void sysMemFrom(char * buffer, int * from);
+extern void generateInvalidOpCode();
+extern void generateDivByZero();*/
+
+int atoi_(char * str);
+
 int strlen_(const char * s);
 
 int substring(char *str, char *substr);
@@ -83,26 +94,6 @@ char getChar(Window window);
 char getKey(Window window);
 
 /*
- * Retorna un entero con la hora del sistema (syscall)
- */
-int getHour();
-
-/*
- * Retorna un entero con los minutos del sistema (syscall)
- */
-int getMinutes();
-
-/*
- * Retorna un entero con los segundos del sistema (syscall)
- */
-int getSeconds();
-
-/*
- * Retorna un entero con el dia del sistema (syscall)
- */
-int getDay();
-
-/*
  * Retorna un string con la hora
 */
 void getTime(char * buffer);
@@ -111,7 +102,7 @@ void getTime(char * buffer);
  * Retorna una copia de los primeros 32 bytes desde la posicion de memoria from 
  * como un arreglo de caractres.
  */
-char * readMem(int * from);
+void readMem(char * buffer, int * from);
 
 /*
  * Retorna una copia de los valores de los registros, 
@@ -119,7 +110,7 @@ char * readMem(int * from);
  *  {"RIP", "RAX", "RBX", "RCX", "RDX", "RSI", "RDI", "RBP", "RSP",
  *  "R8 ", "R9 ", "R10", "R11", "R12", "R13", "R14", "R15"};
  */
-char * readRegs();
+void readRegs(char * buffer);
 
 
 
