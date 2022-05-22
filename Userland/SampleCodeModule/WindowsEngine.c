@@ -1,5 +1,5 @@
-#include "./WindowsEngine/WindowsEngine.h"
-#include "./WindowsEngine/Windows.h"
+#include "include/WindowsEngine.h"
+#include "include/Windows.h"
 
 #define MAX_WINDOWS 3
 

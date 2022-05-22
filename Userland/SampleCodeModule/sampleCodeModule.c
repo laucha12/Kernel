@@ -1,7 +1,7 @@
 /* sampleCodeModule.c */
 
 //#include "./WindowsEngine/Windows.h"
-#include "./WindowsEngine/WindowsEngine.h"
+#include "include/WindowsEngine.h"
 
 
 char * v = (char*)0xB8000 + 79 * 2;

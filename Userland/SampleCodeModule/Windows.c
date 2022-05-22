@@ -1,16 +1,17 @@
-#include "./WindowsEngine/Windows.h"
-#include "./lib/lib.h"
+#include "include/Windows.h"
+#include "include/lib.h"
 //#include "./CommandsEngine/commands.h"
-//#include "./CommandsEngine/commandsEngine.h"
+#include "include/commandsEngine.h"
+
 
 void welcomeScreen(Window window){
-    puts("------------------------------- GDH OS -----------------------------------\n", window);
+    puts_("------------------------------- GDH OS -----------------------------------\n", window);
     char buffer[27];
     getTime(buffer);
-    puts(buffer, window);
-    puts("\n", window);
-    puts("Presione entener para comenzar\n", window);
-    puts("------------------------------- GDH OS -----------------------------------\n", window);
+    puts_(buffer, window);
+    puts_("\n", window);
+    puts_("Presione entener para comenzar\n", window);
+    puts_("------------------------------- GDH OS -----------------------------------\n", window);
     char c = -1;
     while((c = getKey(window)) != '\n'){
     
@@ -28,7 +29,7 @@ void listen(char * command, Window window){
     //clearKeyboardBuffer();?
 
     // Se imprime la leyenda que indica el usuario y el dispositivo
-    puts(SHELL_LEGEND, window);
+    puts_(SHELL_LEGEND, window);
 
     //Por cada letra, la guardo en el string command y valido que no sea enter, si no, termine con mi comando
     while((c = getKey(window)) != '\n' && count <  MAX_COMMAND_SIZE){
@@ -38,12 +39,12 @@ void listen(char * command, Window window){
             deleteChar(window);
         }else if(c != 0){ // En caso contrario, se agrega la letra al comando y se la imprime en pantalla
             command[count++] = c;
-            putc(c, window);
+            putc_(c, window);
         }
     }
     command[count++] = 0;
     // El enter ingresado:
-    putc('\n', window);
+    putc_('\n', window);
 }
 
 
@@ -59,6 +60,6 @@ void windowStart(Window window){
         listen(command, window);
         //Se pasa el comando, y este decidira que hacer con tal comando, si es que es valido.
         
-        //commandsEngineHandle(command, window);
+        commandsEngineHandle(command, window);
     }
 }
