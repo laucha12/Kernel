@@ -1,6 +1,7 @@
 #include "include/lib.h"
 #include "include/Windows.h"
 
+extern long * getRegs();
 
 int atoi_(char * str) {
   int result;
@@ -189,6 +190,11 @@ void readMem(char * buffer, int * from){
 }
 
 
-void readRegs(char * buffer){
-    //sysRegs(buffer);
+
+void readRegs(long * buffer){
+    long * array = getRegs();
+
+    for(int i = 0; i < REGS_CANT; i++){
+        buffer[i] = array[i];
+    }
 }

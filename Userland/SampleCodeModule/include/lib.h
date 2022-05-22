@@ -14,6 +14,8 @@
 #define SPACE ' '
 #define PIPE '|'
 
+#define REGS_CANT 17
+
 extern void sysWrite(int fd, char * buffer);
 extern void sysRead(int fd, char * buffer);
 extern void sysTime(char * buffer);
@@ -110,7 +112,7 @@ void readMem(char * buffer, int * from);
  *  {"RIP", "RAX", "RBX", "RCX", "RDX", "RSI", "RDI", "RBP", "RSP",
  *  "R8 ", "R9 ", "R10", "R11", "R12", "R13", "R14", "R15"};
  */
-void readRegs(char * buffer);
+void readRegs(long * buffer);
 
 
 
