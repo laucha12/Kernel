@@ -7,11 +7,7 @@ static uint8_t * const video = (uint8_t*)0xB8000;
 static uint8_t * currentVideoFD0 = (uint8_t*)0xB8000;
 static uint8_t * currentVideoFD1 = (uint8_t*)0xB8000;
 static uint8_t * currentVideoFD2 = (uint8_t*)0xB8000 + 82;
-<<<<<<< HEAD
-
-=======
 static int actualFd = 0;
->>>>>>> 46869e9facb873856a1d8eb62290303247a5ea78
 
 static const uint32_t width = 80;
 static const uint32_t height = 25 ;
@@ -39,24 +35,6 @@ void ncPrintFD0(char * string){
 	int i;
 	for ( i = 0; string[i] != 0; i++)
 		printFD0Char(string[i]);
-<<<<<<< HEAD
-}
-void printFD0Char(char character){
-	if (character == '\n')
-	{
-		currentVideoFD0 += COLUMS - ((currentVideoFD0 - video) % COLUMS);
-	}else{
-		*currentVideoFD0 = character;
-		 currentVideoFD0 += 2;
-	}
-	// es mayor o igual pues si se pone un enter se fija si es mayor
-	// asi chequeamos que se borre una linea
-	if ((currentVideoFD0 - video) >= 4000)
-	{
-		resetVideo();
-	}
-}
-=======
 }
 void printFD0Char(char character){
 	if (character == '\n')
@@ -72,7 +50,6 @@ void printFD0Char(char character){
 		resetVideo();
 	}
 }
->>>>>>> 46869e9facb873856a1d8eb62290303247a5ea78
 void ncPrintFD1(char * string){
 	int i;
 	for ( i = 0; string[i] != 0; i++)
@@ -129,11 +106,6 @@ void resetVideo(){
 	{
 		*(video+3840 + i*2) = ' ';
 	}
-<<<<<<< HEAD
-	currentVideoFD0 = currentVideoFD0 - COLUMS;
-	currentVideoFD1 = currentVideoFD1 - OFFSET;
-	currentVideoFD2 = currentVideoFD1 - OFFSET;
-=======
 	if (actualFd)
 	{
 		currentVideoFD1 = currentVideoFD1 - OFFSET;
@@ -142,7 +114,6 @@ void resetVideo(){
 	 	currentVideoFD0 = currentVideoFD0 - COLUMS;
 	}
 	
->>>>>>> 46869e9facb873856a1d8eb62290303247a5ea78
 
 }
 
@@ -183,11 +154,8 @@ void ncClear()
 	for (i = 0; i < height * width; i++)
 		video[i * 2] = ' ';
 	currentVideoFD0 = video;
-<<<<<<< HEAD
-=======
 	currentVideoFD1 = video;
 	currentVideoFD2 = video + 82;
->>>>>>> 46869e9facb873856a1d8eb62290303247a5ea78
 }
 
 static uint32_t uintToBase(uint64_t value, char * buffer, uint32_t base)
