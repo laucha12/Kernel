@@ -8,9 +8,12 @@ char * v = (char*)0xB8000 + 79 * 2;
 
 static int var1 = 0;
 static int var2 = 0;
-extern void sysWriteTest(char * pointer);
+extern void sysWriteTest(int fd,char * pointer);
 extern void sysReadTest(char * pointer);
 extern void sysTimeTest(char * pointer);
+extern void sysOpen(int fd);
+extern void sysExit(int fd);
+
 int main() {
 	//All the following code may be removed 
 	*v = 'X';
@@ -20,19 +23,21 @@ int main() {
 	sysTimeTest(date);	
 	sysWriteTest(date);
 
+*/
+	/*char c[] = "hola omo te va";
+	
+	sysOpen(2);
+	sysWriteTest(1,c);*/
 
-	char c[2] ;
-	c[1] = 0;
-	while (1)
-	{		
+/*	while (1){		
 		sysReadTest(c);
-		if (c != 0)
-		{
-			sysWriteTest(c);
+		if (c != 0) {
+			sysWriteTest(1,c);
 		}
-		
-	}
-*/	
+
+	} */
+	
+
 	windowsEngineInitialize();
 
 	//Test if BSS is properly set up

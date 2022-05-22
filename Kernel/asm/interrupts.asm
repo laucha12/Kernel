@@ -68,12 +68,22 @@ SECTION .text
 	jmp .fin
 .syscallsJump:
 	mov rcx,rax
+	cmp rax,8
+;	je .loadtask
 	call syscalls
+	jmp .fin
+.;loadtask:
+;	cmp rsi,2
+;	je .loadTask2
+;	mov [context_Prim+40],rsi
+;	mov [context_Prim+32], rdx
+;	mov [context_Prim+24], rcx
+
+
 .fin:
 	; signal pic EOI (End of Interrupt)
 	mov al, 20h
 	out 20h, al
-
 	popState
 	iretq
 %endmacro
@@ -90,7 +100,109 @@ SECTION .text
 	iretq
 %endmacro
 
+%macro scheduler 1
+	cmp DWORD [last],2
+	je .pushSegunda
+	mov [context_Prim], rax
+	mov [context_Prim+8], rbx
+	mov [context_Prim+16], rcx
+	mov [context_Prim+24], rdx
+	mov [context_Prim+32], rsi
+	mov [context_Prim+40], rdi
+	mov [context_Prim+48], rbp
+	mov [context_Prim+64], r8
+	mov [context_Prim+72], r9
+	mov [context_Prim+80], r10
+	mov [context_Prim+88], r11
+	mov [context_Prim+96], r12
+	mov [context_Prim+104], r13
+	mov [context_Prim+112], r14
+	mov [context_Prim+120], r15
+	mov rax, rsp 
+	add rax, 0x28				; subimos 0x28 pues debemos subir las posiciones que pusheo antes del la interrupt
+	mov [context_Prim+56], rax	; guardamos el valor del RSP
+	mov rax, [rsp]				; guardamos la posicion del RIP
+	mov [context_Prim+128], rax	; lo guardamos en la posicion de memoria
+	mov rax, [rsp+8]			; tomo del interrupt frame el valor de los flags
+	mov [context_Prim+136], rax	; lo guardo
+	; Recupero el contexto del otro proceso
+	mov rax,2
+	mov [last],rax
+	mov rax, [context_Seg+56]
+	mov [rsp+24],rax
+	mov rax, [context_Seg+128]
+	mov [rsp],rax
+	mov rax, [context_Seg+136]
+	mov [rsp+8],rax
+	mov  rax,[context_Seg]
+	mov  rbx,[context_Seg+8]
+	mov  rcx,[context_Seg+16]
+	mov  rdx,[context_Seg+24]
+	mov  rsi,[context_Seg+32]
+	mov  rdi,[context_Seg+40]
+	mov  rbp,[context_Seg+48]
+	mov  r8,[context_Seg+64]
+	mov  r9,[context_Seg+72]
+	mov  r10,[context_Seg+80]
+	mov  r11,[context_Seg+88]
+	mov  r12,[context_Seg+96]
+	mov  r13,[context_Seg+104]
+	mov  r14,[context_Seg+112]
+	mov  r15,[context_Seg+120]
+	iret
+.pushSegunda:
+	mov [context_Seg], rax
+	mov [context_Seg+8], rbx
+	mov [context_Seg+16], rcx
+	mov [context_Seg+24], rdx
+	mov [context_Seg+32], rsi
+	mov [context_Seg+40], rdi
+	mov [context_Seg+48], rbp
+	mov [context_Seg+64], r8
+	mov [context_Seg+72], r9
+	mov [context_Seg+80], r10
+	mov [context_Seg+88], r11
+	mov [context_Seg+96], r12
+	mov [context_Seg+104], r13
+	mov [context_Seg+112], r14
+	mov [context_Seg+120], r15
+	mov rax, rsp 
+	add rax, 0x28				; subimos 0x28 pues debemos subir las posiciones que pusheo antes del la interrupt
+	mov [context_Seg+56], rax	; guardamos el valor del RSP
+	mov rax, [rsp]				; guardamos la posicion del RIP
+	mov [context_Seg+128], rax	; lo guardamos en la posicion de memoria
+	mov rax, [rsp+8]			; tomo del interrupt frame el valor de los flags
+	mov [context_Seg+136], rax	; lo guardo
+	; Recupero el contexto del otro proceso
+	mov rax,1
+	mov [last],rax
+	mov rax, [context_Prim+56]
+	mov [rsp+24],rax
+	mov rax, [context_Prim+128]
+	mov [rsp],rax
+	mov rax, [context_Prim+136]
+	mov [rsp+8],rax
+	mov  rax,[context_Prim]
+	mov  rbx,[context_Prim+8]
+	mov  rcx,[context_Prim+16]
+	mov  rdx,[context_Prim+24]
+	mov  rsi,[context_Prim+32]
+	mov  rdi,[context_Prim+40]
+	mov  rbp,[context_Prim+48]
+	mov  r8,[context_Prim+64]
+	mov  r9,[context_Prim+72]
+	mov  r10,[context_Prim+80]
+	mov  r11,[context_Prim+88]
+	mov  r12,[context_Prim+96]
+	mov  r13,[context_Prim+104]
+	mov  r14,[context_Prim+112]
+	mov  r15,[context_Prim+120]
+	iret
+%endmacro
 
+
+; esta funcion lo que hace es no hacer nada que reciba una interrupt
+; esto viene bien para el sleep
 _hlt:
 	sti
 	hlt
@@ -162,3 +274,6 @@ haltcpu:
 
 SECTION .bss
 	aux resq 1
+	last resq 1				; Guardamos el ultimo que fue guardado
+	context_Prim resq 17	; Seccion donde se guarda el contexto del primer programa
+	context_Seg  resq 17	; Seccion donde se guarda el contexto del segundo programa
