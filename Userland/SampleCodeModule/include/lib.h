@@ -1,28 +1,69 @@
 #ifndef LIB_H
 #define LIB_H
 
-#include "../WindowsEngine/Windows.h"
+#include "Windows.h"
 
-#define IS_NUM(c)  ((c) >= '0' && (c)<='9')
-#define IS_DIGIT(c) (((c) >= 'a' && (c)<='z') || ((c) >= 'A' && (c)<='Z'))
+#define IS_DIGIT(c)  ((c) >= '0' && (c)<='9')
+#define IS_LETTER(c) (((c) >= 'a' && (c)<='z') || ((c) >= 'A' && (c)<='Z'))
 
-#define NULL 0L //https://www.tutorialspoint.com/c_standard_library/c_macro_null.htm
+#define NULL_ 0L //https://www.tutorialspoint.com/c_standard_library/c_macro_null.htm
 
 #define BACKSPACE '\b'
 #define ENTER '\n'
-#define TAB '   '
+#define TAB '\t'
 #define SPACE ' '
 #define PIPE '|'
+
+int strlen_(const char * s);
+
+int substring(char *str, char *substr);
+
+int KMP(const char *text, const char *pattern, int textLen, int patternLen);
+
+/*
+ * Recibe un entero y lo imprime
+ */
+void putInteger(int num, Window window);
+
+/*
+ * Recibe dos strings y las compara
+ */
+int strcmp_(const char * str1, const char * str2);
+
+/*
+ * Recibe una string y un tamaño, devuelve verdadero
+ * si la string tiene al menos el tamño size. Obs: no uso
+ * un strlen ya que puedo llegar una vulnerabilidad desde
+ * el punto de overflow.
+ */
+int isLongerThan(const char * s, int size);
+
+/*
+ * Recibe una string y devuelve el indice de la primer letra y
+ * despues de la ultima letra. OJO QUE TIENE QUE PODER MODIFICAR A LA STRING
+ * NO PUEDE SER UNA STRING LITERAL
+ */
+int removeTrailingSpaces(char * str);
+
+/*
+ * Retorna si el numero es un primo o no
+ */
+int isPrime(int num);
+
+/*
+ * Recibe una window a la cual hacer una nueva linea
+ */
+void newLine(Window window);
 
 /*
  * Recibe una cadena de caracteres y las imprima 
  */
-void puts(char * string, Window window);
+void puts_(char * string, Window window);
 
 /*
  * Recibe un caracter y lo imprime 
  */
-void putc(char c, Window window);
+void putc_(char c, Window window);
 
 /*
  * Recibe una ventana a la cual borrara el ultimo caracter
