@@ -3,7 +3,7 @@
 
 void commandsEngineDisplayCommands(Window window) {
     for (int i = 0; i < commandsCount; ++i) {
-        puts_("\t", window);
+        puts_("     ", window);
         puts_(commands[i].name, window);
         puts_(" : ", window);
         puts_(commands[i].description, window);
