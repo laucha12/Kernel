@@ -75,6 +75,7 @@ void printMem(Window window, int argc, char argv[MAX_ARGUMENT_COUNT][MAX_ARGUMEN
     puts_(buffer, window);
 }
 
+extern long * getRegs();
 
 void infoReg(Window window, int argc, char argv[MAX_ARGUMENT_COUNT][MAX_ARGUMENT]) {
     if (argc != 0) {
@@ -89,15 +90,17 @@ void infoReg(Window window, int argc, char argv[MAX_ARGUMENT_COUNT][MAX_ARGUMENT
 
     puts_("Los registros tienen los valores: \n", window);
 
-    long buffer[REGS_CANT];
-    readRegs(buffer);
+    //long buffer[REGS_CANT];
+    //readRegs(buffer);
+
+    long * buffer = getRegs();
 
     for(int i = 0; i < REGS_CANT; i++){
         puts_("    -", window);
         puts_(registerNames[i], window);
         puts_(": ", window);
-        putInteger(buffer[i], window);
-        puts_("h (TODAVIA NO ES HEXA)\n", window);
+        putHex(buffer[i], window);
+        puts_("h\n", window);
     }
     
     puts_("/n", window);

@@ -3,14 +3,14 @@ GLOBAL getRegs
 section .text
 
 getRegs:
-    mov [array], rax          ;
-    mov qword [array + 8], 0      ;
+    mov qword [array], rax          ;
+    mov qword [array + 8], rbx      ;
     mov [array + 16], rcx     ;
     mov [array + 24], rdx     ;
     mov [array + 32], rsi     ;
     mov [array + 40], rdi     ;
     
-    dec rsp                 ; Decremento el valor de rsp para tener el valor 
+    dec rsp                     ; Decremento el valor de rsp para tener el valor 
     mov [array + 48], rsp     ; previo al llamado de esta rutina
     inc rsp                 ; Restauro su valor
 
@@ -23,9 +23,12 @@ getRegs:
     mov [array + 104], r13    ;
     mov [array + 112], r14    ;
     mov [array + 120], r15    ;
-    ;mov [array + 128], rip    ;
+
+    mov rax, [rsp + 5]      ; La idea es que accedamos al rip del momento en el que se llama al comando infoReg, el cual esta disponible en stack
+    mov [array + 128], rax    ;
 
     mov rax, array          ; Retorno el puntero al arreglo
+    ret
 
 
 section .bss
