@@ -103,7 +103,7 @@ void infoReg(Window window, int argc, char argv[MAX_ARGUMENT_COUNT][MAX_ARGUMENT
         puts_("h\n", window);
     }
     
-    puts_("/n", window);
+    puts_("\n", window);
 }
 
 
