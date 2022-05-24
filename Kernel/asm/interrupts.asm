@@ -69,26 +69,26 @@ SECTION .text
 .syscallsJump:
 	mov rcx,rax
 	cmp rax,8
-	je .loadtask
+	;je .loadtask
 	call syscalls
 	jmp .fin
 	
-loadtask: ; esto esta bien
-	cmp rsi,2
-	je .loadTask2
-	mov [context_Prim+40],rdi
-	mov [context_Prim+32], rsi
-	mov [context_Prim+24], rdx
-	mov [context_Prim+16], rcx
-	mov  [context_Prim+56],rsp
-	mov rax, [rsp]				 ; guardamos la posicion del RIP del interruptFrame
-	mov [context_Prim+128], rax	 ; lo guardamos en la posicion de memoria 
-	mov rax, [rsp+8]			; tomo del interrupt frame el valor de los flags
-	mov [context_Prim+136], rax	; lo guardo
+;loadtask: ; esto esta bien
+;	cmp rsi,2
+;	je .loadTask2
+;	mov [context_Prim+40],rdi
+;	mov [context_Prim+32], rsi
+;	mov [context_Prim+24], rdx
+;	mov [context_Prim+16], rcx
+;	mov  [context_Prim+56],rsp
+;	mov rax, [rsp]				 ; guardamos la posicion del RIP del interruptFrame
+;	mov [context_Prim+128], rax	 ; lo guardamos en la posicion de memoria 
+;	mov rax, [rsp+8]			; tomo del interrupt frame el valor de los flags
+;	mov [context_Prim+136], rax	; lo guardo
 ; void loadTask(int fd, CommandPtr func, int argc, char ** argv)
 ; rdi: fd / rsi: function pointer / rdx: argc / rcx: argv
 .fin:
-	; signal pic EOI (End of Interrupt)
+; signal pic EOI (End of Interrupt)
 	mov al, 20h
 	out 20h, al
 	popState
@@ -246,7 +246,7 @@ picSlaveMask:
 
 ;8254 Timer (Timer Tick)
 _irq00Handler:
-	scheduler 0
+	irqHandlerMaster 0
 
 ;Keyboard
 _irq01Handler:

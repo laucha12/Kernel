@@ -114,25 +114,28 @@ void printFD2Char(char character)
 		currentVideoFD2 += OFFSET + 2;
 	}
 
-	if ((currentVideoFD1 - video) >= 4000)
+	if ((currentVideoFD2 - video) >= 4000)
 	{
 		resetVideo();
 	}
 }
 void resetVideo()
 {
+	// Leer una linea y escribirla un renglon arriba
 	for (int i = 0; i < 3840; i++)
 	{
 		*(video + i) = *(video + i + COLUMS);
 	}
+	
+	// Limpio la ultima linea que sera donde comienza a escribir
 	for (int i = 0; i < OFFSET; i++)
 	{
 		*(video + 3840 + i * 2) = ' ';
 	}
 	if (actualFd)
 	{
-		currentVideoFD1 = currentVideoFD1 - OFFSET;
-		currentVideoFD2 = currentVideoFD1 - OFFSET;
+		currentVideoFD1 =  video + 3840; //currentVideoFD1 - OFFSET;
+		currentVideoFD2 = video + 3840 + OFFSET + 2;
 	}
 	else
 	{
