@@ -72,7 +72,11 @@ void printFD1Char(char character)
 	{
 		currentVideoFD1 += OFFSET - ((currentVideoFD1 - video) % OFFSET);
 	}
-	else
+	else if(character == '\b'){
+		if(currentVideoFD0 != video)
+			currentVideoFD0 -= 2;
+			*currentVideoFD0 = ' ';
+	} else
 	{
 		*currentVideoFD1 = character;
 		currentVideoFD1 += 2;
