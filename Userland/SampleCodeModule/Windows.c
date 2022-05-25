@@ -45,17 +45,18 @@ void listen(char * command, Window window){
 
 
 void windowStart(Window window){
+    sysOpen(LEFT_WINDOW);
+    sysOpen(RIGHT_WINDOW);
     //Se imprime un mensaje de bienvenida al iniciar la ventana
-    welcomeScreen(window);
-
+    welcomeScreen(LEFT_WINDOW);
+    
     // Arreglo de caracteres donde tendre mi comando
     char command[MAX_COMMAND_SIZE];
-
+    
     while(1){
         //Se escucha lo que el usuario escriba hasta el enter
         listen(command, window);
         //Se pasa el comando, y este decidira que hacer con tal comando, si es que es valido.
-        
         commandsEngineHandle(command, window);
     }
 }

@@ -1,7 +1,7 @@
 GLOBAL sysWriteTest
 GLOBAL sysReadTest
 GLOBAL sysTimeTest
-GLOBAL sysOpen
+GLOBAL sysOpenTest
 GLOBAL sysExit
 section .data
     hola db "hola como va",0
@@ -30,7 +30,7 @@ sysReadTest:
     mov rdx,4
     int 80h
     ret
-sysOpen:
+sysOpenTest:
     mov rax,2
     int 80h
     ret

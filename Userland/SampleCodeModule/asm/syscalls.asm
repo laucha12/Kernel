@@ -5,6 +5,8 @@ GLOBAL sysMemFrom
 GLOBAL sysRegs
 GLOBAL generateDivByZero
 GLOBAL generateInvalidOpCode
+GLOBAL sysOpen
+GLOBAL sysClose
 
 section .text
 
@@ -61,7 +63,6 @@ sysRead:
     
     ret
 
-
 ;------------------------------
 ;   Rutina de asm que realiza 
 ;   la syscall de obtener la fecha en string buffer
@@ -83,3 +84,42 @@ sysTime:
     
     ret
 
+;------------------------------
+;   Rutina de asm que realiza 
+;   la syscall de open para un fd
+;------------------------------
+sysOpen:
+    push rbp        ; Stack frame
+    mov rbp, rsp    ; Stack frame
+    push rbx        ; Preservar rbx
+
+    mov rax, 2      ; Numero de syscall
+    ; En rdi ya tengo el parametro fd
+    int 80h         ; "Che Kernel"
+
+    pop rbx         ; Preservar rbx
+    mov rsp, rbp    ; Stack frame
+    pop rbp         ; Stack frame
+
+    ret
+
+;------------------------------
+;   Rutina de asm que realiza 
+;   la syscall de close para un fd
+;------------------------------
+sysClose:
+    push rbp        ; Stack frame
+    mov rbp, rsp    ; Stack frame
+
+    push rbx        ; Preservar rbx
+
+    mov rax, 3      ; Numero de syscall
+    ; En rdi ya tengo el parametro fd
+    int 80h         ; "Che Kernel"
+
+    pop rbx         ; Preservar rbx
+
+    mov rsp, rbp    ; Stack frame
+    pop rbp         ; Stack frame
+
+    ret
