@@ -6,8 +6,7 @@
 #define INVALID_NUMBER_COMMANDS "No ingreso el numero de argumentos validos \n"
 #define TIME_BUFFER 50
 #define MEM_BUFFER 120
-//#define REGS_BUFFER 150
-//#define REGS_CANT 17
+
 
 
 void man(Window window, int argc, char argv[MAX_ARGUMENT_COUNT][MAX_ARGUMENT]) {
@@ -89,9 +88,6 @@ void infoReg(Window window, int argc, char argv[MAX_ARGUMENT_COUNT][MAX_ARGUMENT
     };
 
     puts_("Los registros tienen los valores: \n", window);
-
-    //long buffer[REGS_CANT];
-    //readRegs(buffer);
 
     long * buffer = getRegs();
 

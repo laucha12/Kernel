@@ -56,7 +56,6 @@ static Command commands[] = {{"help",          HELP_DESCRIPTION,           help}
                              {"man",           MAN_DESCRIPTION,            man}};
 
 //OJO AL AGREGAR A LA LISTA DE ACTUALIZAR LA CANTIDAD DE COMANDOS
-
 static int commandsCount = 9;
 
 
