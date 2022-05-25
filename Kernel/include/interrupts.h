@@ -54,6 +54,14 @@ void _irq06Handler(void);
     Return: void
 */
 void _exception0Handler(void);
+/* 
+    Interrup hander la cual llama a el masterHander con un 6 como parametro
+    pues es la invalid opcode exception
+    
+    Argumentos: void
+    Return: void
+*/
+void _exception06Handler(void);
 
 void _cli(void);
 

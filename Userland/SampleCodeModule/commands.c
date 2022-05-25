@@ -45,6 +45,7 @@ void divideByZero(Window window, int argc, char argv[MAX_ARGUMENT_COUNT][MAX_ARG
         puts_(INVALID_NUMBER_COMMANDS, window);
         return;
     }
+    int a = 5 / 0;
     //generateDivByZero();
 }
 

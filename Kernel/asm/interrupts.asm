@@ -15,6 +15,7 @@ GLOBAL _irq05Handler
 GLOBAL _irq06Handler
 
 GLOBAL _exception0Handler
+GLOBAL _exception06Handler
 
 EXTERN irqDispatcher
 EXTERN exceptionDispatcher
@@ -98,14 +99,34 @@ SECTION .text
 
 
 %macro exceptionHandler 1
+	
 	pushState
 
-	mov rdi, %1 ; pasaje de parametro
-	call exceptionDispatcher
+	call copyRegs				; Llamo a la macro que me copia los registros en regsArray
+	mov rdi, %1 				; Pasaje de 1 parametro -> Tipo de excepciom
+	mov rsi, regsArray			; Pasaje de 2 parametro - > Arreglo de registros asi los imprimo desde C
+	call exceptionDispatcher	; Llamo al que maneja la excepcion en particular
 
 	popState
+
 	iretq
+
 %endmacro
+
+
+copyRegs:
+	mov rbx, 0			; Contador de registros
+	mov rcx, rsp		; Puntero a lista de registros (dentro del stack)
+	add rcx, 16			; Le sumo 8, donde comienzan los registros
+	nextRegister:
+	mov rdi, [rcx]
+	mov [regsArray + rbx], rdi	; En la posicion mas offset, guardo una copia del registro
+	add rcx, 8			; Paso al siguiente registro
+	inc rbx				; Incremento el contador de registros
+	cmp rbx, 15			; Si llegue al 16 (cuento desde el 0) termine con los registros
+	jne nextRegister	; Repito
+	ret
+
 
 %macro scheduler 1
 	cmp byte[cantProcesos],1
@@ -275,6 +296,10 @@ _irq06Handler:
 _exception0Handler:
 	exceptionHandler 0
 
+;Zero Division Exception
+_exception06Handler:
+	exceptionHandler 6
+
 haltcpu:
 	cli
 	hlt
@@ -288,3 +313,4 @@ SECTION .bss
 	context_Prim resq 17	; Seccion donde se guarda el contexto del primer programa
 	context_Seg  resq 17	; Seccion donde se guarda el contexto del segundo programa
 	cantProcesos resq 1
+	regsArray resq 16		; Arreglo de resgistros

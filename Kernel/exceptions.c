@@ -1,13 +1,53 @@
+#include "./include/naiveConsole.h"
 
 #define ZERO_EXCEPTION_ID 0
+#define INVALID_OPCODE_ID 6
+#define REGS_CANT 16
 
-static void zero_division();
+static void zero_division(long regs[]);
+static void invalid_opcode(long regs[]);
 
-void exceptionDispatcher(int exception) {
-	if (exception == ZERO_EXCEPTION_ID)
-		zero_division();
+static const char *registerNames[REGS_CANT] = {
+            "RAX", "RBX", "RCX", "RDX", "RSI", "RDI", "RBP", "RSP", "R8 ", "R9 ", "R10", "R11", "R12", "R13",
+            "R14", "R15", "RIP"
+    };
+
+void exceptionDispatcher(int exception, long regs[]) {
+
+	switch (exception)
+	{
+	case ZERO_EXCEPTION_ID:
+		zero_division(regs);
+		break;
+	
+	case INVALID_OPCODE_ID:
+		invalid_opcode(regs);
+		break;
+
+	default:
+		break;
+	}
 }
 
-static void zero_division() {
-	// Handler para manejar excepcíon
+static void zero_division(long regs[]) {
+	ncPrintFD0("EXCEPTION - INVALID OPCODE\n");
+	for(int i = 0; i < REGS_CANT; i++){
+		ncPrintFD0(registerNames[i]);
+		ncPrintFD0(": ");
+		ncPrintHex(regs[i]);
+		ncPrintFD0("\n");
+	}
+
+}
+
+static void invalid_opcode(long regs[]) {
+	ncPrintFD0("EXCEPTION - INVALID OPCODE\n");
+
+	for(int i = 0; i < REGS_CANT; i++){
+		ncPrintFD0(registerNames[i]);
+		ncPrintFD0(": ");
+		ncPrintHex(regs[i]);
+		ncPrintFD0("\n");
+	}
+
 }
