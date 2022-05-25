@@ -27,10 +27,20 @@ extern void generateDivByZero();*/
 
 int atoi_(char * str);
 
+/*
+ * Devuelve el tamanño de una string
+ */
 int strlen_(const char * s);
 
+/*
+ * Devuelve el indice donde substr es una subtring de str, -1 sino existe
+ */
 int substring(char *str, char *substr);
 
+/*
+ * Recibe un texto donde busca el primer indice donde aparece la string patron
+ * como una substring. 
+ */
 int KMP(const char *text, const char *pattern, int textLen, int patternLen);
 
 /*
