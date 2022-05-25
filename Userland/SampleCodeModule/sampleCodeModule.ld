@@ -14,8 +14,10 @@ SECTIONS
 	}
 	.bss ALIGN(0x1000) :
 	{
+		
 		bss = .;
 		*(.bss*)
+		
 	}
 	endOfBinary = .;
 }

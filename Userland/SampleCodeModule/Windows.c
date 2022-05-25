@@ -14,14 +14,14 @@ void welcomeScreen(Window window){
 
 
 void listen(char * command, Window window){
+    //IMPORANTE CLEAR BUFFER TODO
+    //clearKeyboardBuffer();?
+
+
     // Contador de caracteres ingresados por el usuario
     int count = 0;
     // Caracter ingresado por vez
     int c;
-
-    //IMPORANTE CLEAR BUFFER TODO
-    //clearKeyboardBuffer();?
-
     // Se imprime la leyenda que indica el usuario y el dispositivo
     puts_(SHELL_LEGEND, window);
 
@@ -30,7 +30,9 @@ void listen(char * command, Window window){
         
         // Si es backspace, borramos la letra
         if(c == '\b'){
-            deleteChar(window);
+            if(count != 0){
+                deleteChar(window);
+                count--;}
         } else if(c != 0){ // En caso contrario, se agrega la letra al comando y se la imprime en pantalla
             command[count++] = c;
             putc_(c, window);

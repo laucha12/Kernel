@@ -6,8 +6,8 @@
 #define INVALID_NUMBER_COMMANDS "No ingreso el numero de argumentos validos \n"
 #define TIME_BUFFER 50
 #define MEM_BUFFER 120
-#define REGS_BUFFER 150
-
+//#define REGS_BUFFER 150
+//#define REGS_CANT 17
 
 
 void man(Window window, int argc, char argv[MAX_ARGUMENT_COUNT][MAX_ARGUMENT]) {
@@ -75,6 +75,7 @@ void printMem(Window window, int argc, char argv[MAX_ARGUMENT_COUNT][MAX_ARGUMEN
     puts_(buffer, window);
 }
 
+extern long * getRegs();
 
 void infoReg(Window window, int argc, char argv[MAX_ARGUMENT_COUNT][MAX_ARGUMENT]) {
     if (argc != 0) {
@@ -82,18 +83,27 @@ void infoReg(Window window, int argc, char argv[MAX_ARGUMENT_COUNT][MAX_ARGUMENT
         return;
     }
 
-    static const char *registerNames[] = {
-            "RIP", "RAX", "RBX", "RCX", "RDX", "RSI", "RDI", "RBP", "RSP", "R8 ", "R9 ", "R10", "R11", "R12", "R13",
-            "R14", "R15"
+    static const char *registerNames[REGS_CANT] = {
+            "RAX", "RBX", "RCX", "RDX", "RSI", "RDI", "RBP", "RSP", "R8 ", "R9 ", "R10", "R11", "R12", "R13",
+            "R14", "R15", "RIP"
     };
 
-    puts_("Los registros tienen los valores: ", window);
+    puts_("Los registros tienen los valores: \n", window);
 
-    char buffer[REGS_BUFFER];
+    //long buffer[REGS_CANT];
     //readRegs(buffer);
-    puts_(buffer, window);
+
+    long * buffer = getRegs();
+
+    for(int i = 0; i < REGS_CANT; i++){
+        puts_("    -", window);
+        puts_(registerNames[i], window);
+        puts_(": ", window);
+        putHex(buffer[i], window);
+        puts_("h\n", window);
+    }
     
-    puts_("/n", window);
+    puts_("\n", window);
 }
 
 
