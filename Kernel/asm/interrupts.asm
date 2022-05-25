@@ -109,6 +109,10 @@ SECTION .text
 
 	popState
 
+	mov rax, [rsp]
+	inc rax
+	mov [rsp], rax
+
 	iretq
 
 %endmacro

@@ -15,12 +15,12 @@ void man(Window window, int argc, char argv[MAX_ARGUMENT_COUNT][MAX_ARGUMENT]) {
         puts_(INVALID_NUMBER_COMMANDS, window);
         return;
     }
-
+/*
     if(!isLetterString(argv[1])) {
         puts_(INVALID_ARGUMENTS "man", window);
         return;
     }
-
+*/
     puts_("Todavia no tenemos soporte de man :) \n", window);
 }
 
@@ -51,8 +51,10 @@ void divideByZero(Window window, int argc, char argv[MAX_ARGUMENT_COUNT][MAX_ARG
         puts_(INVALID_NUMBER_COMMANDS, window);
         return;
     }
-    int a = 5 / 0;
-    //generateDivByZero();
+    /*int a = 5 / 0;
+    puts_("Continua el programa despues de la excepcion", window);*/
+    divideByZeroAsm();
+
 }
 
 void invalidOpCode(Window window, int argc, char argv[MAX_ARGUMENT_COUNT][MAX_ARGUMENT]) {

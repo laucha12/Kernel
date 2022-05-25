@@ -24,8 +24,8 @@ extern void sysClose(int fd);
 /*
 extern void sysRegs(char * buffer);
 extern void sysMemFrom(char * buffer, int * from);
-extern void generateInvalidOpCode();
-extern void generateDivByZero();*/
+extern void generateInvalidOpCode();*/
+extern void divideByZeroAsm();
 
 int atoi_(char * str);
 
