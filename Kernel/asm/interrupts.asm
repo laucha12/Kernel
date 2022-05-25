@@ -100,35 +100,60 @@ SECTION .text
 
 %macro exceptionHandler 1
 	
-	pushState
+	;pushState
 
 	call copyRegs				; Llamo a la macro que me copia los registros en regsArray
 	mov rdi, %1 				; Pasaje de 1 parametro -> Tipo de excepciom
 	mov rsi, regsArray			; Pasaje de 2 parametro - > Arreglo de registros asi los imprimo desde C
 	call exceptionDispatcher	; Llamo al que maneja la excepcion en particular
 
-	popState
+	;popState
 
-	mov rax, [rsp]
-	inc rax
-	mov [rsp], rax
-
+	mov rax, [rsp]					; Paso a RAX la copia del RIP donde ocurrio la excepcion
+	inc rax							; Incremento el RIP en uno, para que continue con la ejecuccion del programa
+	mov [rsp], rax					; Actualizo el RIP en el stack (Donde se saltara)
+	
 	iretq
 
 %endmacro
 
 
-copyRegs:
+copyRegs2:
 	mov rbx, 0			; Contador de registros
 	mov rcx, rsp		; Puntero a lista de registros (dentro del stack)
 	add rcx, 16			; Le sumo 8, donde comienzan los registros
 	nextRegister:
 	mov rdi, [rcx]
-	mov [regsArray + rbx], rdi	; En la posicion mas offset, guardo una copia del registro
+	mov [regsArray + rbx * 8], rdi	; En la posicion mas offset, guardo una copia del registro
 	add rcx, 8			; Paso al siguiente registro
 	inc rbx				; Incremento el contador de registros
-	cmp rbx, 15			; Si llegue al 16 (cuento desde el 0) termine con los registros
+	cmp rbx, 16			; Si llegue al 16 (cuento desde el 0) termine con los registros
 	jne nextRegister	; Repito
+	ret
+
+
+
+copyRegs:
+
+	mov [regsArray], rax
+	mov [regsArray + 8], rbx
+	mov [regsArray + 16], rcx
+	mov [regsArray + 24], rdx
+	mov [regsArray + 32], rsi
+	mov [regsArray + 40], rdi
+	mov [regsArray + 48], rbp
+	mov [regsArray + 56], rsp 
+	mov [regsArray + 64], r8
+	mov [regsArray + 72], r9
+	mov [regsArray + 80], r10
+	mov [regsArray + 88], r11
+	mov [regsArray + 96], r12
+	mov [regsArray + 104], r13
+	mov [regsArray + 112], r14
+	mov [regsArray + 120], r15
+	mov rax, [rsp + 8]					; Paso a RAX la copia del RIP donde ocurrio la excepcion
+	mov [regsArray + 128], rax		; En la ultima posicion del Arreglo pongo el RIP
+	
 	ret
 
 

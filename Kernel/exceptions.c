@@ -7,7 +7,7 @@
 static void zero_division(long regs[]);
 static void invalid_opcode(long regs[]);
 
-static const char *registerNames[REGS_CANT] = {
+static const char *registerNames[REGS_CANT + 1] = {
             "RAX", "RBX", "RCX", "RDX", "RSI", "RDI", "RBP", "RSP", "R8 ", "R9 ", "R10", "R11", "R12", "R13",
             "R14", "R15", "RIP"
     };
@@ -31,6 +31,9 @@ void exceptionDispatcher(int exception, long regs[]) {
 
 static void zero_division(long regs[]) {
 	ncPrintFD0("---------------------------EXCEPTION - DIVIDE BY ZERO---------------------------\n");
+	ncPrintFD0("    -Exception at -> RIP: ");
+	ncPrintHex(regs[REGS_CANT]);
+	ncPrintFD0("\n");
 	for(int i = 0; i < REGS_CANT; i++){
 		ncPrintFD0("    -");
 		ncPrintFD0(registerNames[i]);

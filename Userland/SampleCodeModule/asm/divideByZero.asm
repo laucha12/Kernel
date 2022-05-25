@@ -5,12 +5,14 @@ section .text
 
 divideByZeroAsm:
     
-    push rsp 
-    push rbp
-    push rbx
-    push r12
-    push r13
-    push 15
+    ;push rsp 
+    ;push rbp
+    ;push rbx
+    ;push r12
+    ;push r13
+    ;push r15
+
+    pushState
 
     mov rax, 0
     mov rbx, 2
@@ -18,8 +20,8 @@ divideByZeroAsm:
     mov rdx, 4
     mov rsi, 5
     mov rdi, 6
-    ;mov rbp, 1
-    ;mov rsp, 1
+    ;mov rbp, 7
+    ;mov rsp, 7
     mov r8, 8
     mov r9, 9
     mov r10, 10
@@ -31,11 +33,50 @@ divideByZeroAsm:
     
     div rax
     
-    pop r12
-    pop r13
-    pop r15
-    pop rbx
-    pop rbp
-    pop rsp
+    ;pop r15
+    ;pop r13
+    ;pop r12
+    ;pop rbx
+    ;pop rbp
+    ;pop rsp
+
+    popState
 
     ret
+
+
+    %macro pushState 0
+	push rax
+	push rbx
+	push rcx
+	push rdx
+	push rbp
+	push rdi
+	push rsi
+	push r8
+	push r9
+	push r10
+	push r11
+	push r12
+	push r13
+	push r14
+	push r15
+%endmacro
+
+%macro popState 0
+	pop r15
+	pop r14
+	pop r13
+	pop r12
+	pop r11
+	pop r10
+	pop r9
+	pop r8
+	pop rsi
+	pop rdi
+	pop rbp
+	pop rdx
+	pop rcx
+	pop rbx
+	pop rax
+%endmacro

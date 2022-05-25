@@ -54,7 +54,7 @@ void divideByZero(Window window, int argc, char argv[MAX_ARGUMENT_COUNT][MAX_ARG
     /*int a = 5 / 0;
     puts_("Continua el programa despues de la excepcion", window);*/
     divideByZeroAsm();
-
+    puts_("Luego de la excepcion continuo con el programa \n", window);
 }
 
 void invalidOpCode(Window window, int argc, char argv[MAX_ARGUMENT_COUNT][MAX_ARGUMENT]) {
