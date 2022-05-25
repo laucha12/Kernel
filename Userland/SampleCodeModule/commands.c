@@ -4,6 +4,7 @@
 
 
 #define INVALID_NUMBER_COMMANDS "No ingreso el numero de argumentos validos \n"
+#define INVALID_ARGUMENTS "No ingreso el tipo de argumentos validos \n, haga $> man "
 #define TIME_BUFFER 50
 #define MEM_BUFFER 120
 
@@ -12,6 +13,11 @@
 void man(Window window, int argc, char argv[MAX_ARGUMENT_COUNT][MAX_ARGUMENT]) {
     if(argc != 2) {
         puts_(INVALID_NUMBER_COMMANDS, window);
+        return;
+    }
+
+    if(!isLetterString(argv[1])) {
+        puts_(INVALID_ARGUMENTS "man", window);
         return;
     }
 
