@@ -117,22 +117,6 @@ SECTION .text
 
 %endmacro
 
-
-copyRegs2:
-	mov rbx, 0			; Contador de registros
-	mov rcx, rsp		; Puntero a lista de registros (dentro del stack)
-	add rcx, 16			; Le sumo 8, donde comienzan los registros
-	nextRegister:
-	mov rdi, [rcx]
-	mov [regsArray + rbx * 8], rdi	; En la posicion mas offset, guardo una copia del registro
-	add rcx, 8			; Paso al siguiente registro
-	inc rbx				; Incremento el contador de registros
-	cmp rbx, 16			; Si llegue al 16 (cuento desde el 0) termine con los registros
-	jne nextRegister	; Repito
-	ret
-
-
-
 copyRegs:
 
 	mov [regsArray], rax

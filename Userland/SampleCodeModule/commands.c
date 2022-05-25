@@ -51,8 +51,7 @@ void divideByZero(Window window, int argc, char argv[MAX_ARGUMENT_COUNT][MAX_ARG
         puts_(INVALID_NUMBER_COMMANDS, window);
         return;
     }
-    /*int a = 5 / 0;
-    puts_("Continua el programa despues de la excepcion", window);*/
+    puts_("Intentamos dividir por cero...", window);
     divideByZeroAsm();
     puts_("Luego de la excepcion continuo con el programa \n", window);
 }
@@ -62,7 +61,9 @@ void invalidOpCode(Window window, int argc, char argv[MAX_ARGUMENT_COUNT][MAX_AR
         puts_(INVALID_NUMBER_COMMANDS, window);
         return;
     }
-    //generateInvalidOpCode();
+    puts_("Intentamos un invalid op code...", window);
+    generateInvalidOpCode();
+    puts_("Luego de la excepcion continuo con el programa \n", window);
 }
 
 void printMem(Window window, int argc, char argv[MAX_ARGUMENT_COUNT][MAX_ARGUMENT]) {

@@ -31,7 +31,7 @@ divideByZeroAsm:
     mov r14, 14
     mov r15, 15
     
-    div rax
+    ;div rax
     
     ;pop r15
     ;pop r13

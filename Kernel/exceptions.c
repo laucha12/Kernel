@@ -30,7 +30,7 @@ void exceptionDispatcher(int exception, long regs[]) {
 }
 
 static void zero_division(long regs[]) {
-	ncPrintFD0("---------------------------EXCEPTION - DIVIDE BY ZERO---------------------------\n");
+	ncPrintFD0("\n---------------------------EXCEPTION - DIVIDE BY ZERO---------------------------\n");
 	ncPrintFD0("    -Exception at -> RIP: ");
 	ncPrintHex(regs[REGS_CANT]);
 	ncPrintFD0("\n");
@@ -45,13 +45,16 @@ static void zero_division(long regs[]) {
 }
 
 static void invalid_opcode(long regs[]) {
-	ncPrintFD0("EXCEPTION - INVALID OPCODE\n");
-
+	ncPrintFD0("\n---------------------------EXCEPTION - INVALID OPCODE---------------------------\n");
+	ncPrintFD0("    -Exception at -> RIP: ");
+	ncPrintHex(regs[REGS_CANT]);
+	ncPrintFD0("\n");
 	for(int i = 0; i < REGS_CANT; i++){
+		ncPrintFD0("    -");
 		ncPrintFD0(registerNames[i]);
 		ncPrintFD0(": ");
 		ncPrintHex(regs[i]);
 		ncPrintFD0("\n");
 	}
-
+	ncPrintFD0("--------------------------------------------------------------------------------\n");
 }
