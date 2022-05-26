@@ -3,8 +3,8 @@
 #include <naiveConsole.h>
 #include <lib.h>
 #include <timeDriver.h>
-static void int_20();
-static void int_21();
+ void int_20();
+ void int_21();
 
 void irqDispatcher(uint64_t irq)
 {
@@ -26,9 +26,9 @@ void irqDispatcher(uint64_t irq)
 }
 
 void int_21()
-{
-	// Llamamos al driver del teclado para que guarde en su buffer
+{	// Llamamos al driver del teclado para que guarde en su buffer
 	// la tecla leida desde la interrupcion del mismo
+	ncPrintFD0("ACA");
 	char c = readKey();
 	saveBuffer(c);
 	

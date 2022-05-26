@@ -21,13 +21,12 @@ void listen(char * command, Window window){
     // Contador de caracteres ingresados por el usuario
     int count = 0;
     // Caracter ingresado por vez
-    int c;
+    char c;
     // Se imprime la leyenda que indica el usuario y el dispositivo
     puts_(SHELL_LEGEND, window);
-
     //Por cada letra, la guardo en el string command y valido que no sea enter, si no, termine con mi comando
+    
     while((c = getKey(window)) != '\n' && count <  MAX_COMMAND_SIZE){
-        
         // Si es backspace, borramos la letra
         if(c == '\b'){
             if(count != 0){
@@ -39,6 +38,11 @@ void listen(char * command, Window window){
         }
     }
     command[count++] = 0;
+    while (1)
+    {
+        /* code */
+    }
+    
     // El enter ingresado:
     putc_('\n', window);
 }
@@ -53,9 +57,9 @@ void windowStart(Window window){
 
     while(1){
         //Se escucha lo que el usuario escriba hasta el enter
+
         listen(command, window);
         //Se pasa el comando, y este decidira que hacer con tal comando, si es que es valido.
-        
         commandsEngineHandle(command, window);
     }
 }
