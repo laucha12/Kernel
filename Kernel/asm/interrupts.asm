@@ -222,7 +222,9 @@ loadtaskHandler:
 	
 %endmacro
 
-
+;--------------------------------------------------------
+; 	Signal pic EOI (End Of Interrupt)
+;--------------------------------------------------------
 %macro endHardwareInterrupt 0
 	mov al, 20h
 	out 20h, al
