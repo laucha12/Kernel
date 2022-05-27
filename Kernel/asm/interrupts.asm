@@ -223,6 +223,12 @@ copyRegs:
 	mov  r14,[context_Seg+112]
 	mov  r15,[context_Seg+120]
 	iret
+
+;--------------------------------------------------------
+;
+;--------------------------------------------------------
+; Argumentos 
+;--------------------------------------------------------
 .pushSegunda:
 	mov [context_Seg], rax
 	mov [context_Seg+8], rbx
@@ -309,22 +315,27 @@ _sti:
 	ret
 
 ;--------------------------------------------------------
-; Esta funcion seteo en 1 
+; Esta funcion seteo la mascara del pic de interrupciones
+; en base a su argumento
 ;--------------------------------------------------------
-; Argumentos: -
+; Argumentos: un numero de 8 bits donde el n-esimo bit representa
+; si el pin n del pic responde o no a interrupciones (0 si responder
+; 1 sino)
 ;--------------------------------------------------------
 picMasterMask:
 	push rbp
     mov rbp, rsp
     mov ax, di
-    out	21h,al
+    out	21h, al
     pop rbp
     retn
 
 ;--------------------------------------------------------
-; Esta funcion seteo en 1 
+; Esta funcion seteo la mascara del pic en cascada con el pic master
 ;--------------------------------------------------------
-; Argumentos: -
+; Argumentos: un numero de 8 bits donde el n-esimo bit representa
+; si el pin n del pic responde o no a interrupciones (0 si responder
+; 1 sino)
 ;--------------------------------------------------------
 picSlaveMask:
 	push    rbp
@@ -334,6 +345,10 @@ picSlaveMask:
     pop     rbp
     retn
 
+
+;--------------------------------------------------------------------
+; FUNCIONES GLOBALES
+;--------------------------------------------------------------------
 
 ;8254 Timer (Timer Tick)
 _irq00Handler:
