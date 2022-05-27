@@ -14,7 +14,6 @@ void irqDispatcher(uint64_t irq)
 	case 0:
 		// Se llama a la funcion que debera ejecutar
 	   //  la interrupcion que se guardo en la posicion 20 del IDT
-	    ncPrintFD0("aca no se como llego");
 		int_20();
 		break;
 	case 1:
@@ -29,7 +28,6 @@ void irqDispatcher(uint64_t irq)
 void int_21()
 {	// Llamamos al driver del teclado para que guarde en su buffer
 	// la tecla leida desde la interrupcion del mismo
-	ncPrintFD0("recibi una interrupcion del teclado!");
 	char c = readKey();
 	saveBuffer(c);
 }

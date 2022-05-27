@@ -3,6 +3,8 @@ GLOBAL _cli
 GLOBAL _sti
 GLOBAL _hlt
 
+GLOBAL initialiseContextSchedluer
+
 GLOBAL picMasterMask
 GLOBAL picSlaveMask
 GLOBAL movCero
@@ -25,8 +27,14 @@ EXTERN syscalls
 EXTERN loadProces
 EXTERN exitProces
 EXTERN switchContext
+EXTERN initialiseContextSchedluerEngine
 
 SECTION .text
+
+initialiseContextSchedluer:
+	mov byte [contextOwner], 0
+	call initialiseContextSchedluerEngine
+	ret
 
 ;-------------------------------------------------------------------------------
 ; Almaceno el contexto del proceso actual (definido como todos los registros 
@@ -35,6 +43,8 @@ SECTION .text
 ; Argumento: posicion de memoria a donde copiar el contexto
 ;-------------------------------------------------------------------------------
 %macro pushContext 1
+
+	;pusheo los registros generales a la posicion pasada como argumentos
 	mov [%1], rax
 	mov [%1+8], rbx
 	mov [%1+16], rcx
@@ -42,6 +52,7 @@ SECTION .text
 	mov [%1+32], rsi
 	mov [%1+40], rdi
 	mov [%1+48], rbp
+	; un hueco de un registro 
 	mov [%1+64], r8
 	mov [%1+72], r9
 	mov [%1+80], r10
@@ -50,11 +61,28 @@ SECTION .text
 	mov [%1+104], r13
 	mov [%1+112], r14
 	mov [%1+120], r15
-	mov rax, [rsp+24]
-	mov [%1+56], rax	        ; guardamos el valor del RSP
+
+	;-----------------------------------------------------------------------
+	; pusheo los registros especiales, al entrar aca voy a tener el rsp
+	; -------------------------------------
+	;  error code   						 
+	; -------------------------------------
+	;  Instruction Pointer (RIP - 8 bytes)      <= rsp
+	; -------------------------------------
+	;  Code Segment (CS - 2 bytes)        
+	; -------------------------------------
+	;  Register Flags (RFLAGS - 8 bytes) 
+	; -------------------------------------
+	;  Stack Pointer (RSP - 8 bytes)       
+	; -------------------------------------
+	;  Stack Segment (SS - )
+	; -------------------------------------
+
+	mov rax, [rsp+18]			; almaceno el valor del RSP de la interrupcion en rax
+	mov [%1+56], rax	        ; guardamos el valor del RSP en la tabla de contexto 
 	mov rax, [rsp]				; guardamos la posicion del RIP
 	mov [%1+128], rax	        ; lo guardamos en la posicion de memoria
-	mov rax, [rsp+16]			; tomo del interrupt frame el valor de los flags
+	mov rax, [rsp+10]			; tomo del interrupt frame el valor de los flags
 	mov [%1+136], rax	        ; lo guardo
 %endmacro
 
@@ -66,12 +94,16 @@ SECTION .text
 ; Argumento: posicion de memoria a donde copiar el contexto
 ;-------------------------------------------------------------------------------
 %macro popContext 1
-	mov rax, [%1+56]
-	mov [rsp+24],rax
+	
+	;popeo los registros especiales
+	mov rax, [%1+56]					; almaceno en rax el valor que almacene de RSP de la interrupcion
+	mov [rsp+18],rax					; piso la posicion del 
 	mov rax, [%1+128]
 	mov [rsp],rax
-	;mov rax, [%1+136]
-	;mov [rsp+16],rax
+	mov rax, [%1+136]
+	mov [rsp+10],rax
+
+	;popeo los registros generales
 	mov  rax,[%1]
 	mov  rbx,[%1+8]
 	mov  rcx,[%1+16]
@@ -101,14 +133,14 @@ SECTION .text
 	; ret
 	; donde REGISTROS PUSHEADOS son 15 registros de 8 bytes, por lo tanto ocupan 120 bytes en mi stack
 	; Por lo tanto rsp + 120 apunta al principio de mi stack de interrupcion
-	; por ultimo, rsp + 120 + 16 apunta al registro de flags
+	; por ultimo, rsp + 120 + 10 apunta al registro de flags
 
 	mov [%1+40], rsi		; alamceno el int fd como primer parametro de mi funcion a loadear
 	mov [%1+32], rdx		; alamceno el int argc como primer parametro de mi funcion a loadear
 	mov [%1+24], rcx		; alamceno el char ** argv como primer parametro de mi funcion a loadear
 	mov [%1+56], rax		; seteo donde va a arrancar el stack de mi funcion A CHEQUEAR
 	mov [%1+128], rdi	 	; alamceno el puntero al comienzo de mi funcion.
-	mov r15, [rsp + 128]	; almaceno el registro de flags
+	mov r15, [rsp + 130]	; almaceno el registro de flags
 	mov [%1+136], r15 		; lo copio a la posicion donde despues pusheo mi context
 %endmacro
 
@@ -179,7 +211,7 @@ exitSyscall:
 ; de procesos para el context switching
 ;-------------------------------------------------------------------------------
 ; @argumentos:  
-;-------------------------------------------------------------------------------
+;-------------------------------------------------------------------------
 loadtaskHandler:
 	loadTask contextLoading 	; rsp+16 estan los 
 	mov rdi, contextLoading
@@ -243,10 +275,11 @@ loadtaskHandler:
 	endInterrupt
 %endmacro
 
-;-------------------------------------------------------------------------------
-;	Esta macro sera el codigo que ira en la IDT para excepciones (0h - 20h).
-;	Se distingue el tipo de excepcion mediante el parametro de la macro.
-;-------------------------------------------------------------------------------
+;--------------------------------------------------------
+; 
+;--------------------------------------------------------
+; Argumentos: -
+;--------------------------------------------------------
 %macro exceptionHandler 1
 	pushState							; preservo los registros
 	mov rdi, %1 					
@@ -255,17 +288,28 @@ loadtaskHandler:
 	iretq
 %endmacro
 
+<<<<<<< HEAD
 ;-------------------------------------------------------------------------------
 ;	Esta macro sera el codigo que ira a la IDT para la interrupcion de timerTick.
 ;	No recibe parametros, pues solo la interrupcion de timerTick usa esta rutina.
 ;-------------------------------------------------------------------------------
 %macro scheduler 1
 	       						; desactivo interrupciones
+=======
+;--------------------------------------------------------
+; 
+;--------------------------------------------------------
+; Argumentos: -
+;--------------------------------------------------------
+%macro timerTickHandler 1
+	call _cli						; desactivo interrupciones
+>>>>>>> 76e60baf4513c96d55619dd11cbacb37fa50e53e
 	pushContext contextHolder		; pusheo el contexto actual al contextHolder
 	mov rdi, contextHolder			; pusheo como primer argumento el puntero al contexto actual
 	mov rsi, contextOwner			; pusheo como segundo parametro el puntero 
 	call switchContext				; llamo a la funcion de C que me va a guardar el contexto y copiar el siguiente
-	endHardwareInterrupt			; termino la interrupcion de hardware
+	mov al, 20h
+	out 20h, al
 	popContext contextHolder		; copio el context holder a mis registros
 
 	iret
@@ -273,21 +317,34 @@ loadtaskHandler:
 
 
 ;--------------------------------------------------------
-;	Macro que sera el codigo para la interrupcion de 
-;	teclado.
+; keyBoardHandler - Esta funcion seteo en 0 el flag de responder a interrupciones
+; maskeables y luego hace un hlt -> hace un sleep del micro
 ;--------------------------------------------------------
 ;	Argumentos: No recibe, pues solo se utiliza para una 
 ;	interrupcion.
 ;--------------------------------------------------------
+<<<<<<< HEAD
 %macro teclado 1
 	call _cli
 	call int_21
 	call _sti
 	endHardwareInterrupt
+=======
+%macro keyBoardHandler 1
+	cli
+	call int_21
+	sti
+	mov al, 20h
+	out 20h, al
+>>>>>>> 76e60baf4513c96d55619dd11cbacb37fa50e53e
 	iretq
 %endmacro
 
-
+%macro nothing 1
+	mov al, 20h
+	out 20h, al
+	iretq
+%endmacro
 
 ;--------------------------------------------------------
 ; Esta funcion seteo en 0 el flag de responder a interrupciones
@@ -363,24 +420,23 @@ picSlaveMask:
 ; 8254 Timer (Timer Tick)
 ; -----------------------------------------------------
 _irq00Handler:
-	scheduler 0
+	timerTickHandler 0
+
 ; -----------------------------------------------------
 ; Keyboard
 ; -----------------------------------------------------
 _irq01Handler:
+<<<<<<< HEAD
 	teclado 0
+=======
+	keyBoardHandler 1
+>>>>>>> 76e60baf4513c96d55619dd11cbacb37fa50e53e
 
 ; -----------------------------------------------------
 ; Syscalls
 ; -----------------------------------------------------
 _irq06Handler:
 	irqHandlerMaster 6
-
-; -----------------------------------------------------
-; Zero Division Exception
-; -----------------------------------------------------
-_exception0Handler:
-	exceptionHandler 0
 
 ;--------------------------------------------------------------------
 ;Cascade pic never called
@@ -405,12 +461,6 @@ _irq04Handler:
 ;-----------------------------------------------------
 _irq05Handler:
 	irqHandlerMaster 5
-
-;-----------------------------------------------------
-;	Syscalls
-;-----------------------------------------------------
-_irq06Handler:
-	irqHandlerMaster 6
 
 ;-----------------------------------------------------
 ;	Zero Division Exception

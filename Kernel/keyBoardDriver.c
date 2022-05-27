@@ -7,7 +7,7 @@
 #define LEFT_SHIFT 0x2A
 #define RIGHT_SHIFT 0x36
 
-static char buffer[MAX_BUFFER]  = "HOLA Como estas";
+static char buffer[MAX_BUFFER];
 
 static unsigned int size = 0;
 static unsigned int actualPos = 0;

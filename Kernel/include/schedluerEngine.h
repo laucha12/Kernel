@@ -38,6 +38,9 @@ Process procesos[MAX_PROCESSES];
 */
 int processesRunning = 0;
 
+/**/
+void initialiseContextSchedluerEngine();
+
 /*
  * Funcion que recibe el puntero a posicion de memoria donde tengo el ultimo contexto y el
  * proceso que es duenio de ese contexto. Luego sobreescribe en el contextHolder el contexto

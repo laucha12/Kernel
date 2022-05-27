@@ -3,7 +3,11 @@
 #include <naiveConsole.h>
 #include <interrupts.h>
 
+void initialiseContextSchedluerEngine() {
+    for (int i = 0; i < MAX_PROCESSES; i++) procesos[i].flagRunning = 0;
+}
 void switchContext(long * contextHolder, long * contextOwner) {
+    if(processesRunning == 0) return;
     pushContext(contextHolder, contextOwner);
     *contextOwner = nextProcess(contextOwner);
     popContext(contextHolder, contextOwner);
@@ -41,6 +45,12 @@ void loadProces(long * contextHolder){
     if (processesRunning == MAX_PROCESSES) return;
     pushContext(contextHolder, processesRunning);
     procesos[processesRunning].context.registers[RSP] = procesos[processesRunning].stackFrame;
+<<<<<<< HEAD
     popContext(contextHolder,0) ;
   
+=======
+    popContext(contextHolder, processesRunning);
+    if(processesRunning == SHELL) {
+     } 
+>>>>>>> 76e60baf4513c96d55619dd11cbacb37fa50e53e
 }
