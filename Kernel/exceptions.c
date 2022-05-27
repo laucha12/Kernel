@@ -27,6 +27,8 @@ void exceptionDispatcher(int exception, long regs[]) {
 	default:
 		break;
 	}
+	ncPrintFD0("Falta implementar retorno al proceso/shell");
+	while(1);
 }
 
 static void zero_division(long regs[]) {
