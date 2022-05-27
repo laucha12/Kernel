@@ -31,9 +31,11 @@ void listen(char * command, Window window){
     while(c != '\n' && count <  MAX_COMMAND_SIZE){
 
         // Si es backspace, borramos la letra
-        if(c == '\b' && count > 0){
-            deleteChar(window);
-            count--;
+        if(c == '\b'){
+            if(count != 0){
+                deleteChar(window);
+                count--;
+            }
         } else if(c != NULL_) { // En caso contrario, se agrega la letra al comando y se la imprime en pantalla
             command[count++] = c;
             putc_(c, window);
