@@ -38,3 +38,4 @@ Kernel/moduleLoader.o
 Userland/SampleCodeModule/obj/syscalls.asm.o
 Userland/0000-sampleCodeModule.bin
 Userland/0001-sampleDataModule.bin
+Userland/0000-sampleCodeModule.elf
