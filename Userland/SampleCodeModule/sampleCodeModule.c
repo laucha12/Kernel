@@ -44,6 +44,7 @@ int main() {
 
 	char argv[MAX_ARGUMENT_COUNT][MAX_ARGUMENT];
 	loadProces(windowsEngineInitialize, MAIN_WINDOW, 0, argv);
+	//windowsEngineInitialize(MAIN_WINDOW, 0, argv);
 
 	//Test if BSS is properly set up
 	if (var1 == 0 && var2 == 0)
