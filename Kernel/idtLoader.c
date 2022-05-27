@@ -33,11 +33,10 @@ void load_idt() {
   setup_IDT_entry (0x80, (uint64_t)&_irq06Handler);
   
   // Se maskean o se desmaskean las interrupciones de pic que queremos escuchar
-<<<<<<< HEAD
+
   picMasterMask(0xFF); 
-=======
   picMasterMask(0b11111100); 
->>>>>>> 76e60baf4513c96d55619dd11cbacb37fa50e53e
+  picMasterMask(0b11111101); 
 	picSlaveMask(0b11111111);
 
   initialiseContextSchedluer();
