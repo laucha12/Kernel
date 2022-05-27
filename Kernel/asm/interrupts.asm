@@ -1,10 +1,10 @@
 
 GLOBAL _cli
 GLOBAL _sti
+GLOBAL _hlt
+
 GLOBAL picMasterMask
 GLOBAL picSlaveMask
-GLOBAL haltcpu
-GLOBAL _hlt
 GLOBAL movCero
 
 GLOBAL _irq00Handler
@@ -25,8 +25,13 @@ EXTERN syscalls
 EXTERN loadProces
 EXTERN exitProces
 EXTERN switchContext
+
 SECTION .text
 
+;-------------------------------------------------------------------------------
+; Hace una copia de todos los registros generales en el stack frame donde es llamada,
+; para preservarlos.
+;-------------------------------------------------------------------------------
 %macro pushState 0
 	push rax
 	push rbx
@@ -45,6 +50,9 @@ SECTION .text
 	push r15
 %endmacro
 
+;-------------------------------------------------------------------------------
+; Recupera todos los registros generales pusheados anteriormente al stack
+;-------------------------------------------------------------------------------
 %macro popState 0
 	pop r15
 	pop r14
@@ -63,6 +71,12 @@ SECTION .text
 	pop rax
 %endmacro
 
+;-------------------------------------------------------------------------------
+; Almaceno el contexto del proceso actual (definido como todos los registros 
+; generales, asi como el RIP y los registros de flag) a la posicion de memoria
+;-------------------------------------------------------------------------------
+; Argumento: posicion de memoria a donde copiar el contexto
+;-------------------------------------------------------------------------------
 %macro pushContext 1
 	mov [%1], rax
 	mov [%1+8], rbx
@@ -87,6 +101,13 @@ SECTION .text
 	mov [%1+136], rax	        ; lo guardo
 %endmacro
 
+;-------------------------------------------------------------------------------
+; Recupero el contexto del proceso (definido como todos los registros 
+; generales, asi como el RIP y los registros de flag)cuyo contexto almacene  a
+; la posicion de memoria recibida como parametro
+;-------------------------------------------------------------------------------
+; Argumento: posicion de memoria a donde copiar el contexto
+;-------------------------------------------------------------------------------
 %macro popContext 1
 	mov rax, [%1+56]
 	mov [rsp+24],rax
@@ -112,9 +133,9 @@ SECTION .text
 %endmacro
 
 ;-------------------------------------------------------------------------------
-;
+; Recibe una posicion de memoria desde la cual va a comenzar el stack frame de mi 
+; funcion
 ;-------------------------------------------------------------------------------
-
 %macro loadTask 1
 	
 	; ---- REGISTROS PUSHEADOS 			<= rsp
@@ -134,9 +155,43 @@ SECTION .text
 	mov [%1+136], r15 		; lo copio a la posicion donde despues pusheo mi context
 %endmacro
 
+;-------------------------------------------------------------------------------
+; exitSyscall - ejecuta el borrado del proceso desde donde se llamo de la tabla
+; de procesos para el context switching
+;-------------------------------------------------------------------------------
+; @argumentos:  
+;-------------------------------------------------------------------------------
+exitSyscall:
+	mov rdi,contextHolder				; paso el primer parametro para copiar el siguiente contexto
+										; al exitear el proceso actual
+	mov rsi,contextOwner			    ; paso el segundo parametro para actualizar duenio del contexto
+										; que estoy copiando al context holder
+	call exitProces						; llamo a la funcion de C que maneja el exit
+	mov al, 20h							; signal pic EOI
+	out 20h, al							; signal pic EOI
+	popContext contextHolder			; actualizo el contexto actual al del proximo proceso a ejecutar
+	;call _sti
+	iretq								; desarmo el stack frame de la interrupcion y hago el ret al proximo proceso
+
+;-------------------------------------------------------------------------------
+; exitSyscall - ejecuta el borrado del proceso desde donde se llamo de la tabla
+; de procesos para el context switching
+;-------------------------------------------------------------------------------
+; @argumentos:  
+;-------------------------------------------------------------------------------
+loadtaskHandler:
+	loadTask contextLoading 	; rsp+16 estan los 
+	mov rdi, contextLoading
+	call loadProces
+	popState
+	popContext contextLoading
+	call _sti
+	iretq
+
 ; -------------------------------------------------------
-
-
+; Recibe un numero que determina el numero de interrupcion por hardware y mapea
+; a la funcion que maneja esa interrupcion
+; -------------------------------------------------------
 %macro irqHandlerMaster 1
 	call _cli					; desactivamos las interrupciones
 	pushState					; pusheamos todos los registros para preservarlos
@@ -148,41 +203,14 @@ SECTION .text
 	jmp .fin
 .syscallsJump:
 	cmp rax,8					; ahora comienzo el switch de las syscalls, 
-	je .loadtaskHandler			; si es 8 es la de loadTask
+	je loadtaskHandler			; si es 8 es la de loadTask
 	cmp rax,99					; si es 99 es la de exit
-	je .exitSyscall
+	je exitSyscall
 	mov rcx,rax					; si es otro entonces voy al switch de C
 	call syscalls						
 	popState
 	call _sti
 	iretq 						
-
-; pushState , registros generales los pusheo al stack
-; loadTask, 
-; popState
-; popC
-
-.loadtaskHandler:
-	loadTask contextLoading 	; rsp+16 estan los 
-	mov rdi, contextLoading
-	call loadProces
-	popState
-	popContext contextLoading
-	call _sti
-	iretq
-
-; Maneja la interrupcion al sistema operativo de exit
-.exitSyscall:
-	mov rdi,contextHolder				; paso el primer parametro para copiar el siguiente contexto
-										; al exitear el proceso actual
-	mov rsi,contextOwner			    ; paso el segundo parametro para actualizar duenio del contexto
-										; que estoy copiando al context holder
-	call exitProces						; llamo a la funcion de C que maneja el exit
-	mov al, 20h							; signal pic EOI
-	out 20h, al							; signal pic EOI
-	popContext contextHolder			; actualizo el contexto actual al del proximo proceso a ejecutar
-	;call _sti
-	iretq								; desarmo el stack frame de la interrupcion y hago el ret al proximo proceso
 
 .fin:
  ; signal pic EOI (End of Interrupt) ES NECESARIO CUANDO HAGO INTERRUPCIONES POR SOFTWARE
