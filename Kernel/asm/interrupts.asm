@@ -29,49 +29,6 @@ EXTERN switchContext
 SECTION .text
 
 ;-------------------------------------------------------------------------------
-; Hace una copia de todos los registros generales en el stack frame donde es llamada,
-; para preservarlos.
-;-------------------------------------------------------------------------------
-%macro pushState 0
-	push rax
-	push rbx
-	push rcx
-	push rdx
-	push rbp
-	push rdi
-	push rsi
-	push r8
-	push r9
-	push r10
-	push r11
-	push r12
-	push r13
-	push r14
-	push r15
-%endmacro
-
-;-------------------------------------------------------------------------------
-; Recupera todos los registros generales pusheados anteriormente al stack
-;-------------------------------------------------------------------------------
-%macro popState 0
-	pop r15
-	pop r14
-	pop r13
-	pop r12
-	pop r11
-	pop r10
-	pop r9
-	pop r8
-	pop rsi
-	pop rdi
-	pop rbp
-	pop rdx
-	pop rcx
-	pop rbx
-	pop rax
-%endmacro
-
-;-------------------------------------------------------------------------------
 ; Almaceno el contexto del proceso actual (definido como todos los registros 
 ; generales, asi como el RIP y los registros de flag) a la posicion de memoria
 ;-------------------------------------------------------------------------------
@@ -154,6 +111,50 @@ SECTION .text
 	mov r15, [rsp + 128]	; almaceno el registro de flags
 	mov [%1+136], r15 		; lo copio a la posicion donde despues pusheo mi context
 %endmacro
+
+;-------------------------------------------------------------------------------
+; Hace una copia de todos los registros generales en el stack frame donde es llamada,
+; para preservarlos.
+;-------------------------------------------------------------------------------
+%macro pushState 0
+	push rax
+	push rbx
+	push rcx
+	push rdx
+	push rbp
+	push rdi
+	push rsi
+	push r8
+	push r9
+	push r10
+	push r11
+	push r12
+	push r13
+	push r14
+	push r15
+%endmacro
+
+;-------------------------------------------------------------------------------
+; Recupera todos los registros generales pusheados anteriormente al stack
+;-------------------------------------------------------------------------------
+%macro popState 0
+	pop r15
+	pop r14
+	pop r13
+	pop r12
+	pop r11
+	pop r10
+	pop r9
+	pop r8
+	pop rsi
+	pop rdi
+	pop rbp
+	pop rdx
+	pop rcx
+	pop rbx
+	pop rax
+%endmacro
+
 
 ;-------------------------------------------------------------------------------
 ; exitSyscall - ejecuta el borrado del proceso desde donde se llamo de la tabla
@@ -358,14 +359,30 @@ picSlaveMask:
 ; FUNCIONES GLOBALES
 ;--------------------------------------------------------------------
 
-;8254 Timer (Timer Tick)
+; -----------------------------------------------------
+; 8254 Timer (Timer Tick)
+; -----------------------------------------------------
 _irq00Handler:
 	scheduler 0
-
-;Keyboard
+; -----------------------------------------------------
+; Keyboard
+; -----------------------------------------------------
 _irq01Handler:
 	teclado 1
 
+; -----------------------------------------------------
+; Syscalls
+; -----------------------------------------------------
+_irq06Handler:
+	irqHandlerMaster 6
+
+; -----------------------------------------------------
+; Zero Division Exception
+; -----------------------------------------------------
+_exception0Handler:
+	exceptionHandler 0
+
+;--------------------------------------------------------------------
 ;Cascade pic never called
 _irq02Handler:
 	irqHandlerMaster 2
@@ -381,21 +398,6 @@ _irq04Handler:
 ;USB
 _irq05Handler:
 	irqHandlerMaster 5
-
-; -----------------------------------------------------
-;
-; -----------------------------------------------------
-_irq06Handler:
-	irqHandlerMaster 6
-
-;Zero Division Exception
-_exception0Handler:
-	exceptionHandler 0
-
-haltcpu:
-	cli
-	hlt
-	ret
 
 
 
