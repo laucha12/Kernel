@@ -2,6 +2,7 @@
 #include "include/schedluerEngine.h"
 #include <naiveConsole.h>
 #include <interrupts.h>
+
 void switchContext(long * contextHolder, long * contextOwner) {
     pushContext(contextHolder,contextOwner);
     *contextOwner = nextProcess(contextOwner);
@@ -33,6 +34,7 @@ void exitProces(long * contextHolder,long * contextOwner){
     procesos[(int)(*contextOwner)].flagRunning = 0;
     processesRunning -= 1;
     switchContext(contextHolder,contextOwner);
+    ncPrintFD0("se exiteo un proceso \n");
 }
 
 void loadProces(long * contextHolder){

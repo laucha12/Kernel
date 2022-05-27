@@ -1,18 +1,21 @@
 #include <keyBoard.h>
 #include <naiveConsole.h>
 #include <stdint.h>
-#define MAXBUFFER 255
-static char buffer[]  = "HOLA";
+
+#define NULL_ 0l
+#define MAX_BUFFER 255
+#define LEFT_SHIFT 0x2A
+#define RIGHT_SHIFT 0x36
+
+static char buffer[MAX_BUFFER]  = "HOLA Como estas";
+
 static unsigned int size = 0;
 static unsigned int actualPos = 0;
 static uint8_t *keyMap[] = {scancodeLToAscii, scancodeUToAscii};
-#define LEFT_SHIFT 0x2A
-#define RIGHT_SHIFT 0x36
 static char keyMapRow = 0;
 
 void saveBuffer(char code)
 {
-	ncPrintFD0("ACA");
 	if (code < 0x80 && code > 0)
 	{ // Key pressed
 		if (code == LEFT_SHIFT || code == RIGHT_SHIFT)
@@ -35,13 +38,19 @@ void saveBuffer(char code)
 		}
 	}
 }
-void getBufferChar(char *sysBuffer)
-{
 
+void getBufferChar(char * sysBuffer) {
+
+	//ncPrintFD0("hay una interrupcion de leer caracter");
+
+	//copio el valor actual del buffer a mi 
+	//variable de salida
 	sysBuffer[0] = buffer[actualPos];
-	if (buffer[actualPos] != 0)
-	{
-		buffer[actualPos] = 0;
-		actualPos = (actualPos == 254) ? 0 : (actualPos+1);
-	}
+
+	//chequeo si no la habia leido, si es asi la marco como
+	//leida y 
+	if (buffer[actualPos] != 0) buffer[actualPos] = NULL_;
+
+	if(actualPos == MAX_BUFFER - 1) actualPos = 0;
+	else actualPos++;
 }

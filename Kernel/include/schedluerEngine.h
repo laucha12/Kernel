@@ -1,6 +1,6 @@
 
 #define MAX_PROCESSES 3
-#define MAX_STACK 1000
+#define MAX_STACK 10000
 #define REGISTER_COUNT 17
 
 #define RSP 7               // defino el indice donde guardo el RSP en mi arreglo de registros

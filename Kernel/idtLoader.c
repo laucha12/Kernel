@@ -25,18 +25,18 @@ static void setup_IDT_entry (int index, uint64_t offset);
 void load_idt() {
   //En las siguientes lineas se carga en la IDT los punteros
   // a cada una de las interrupciones
-  _cli();
+  //_cli();
 
-  setup_IDT_entry (0x00, (uint64_t)&_exception0Handler);
+  //setup_IDT_entry (0x00, (uint64_t)&_exception0Handler);
   setup_IDT_entry (0x20, (uint64_t)&_irq00Handler);
   setup_IDT_entry (0x21, (uint64_t)&_irq01Handler);
   setup_IDT_entry (0x80, (uint64_t)&_irq06Handler);
   
   // Se maskean o se desmaskean las interrupciones de pic que queremos escuchar
-  picMasterMask(0b11111101); 
-	picSlaveMask(0b11111111);
-  movCero();
-  _sti();
+  picMasterMask(0xFF); 
+	picSlaveMask(0xFF);
+  //movCero();
+  //_sti();
 }
 
 static void setup_IDT_entry (int index, uint64_t offset) {

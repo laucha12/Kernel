@@ -62,6 +62,7 @@ SECTION .text
 	pop rbx
 	pop rax
 %endmacro
+
 %macro pushContext 1
 	mov [%1], rax
 	mov [%1+8], rbx
@@ -85,6 +86,7 @@ SECTION .text
 	mov rax, [rsp+16]			; tomo del interrupt frame el valor de los flags
 	mov [%1+136], rax	        ; lo guardo
 %endmacro
+
 %macro popContext 1
 	mov rax, [%1+56]
 	mov [rsp+24],rax
@@ -108,6 +110,7 @@ SECTION .text
 	mov  r14,[%1+112]
 	mov  r15,[%1+120]
 %endmacro
+
 %macro loadTask 1
 		
 	mov [%1+40], rsi		; alamceno el int fd como primer parametro de mi funcion a loadear
@@ -138,13 +141,11 @@ SECTION .text
 .loadtaskHandler:
 	loadTask contextLoading ; asumimos que copio bien
 	mov rdi, contextLoading
-	call _cli
 	call loadProces
 	mov al, 20h
 	out 20h, al
 	popState
 	popContext contextLoading
-	call _sti
 	iretq
 
 ; Maneja la interrupcion al sistema operativo de exit
@@ -165,9 +166,13 @@ SECTION .text
 	out 20h, al
 	popState
 	iretq
+	
 %endmacro
 
-
+%macro endHardwareInterrupt 0
+	mov al, 20h
+	out 20h, al
+%endmacro
 
 %macro exceptionHandler 1
 	pushState
@@ -180,19 +185,18 @@ SECTION .text
 %endmacro
 
 %macro scheduler 1
-	call _cli
 	pushContext contextHolder		; pusheo el contexto actual al contextHolder
 	mov rdi, contextHolder			; pusheo como primer argumento el puntero al contexto actual
 	mov rsi, contextOwner			; pusheo como segundo parametro el puntero 
 	call switchContext				; llamo a la funcion de C que me va a guardar el contexto y copiar el siguiente
-	mov al, 20h
-	out 20h, al
+	endHardwareInterrupt			; termino la interrupcion de hardware
 	popContext contextHolder		; copio el context holder a mis registros
-	call _sti
-	iret
+	iretq
 %endmacro
+
 %macro teclado 1
 	call int_21
+	endHardwareInterrupt
 	iretq
 %endmacro
 
