@@ -303,7 +303,8 @@ loadtaskHandler:
 ; keyBoardHandler - Esta funcion seteo en 0 el flag de responder a interrupciones
 ; maskeables y luego hace un hlt -> hace un sleep del micro
 ;--------------------------------------------------------
-; Argumentos: -
+;	Argumentos: No recibe, pues solo se utiliza para una 
+;	interrupcion.
 ;--------------------------------------------------------
 %macro keyBoardHandler 1
 	cli
@@ -409,26 +410,65 @@ _exception0Handler:
 
 ;--------------------------------------------------------------------
 ;Cascade pic never called
+;-----------------------------------------------------
 _irq02Handler:
 	irqHandlerMaster 2
 
+;-----------------------------------------------------
 ;Serial Port 2 and 4
+;-----------------------------------------------------
 _irq03Handler:
 	irqHandlerMaster 3
 
-;Serial Port 1 and 3
+;-----------------------------------------------------
+;Serial Port 1 and 3	
+;-----------------------------------------------------
 _irq04Handler:
 	irqHandlerMaster 4
 
-;USB
+;-----------------------------------------------------
+;	USB
+;-----------------------------------------------------
 _irq05Handler:
 	irqHandlerMaster 5
 
+;-----------------------------------------------------
+;	Syscalls
+;-----------------------------------------------------
+_irq06Handler:
+	irqHandlerMaster 6
+
+;-----------------------------------------------------
+;	Zero Division Exception
+;-----------------------------------------------------
+_exception0Handler:
+	exceptionHandler 0
+
+; RUTINA DUPLICADA CON _hlt !!
+haltcpu:
+	cli
+	hlt
+	ret
 
 
+;-----------------------------------------------------
+;	BSS
+;-----------------------------------------------------
 SECTION .bss
 	aux resq 1
-	contextHolder resq 17			; Seccion donde se guarda el contexto para la comunicacion con el back
-	contextOwner resq 1		; guardo el duenio del contexto
-	contextLoading resq 17			; Seccion donde se guarda el contexto para la comunicacion con el back
+	;-----------------------------------------------------
+	;	Seccion donde se guarda el contexto para la comunicacion con el back
+	;-----------------------------------------------------
+	contextHolder resq 17			
+	;----------------------------------------------------
+	;	Guardo el duenio del contexto
+	;-----------------------------------------------------
+	contextOwner resq 1		
+	;-----------------------------------------------------
+	;	Seccion donde se guarda el contexto para la comunicacion con el back
+	;-----------------------------------------------------
+	contextLoading resq 17			
+	;-----------------------------------------------------
+	;	*DEBUGGING*
+	;-----------------------------------------------------
 	string db "HOLLAAA",0
