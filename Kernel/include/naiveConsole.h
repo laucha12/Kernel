@@ -4,6 +4,7 @@
 #include <stdint.h>
 #define COLUMS 160
 #define OFFSET 80
+
 /*
     Funcion la cual imprime en el FD0 lo que hay en String
     debe estar pues la usa al inicializar el kernel
@@ -11,6 +12,7 @@
     Params: const char * string lo que se va a imprimir 
     Retunr: void
 */
+
 void ncPrint(const char * string);
 /*
     Funcion la cual va a imprimir un caracter a la vez en FD0

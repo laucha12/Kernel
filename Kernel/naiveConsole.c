@@ -82,7 +82,7 @@ void printFD1Char(char character)
 		currentVideoFD1 += 2;
 	}
 
-	if (!((currentVideoFD1 - video) % OFFSET))
+	if (((currentVideoFD1 - video) % OFFSET) > 0)
 	{
 		currentVideoFD1 += OFFSET;
 	}
