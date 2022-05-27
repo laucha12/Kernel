@@ -22,6 +22,11 @@ EXTERN exceptionDispatcher
 EXTERN syscalls
 SECTION .text
 
+;--------------------------------------------------------
+;
+;--------------------------------------------------------
+; Argumentos : no tiene
+;--------------------------------------------------------
 %macro pushState 0
 	push rax
 	push rbx
@@ -40,6 +45,11 @@ SECTION .text
 	push r15
 %endmacro
 
+;--------------------------------------------------------
+;
+;--------------------------------------------------------
+; Argumentos : no tiene
+;--------------------------------------------------------
 %macro popState 0
 	pop r15
 	pop r14
@@ -58,6 +68,11 @@ SECTION .text
 	pop rax
 %endmacro
 
+;--------------------------------------------------------
+;
+;--------------------------------------------------------
+; Argumentos 
+;--------------------------------------------------------
 %macro irqHandlerMaster 1
 
 	pushState
@@ -97,7 +112,11 @@ SECTION .text
 %endmacro
 
 
-
+;--------------------------------------------------------
+;
+;--------------------------------------------------------
+; Argumentos 
+;--------------------------------------------------------
 %macro exceptionHandler 1
 	
 	;pushState
@@ -117,6 +136,11 @@ SECTION .text
 
 %endmacro
 
+;--------------------------------------------------------
+;
+;--------------------------------------------------------
+; Argumentos 
+;--------------------------------------------------------
 copyRegs:
 
 	mov [regsArray], rax
@@ -140,7 +164,11 @@ copyRegs:
 	
 	ret
 
-
+;--------------------------------------------------------
+;
+;--------------------------------------------------------
+; Argumentos 
+;--------------------------------------------------------
 %macro scheduler 1
 	cmp byte[cantProcesos],1
 	je .fin
@@ -245,22 +273,44 @@ copyRegs:
 %endmacro
 
 
-; esta funcion lo que hace es no hacer nada que reciba una interrupt
-; esto viene bien para el sleep
+;--------------------------------------------------------
+; Esta funcion seteo en 0 el flag de responder a interrupciones
+; maskeables y luego hace un hlt -> hace un sleep del micro
+;--------------------------------------------------------
+; Argumentos: -
+;--------------------------------------------------------
 _hlt:
-	sti
+	cli
 	hlt
 	ret
 
+;--------------------------------------------------------
+; Desabilita las interrupciones (setea el flag
+; de interrupciones de hardware en cero)
+; "External interrupts disabled at the end of the cli instruction 
+; or from that point on until the interrupt flag is set."
+;--------------------------------------------------------
+; Argumentos: -
+;--------------------------------------------------------
 _cli:
 	cli
 	ret
 
-
+;--------------------------------------------------------
+; Habilita las interrupciones (setea el flag
+; de interrupciones de hardware en cero)
+;--------------------------------------------------------
+; Argumentos: -
+;--------------------------------------------------------
 _sti:
 	sti
 	ret
 
+;--------------------------------------------------------
+; Esta funcion seteo en 1 
+;--------------------------------------------------------
+; Argumentos: -
+;--------------------------------------------------------
 picMasterMask:
 	push rbp
     mov rbp, rsp
@@ -269,6 +319,11 @@ picMasterMask:
     pop rbp
     retn
 
+;--------------------------------------------------------
+; Esta funcion seteo en 1 
+;--------------------------------------------------------
+; Argumentos: -
+;--------------------------------------------------------
 picSlaveMask:
 	push    rbp
     mov     rbp, rsp
@@ -312,12 +367,6 @@ _exception0Handler:
 ;Zero Division Exception
 _exception06Handler:
 	exceptionHandler 6
-
-haltcpu:
-	cli
-	hlt
-	ret
-
 
 
 SECTION .bss
