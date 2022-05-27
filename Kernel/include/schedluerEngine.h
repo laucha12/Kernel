@@ -1,5 +1,6 @@
 
 #define MAX_PROCESSES 3
+
 #define MAX_STACK 10000
 #define REGISTER_COUNT 17
 
@@ -28,14 +29,14 @@ typedef struct {
 * Defino el array para guardar los contextos de todos los procesos que puedo switchear al mismo tiempo.
  * Obs: si tendriamos memoria dinamica esto quedaria mejor.
 */
-static Process procesos[MAX_PROCESSES];
+Process procesos[MAX_PROCESSES];
 
 
 /*
     * Defino la cantidad de procesos que tengo corriendo en este mismo momento
     * Obs: siempre tiene que ser menor que MAX_PROCESES
 */
-static int processesRunning = 0;
+int processesRunning = 0;
 
 /*
  * Funcion que recibe el puntero a posicion de memoria donde tengo el ultimo contexto y el
@@ -43,6 +44,7 @@ static int processesRunning = 0;
  * del proximo proceso, y en el contextOwner copia el identificador del contexto.
  */
 void switchContext(long * contextHolder, long * contextOwner);
+
 /*
     * Funcion la cual va a copiar todos los registros mandados desde assembler
     * a la struct en el array

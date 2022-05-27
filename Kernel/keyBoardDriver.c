@@ -28,8 +28,7 @@ void saveBuffer(char code)
 			size = (size == 254) ? 0 : size++;
 		}
 	}
-	else
-	{  
+	else {  
 		 // Key released
 		code -= 0x80;
 		if (code == LEFT_SHIFT || code == RIGHT_SHIFT)
