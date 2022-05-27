@@ -288,15 +288,6 @@ loadtaskHandler:
 	iretq
 %endmacro
 
-<<<<<<< HEAD
-;-------------------------------------------------------------------------------
-;	Esta macro sera el codigo que ira a la IDT para la interrupcion de timerTick.
-;	No recibe parametros, pues solo la interrupcion de timerTick usa esta rutina.
-;-------------------------------------------------------------------------------
-%macro scheduler 1
-<<<<<<< HEAD
-	       						; desactivo interrupciones
-=======
 ;--------------------------------------------------------
 ; 
 ;--------------------------------------------------------
@@ -304,17 +295,6 @@ loadtaskHandler:
 ;--------------------------------------------------------
 %macro timerTickHandler 1
 	call _cli						; desactivo interrupciones
->>>>>>> 76e60baf4513c96d55619dd11cbacb37fa50e53e
-=======
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
-	cli
->>>>>>> bcecaba97c4c1087896cac14efa99473f6cfde14
-=======
-	call _cli						; desactivo interrupciones
->>>>>>> b4bf69562387b47ee4b20c2ab039e4f2ac7f7488
->>>>>>> parent of 40a27ec (hola)
 	pushContext contextHolder		; pusheo el contexto actual al contextHolder
 	mov rdi, contextHolder			; pusheo como primer argumento el puntero al contexto actual
 	mov rsi, contextOwner			; pusheo como segundo parametro el puntero 
@@ -322,14 +302,7 @@ loadtaskHandler:
 	mov al, 20h
 	out 20h, al
 	popContext contextHolder		; copio el context holder a mis registros
-<<<<<<< HEAD
-<<<<<<< HEAD
-	iret
-%endmacro
-=======
-=======
 	call _sti						; desactivo las interrupciones (ojo que tiene que ir abajo sino)
->>>>>>> b4bf69562387b47ee4b20c2ab039e4f2ac7f7488
 	iretq
 %endmacro
 
@@ -341,23 +314,14 @@ loadtaskHandler:
 ;	Argumentos: No recibe, pues solo se utiliza para una 
 ;	interrupcion.
 ;--------------------------------------------------------
-<<<<<<< HEAD
-%macro teclado 1
-	cli
-	call int_21
-	sti
-	endHardwareInterrupt
-=======
 %macro keyBoardHandler 1
 	cli
 	call int_21
 	sti
 	mov al, 20h
 	out 20h, al
->>>>>>> 76e60baf4513c96d55619dd11cbacb37fa50e53e
 	iretq
 %endmacro
->>>>>>> bcecaba97c4c1087896cac14efa99473f6cfde14
 
 %macro nothing 1
 	mov al, 20h
@@ -444,15 +408,7 @@ _irq00Handler:
 ; Keyboard
 ; -----------------------------------------------------
 _irq01Handler:
-<<<<<<< HEAD
-<<<<<<< HEAD
-	teclado 0
-=======
 	keyBoardHandler 1
->>>>>>> 76e60baf4513c96d55619dd11cbacb37fa50e53e
-=======
-	teclado 1
->>>>>>> parent of 40a27ec (hola)
 
 ; -----------------------------------------------------
 ; Syscalls
