@@ -4,9 +4,9 @@
 #include <interrupts.h>
 
 void switchContext(long * contextHolder, long * contextOwner) {
-    pushContext(contextHolder,contextOwner);
+    pushContext(contextHolder, contextOwner);
     *contextOwner = nextProcess(contextOwner);
-    popContext(contextHolder,contextOwner);
+    popContext(contextHolder, contextOwner);
     return;
 }
 

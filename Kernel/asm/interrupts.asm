@@ -92,8 +92,8 @@ SECTION .text
 	mov [rsp+24],rax
 	mov rax, [%1+128]
 	mov [rsp],rax
-	mov rax, [%1+136]
-	mov [rsp+16],rax
+	;mov rax, [%1+136]
+	;mov [rsp+16],rax
 	mov  rax,[%1]
 	mov  rbx,[%1+8]
 	mov  rcx,[%1+16]
@@ -111,42 +111,64 @@ SECTION .text
 	mov  r15,[%1+120]
 %endmacro
 
+;-------------------------------------------------------------------------------
+;
+;-------------------------------------------------------------------------------
+
 %macro loadTask 1
-		
+	
+	; ---- REGISTROS PUSHEADOS 			<= rsp
+	; ---- STACK INTERRUPCION
+	; ebp
+	; ret
+	; donde REGISTROS PUSHEADOS son 15 registros de 8 bytes, por lo tanto ocupan 120 bytes en mi stack
+	; Por lo tanto rsp + 120 apunta al principio de mi stack de interrupcion
+	; por ultimo, rsp + 120 + 16 apunta al registro de flags
+
 	mov [%1+40], rsi		; alamceno el int fd como primer parametro de mi funcion a loadear
 	mov [%1+32], rdx		; alamceno el int argc como primer parametro de mi funcion a loadear
 	mov [%1+24], rcx		; alamceno el char ** argv como primer parametro de mi funcion a loadear
-	mov [%1+56],rax		    ; seteo donde va a arrancar el stack de mi funcion A CHEQUEAR
+	mov [%1+56], rax		; seteo donde va a arrancar el stack de mi funcion A CHEQUEAR
 	mov [%1+128], rdi	 	; alamceno el puntero al comienzo de mi funcion.
-
+	mov r15, [rsp + 128]	; almaceno el registro de flags
+	mov [%1+136], r15 		; lo copio a la posicion donde despues pusheo mi context
 %endmacro
 
+; -------------------------------------------------------
+
+
 %macro irqHandlerMaster 1
-	cli
-	pushState
-    mov r8,%1
-	cmp  r8,6
-	je .syscallsJump
+	call _cli					; desactivamos las interrupciones
+	pushState					; pusheamos todos los registros para preservarlos
+    mov r8,%1					; almaceno el numero de la interrupcion 
+	cmp  r8,6					; comparo 6 a ver si es una interrupcion de software
+	je .syscallsJump			; 
 	mov rdi,r8
 	call irqDispatcher
 	jmp .fin
 .syscallsJump:
-	cmp rax,8
-	je .loadtaskHandler
-	cmp rax,99
+	cmp rax,8					; ahora comienzo el switch de las syscalls, 
+	je .loadtaskHandler			; si es 8 es la de loadTask
+	cmp rax,99					; si es 99 es la de exit
 	je .exitSyscall
-	mov rcx,rax
-	call syscalls
-	jmp .fin
+	mov rcx,rax					; si es otro entonces voy al switch de C
+	call syscalls						
+	popState
+	call _sti
+	iretq 						
+
+; pushState , registros generales los pusheo al stack
+; loadTask, 
+; popState
+; popC
 
 .loadtaskHandler:
-	loadTask contextLoading ; asumimos que copio bien
+	loadTask contextLoading 	; rsp+16 estan los 
 	mov rdi, contextLoading
 	call loadProces
-	mov al, 20h
-	out 20h, al
 	popState
 	popContext contextLoading
+	call _sti
 	iretq
 
 ; Maneja la interrupcion al sistema operativo de exit
@@ -158,11 +180,12 @@ SECTION .text
 	call exitProces						; llamo a la funcion de C que maneja el exit
 	mov al, 20h							; signal pic EOI
 	out 20h, al							; signal pic EOI
-	popContext contextHolder									; actualizo el contexto actual al del proximo proceso a ejecutar
+	popContext contextHolder			; actualizo el contexto actual al del proximo proceso a ejecutar
+	;call _sti
 	iretq								; desarmo el stack frame de la interrupcion y hago el ret al proximo proceso
 
 .fin:
-; signal pic EOI (End of Interrupt) ES NECESARIO CUANDO HAGO INTERRUPCIONES POR SOFTWARE
+ ; signal pic EOI (End of Interrupt) ES NECESARIO CUANDO HAGO INTERRUPCIONES POR SOFTWARE
 	mov al, 20h
 	out 20h, al
 	popState
@@ -172,34 +195,48 @@ SECTION .text
 %endmacro
 
 
-
 %macro endHardwareInterrupt 0
 	mov al, 20h
 	out 20h, al
 %endmacro
 
+;--------------------------------------------------------
+;
+;--------------------------------------------------------
+; Argumentos: -
+;--------------------------------------------------------
 %macro exceptionHandler 1
-	pushState
-
-	mov rdi, %1 ; pasaje de parametro
+	pushState							; preservo los registros
+	mov rdi, %1 					
 	call exceptionDispatcher
-
-	popState
+	popState							; preservo los registros
 	iretq
 %endmacro
 
+;--------------------------------------------------------
+; 
+;--------------------------------------------------------
+; Argumentos: -
+;--------------------------------------------------------
 %macro scheduler 1
-	cli
+	call _cli						; desactivo interrupciones
 	pushContext contextHolder		; pusheo el contexto actual al contextHolder
 	mov rdi, contextHolder			; pusheo como primer argumento el puntero al contexto actual
 	mov rsi, contextOwner			; pusheo como segundo parametro el puntero 
 	call switchContext				; llamo a la funcion de C que me va a guardar el contexto y copiar el siguiente
 	endHardwareInterrupt			; termino la interrupcion de hardware
-	sti
 	popContext contextHolder		; copio el context holder a mis registros
+	call _sti						; desactivo las interrupciones (ojo que tiene que ir abajo sino)
 	iretq
 %endmacro
 
+
+;--------------------------------------------------------
+; Esta funcion seteo en 0 el flag de responder a interrupciones
+; maskeables y luego hace un hlt -> hace un sleep del micro
+;--------------------------------------------------------
+; Argumentos: -
+;--------------------------------------------------------
 %macro teclado 1
 	cli
 	call int_21
@@ -208,54 +245,76 @@ SECTION .text
 	iretq
 %endmacro
 
-; ---------------------------------------------------------
-;
-; ---------------------------------------------------------
+
+
+;--------------------------------------------------------
+; Esta funcion seteo en 0 el flag de responder a interrupciones
+; maskeables y luego hace un hlt -> hace un sleep del micro
+;--------------------------------------------------------
+; Argumentos: -
+;--------------------------------------------------------
 _hlt:
 	cli
 	hlt
 	ret
 
-; ---------------------------------------------------------
-;
-; ---------------------------------------------------------
+;--------------------------------------------------------
+; Desabilita las interrupciones (setea el flag
+; de interrupciones de hardware en cero)
+; "External interrupts disabled at the end of the cli instruction 
+; or from that point on until the interrupt flag is set."
+;--------------------------------------------------------
+; Argumentos: -
+;--------------------------------------------------------
 _cli:
 	cli
 	ret
 
-
+;--------------------------------------------------------
+; Habilita las interrupciones (setea el flag
+; de interrupciones de hardware en cero)
+;--------------------------------------------------------
+; Argumentos: -
+;--------------------------------------------------------
 _sti:
 	sti
 	ret
 
-movCero:
-	mov dword [contextOwner],0
-	ret
-
-;-----------------------------------------------
-; Recibe un numero de 8 bytes que lo pasa a los registros
-; de in/out donde maskea las entradas, 0 LAS DESHABILITA
-;-----------------------------------------------
+;--------------------------------------------------------
+; Esta funcion seteo la mascara del pic de interrupciones
+; en base a su argumento
+;--------------------------------------------------------
+; Argumentos: un numero de 8 bits donde el n-esimo bit representa
+; si el pin n del pic responde o no a interrupciones (0 si responder
+; 1 sino)
+;--------------------------------------------------------
 picMasterMask:
 	push rbp
     mov rbp, rsp
     mov ax, di
-    out	21h,al
+    out	21h, al
     pop rbp
     retn
 
-;-----------------------------------------------
-; Recibe un numero de 8 bytes que lo pasa a los registros
-; de in/out donde maskea las entradas, 0 LAS DESHABILITA
-;-----------------------------------------------
+;--------------------------------------------------------
+; Esta funcion seteo la mascara del pic en cascada con el pic master
+;--------------------------------------------------------
+; Argumentos: un numero de 8 bits donde el n-esimo bit representa
+; si el pin n del pic responde o no a interrupciones (0 si responder
+; 1 sino)
+;--------------------------------------------------------
 picSlaveMask:
 	push    rbp
     mov     rbp, rsp
     mov     ax, di  ; ax = mascara de 16 bits
-    out		0A1h,al
+    out	0A1h,al
     pop     rbp
     retn
 
+
+;--------------------------------------------------------------------
+; FUNCIONES GLOBALES
+;--------------------------------------------------------------------
 
 ;8254 Timer (Timer Tick)
 _irq00Handler:
@@ -281,7 +340,9 @@ _irq04Handler:
 _irq05Handler:
 	irqHandlerMaster 5
 
-;syscalls
+; -----------------------------------------------------
+;
+; -----------------------------------------------------
 _irq06Handler:
 	irqHandlerMaster 6
 
