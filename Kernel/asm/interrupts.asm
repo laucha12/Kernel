@@ -155,34 +155,6 @@ SECTION .text
 	pop rax
 %endmacro
 
-<<<<<<< HEAD
-%macro irqHandlerMaster 1
-	cli
-	pushState
-    mov r8,%1
-	cmp  r8,6
-	je .syscallsJump
-	mov rdi,r8
-	call irqDispatcher
-	jmp .fin
-.syscallsJump:
-	cmp rax,8
-	je .loadtaskHandler
-	cmp rax,99
-	je .exitSyscall
-	mov rcx,rax
-	call syscalls
-	jmp .fin
-
-.loadtaskHandler:
-	loadTask contextLoading ; asumimos que copio bien
-	mov rdi, contextLoading
-	call loadProces
-	popState
-	popContext contextLoading
-	iretq
-=======
->>>>>>> b4bf69562387b47ee4b20c2ab039e4f2ac7f7488
 
 ;-------------------------------------------------------------------------------
 ; exitSyscall - ejecuta el borrado del proceso desde donde se llamo de la tabla
@@ -288,29 +260,15 @@ loadtaskHandler:
 ;	No recibe parametros, pues solo la interrupcion de timerTick usa esta rutina.
 ;-------------------------------------------------------------------------------
 %macro scheduler 1
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
-	cli
->>>>>>> bcecaba97c4c1087896cac14efa99473f6cfde14
-=======
-	call _cli						; desactivo interrupciones
->>>>>>> b4bf69562387b47ee4b20c2ab039e4f2ac7f7488
+	       						; desactivo interrupciones
 	pushContext contextHolder		; pusheo el contexto actual al contextHolder
 	mov rdi, contextHolder			; pusheo como primer argumento el puntero al contexto actual
 	mov rsi, contextOwner			; pusheo como segundo parametro el puntero 
 	call switchContext				; llamo a la funcion de C que me va a guardar el contexto y copiar el siguiente
 	endHardwareInterrupt			; termino la interrupcion de hardware
 	popContext contextHolder		; copio el context holder a mis registros
-<<<<<<< HEAD
-<<<<<<< HEAD
+
 	iret
-%endmacro
-=======
-=======
-	call _sti						; desactivo las interrupciones (ojo que tiene que ir abajo sino)
->>>>>>> b4bf69562387b47ee4b20c2ab039e4f2ac7f7488
-	iretq
 %endmacro
 
 
@@ -322,13 +280,12 @@ loadtaskHandler:
 ;	interrupcion.
 ;--------------------------------------------------------
 %macro teclado 1
-	cli
+	call _cli
 	call int_21
-	sti
+	call _sti
 	endHardwareInterrupt
 	iretq
 %endmacro
->>>>>>> bcecaba97c4c1087896cac14efa99473f6cfde14
 
 
 
@@ -395,8 +352,9 @@ picSlaveMask:
     out	0A1h,al
     pop     rbp
     retn
-
-
+%macro nothing 1
+	iret
+%endmacro
 ;--------------------------------------------------------------------
 ; FUNCIONES GLOBALES
 ;--------------------------------------------------------------------
@@ -410,7 +368,7 @@ _irq00Handler:
 ; Keyboard
 ; -----------------------------------------------------
 _irq01Handler:
-	teclado 1
+	teclado 0
 
 ; -----------------------------------------------------
 ; Syscalls
