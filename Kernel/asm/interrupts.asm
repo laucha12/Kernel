@@ -128,9 +128,11 @@ SECTION .text
 
 	;popState
 
-	mov rax, [rsp]					; Paso a RAX la copia del RIP donde ocurrio la excepcion
-	inc rax							; Incremento el RIP en uno, para que continue con la ejecuccion del programa
-	mov [rsp], rax					; Actualizo el RIP en el stack (Donde se saltara)
+
+	; !! Esto esta mal, hay que sentarse a ver como implementamos la vuelta al proceso/shell
+	;mov rax, [rsp]					; Paso a RAX la copia del RIP donde ocurrio la excepcion
+	;inc rax							; Incremento el RIP en uno, para que continue con la ejecuccion del programa
+	;mov [rsp], rax					; Actualizo el RIP en el stack (Donde se saltara)
 	
 	iretq
 

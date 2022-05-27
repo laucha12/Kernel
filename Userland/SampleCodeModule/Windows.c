@@ -33,7 +33,7 @@ void listen(char * command, Window window){
             if(count != 0){
                 deleteChar(window);
                 count--;}
-        } else if(c != 0){ // En caso contrario, se agrega la letra al comando y se la imprime en pantalla
+        } else if(c != 0){ // En caso contrario, si leimos algo del buffer, se agrega la letra al comando y se la imprime en pantalla
             command[count++] = c;
             putc_(c, window);
         }
