@@ -122,6 +122,7 @@ SECTION .text
 %endmacro
 
 %macro irqHandlerMaster 1
+	cli
 	pushState
     mov r8,%1
 	cmp  r8,6
@@ -165,9 +166,12 @@ SECTION .text
 	mov al, 20h
 	out 20h, al
 	popState
+	sti
 	iretq
 	
 %endmacro
+
+
 
 %macro endHardwareInterrupt 0
 	mov al, 20h
@@ -185,17 +189,21 @@ SECTION .text
 %endmacro
 
 %macro scheduler 1
+	cli
 	pushContext contextHolder		; pusheo el contexto actual al contextHolder
 	mov rdi, contextHolder			; pusheo como primer argumento el puntero al contexto actual
 	mov rsi, contextOwner			; pusheo como segundo parametro el puntero 
 	call switchContext				; llamo a la funcion de C que me va a guardar el contexto y copiar el siguiente
 	endHardwareInterrupt			; termino la interrupcion de hardware
+	sti
 	popContext contextHolder		; copio el context holder a mis registros
 	iretq
 %endmacro
 
 %macro teclado 1
+	cli
 	call int_21
+	sti
 	endHardwareInterrupt
 	iretq
 %endmacro
