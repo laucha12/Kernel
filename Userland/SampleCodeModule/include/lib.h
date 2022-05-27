@@ -93,7 +93,7 @@ char getChar(Window window);
  * Recibe una ventana donde leera el buffer de teclado, y en el caso de no 
  * haber nada, lo esperara.
  */
-char getKey(Window window);
+void getKey(Window window, char * buffer);
 
 /*
  * Retorna un string con la hora

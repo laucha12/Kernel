@@ -20,13 +20,18 @@ void listen(char * command, Window window){
 
     // Contador de caracteres ingresados por el usuario
     int count = 0;
+    
     // Caracter ingresado por vez
     char c;
+    
+    getKey(window, &c);
+
     // Se imprime la leyenda que indica el usuario y el dispositivo
     puts_(SHELL_LEGEND, window);
+
     //Por cada letra, la guardo en el string command y valido que no sea enter, si no, termine con mi comando
     
-    while((c = getKey(window)) != '\n' && count <  MAX_COMMAND_SIZE){
+    while(c != '\n' && count <  MAX_COMMAND_SIZE){
         // Si es backspace, borramos la letra
         if(c == '\b'){
             if(count != 0){
@@ -36,6 +41,8 @@ void listen(char * command, Window window){
             command[count++] = c;
             putc_(c, window);
         }
+        
+        getKey(window, &c);
     }
     command[count++] = 0;
     while (1)
