@@ -3,6 +3,8 @@ GLOBAL _cli
 GLOBAL _sti
 GLOBAL _hlt
 
+GLOBAL initialiseContextSchedluer
+
 GLOBAL picMasterMask
 GLOBAL picSlaveMask
 GLOBAL movCero
@@ -25,8 +27,14 @@ EXTERN syscalls
 EXTERN loadProces
 EXTERN exitProces
 EXTERN switchContext
+EXTERN initialiseContextSchedluerEngine
 
 SECTION .text
+
+initialiseContextSchedluer:
+	mov byte [contextOwner], 0
+	call initialiseContextSchedluerEngine
+	ret
 
 ;-------------------------------------------------------------------------------
 ; Almaceno el contexto del proceso actual (definido como todos los registros 
@@ -288,11 +296,11 @@ loadtaskHandler:
 %macro timerTickHandler 1
 	call _cli						; desactivo interrupciones
 	pushContext contextHolder		; pusheo el contexto actual al contextHolder
-
 	mov rdi, contextHolder			; pusheo como primer argumento el puntero al contexto actual
 	mov rsi, contextOwner			; pusheo como segundo parametro el puntero 
 	call switchContext				; llamo a la funcion de C que me va a guardar el contexto y copiar el siguiente
-	endHardwareInterrupt			; termino la interrupcion de hardware
+	mov al, 20h
+	out 20h, al
 	popContext contextHolder		; copio el context holder a mis registros
 	call _sti						; desactivo las interrupciones (ojo que tiene que ir abajo sino)
 	iretq
@@ -310,11 +318,16 @@ loadtaskHandler:
 	cli
 	call int_21
 	sti
-	endHardwareInterrupt
+	mov al, 20h
+	out 20h, al
 	iretq
 %endmacro
 
-
+%macro nothing 1
+	mov al, 20h
+	out 20h, al
+	iretq
+%endmacro
 
 ;--------------------------------------------------------
 ; Esta funcion seteo en 0 el flag de responder a interrupciones
@@ -390,6 +403,7 @@ picSlaveMask:
 ; -----------------------------------------------------
 _irq00Handler:
 	timerTickHandler 0
+
 ; -----------------------------------------------------
 ; Keyboard
 ; -----------------------------------------------------
@@ -401,12 +415,6 @@ _irq01Handler:
 ; -----------------------------------------------------
 _irq06Handler:
 	irqHandlerMaster 6
-
-; -----------------------------------------------------
-; Zero Division Exception
-; -----------------------------------------------------
-_exception0Handler:
-	exceptionHandler 0
 
 ;--------------------------------------------------------------------
 ;Cascade pic never called
@@ -431,12 +439,6 @@ _irq04Handler:
 ;-----------------------------------------------------
 _irq05Handler:
 	irqHandlerMaster 5
-
-;-----------------------------------------------------
-;	Syscalls
-;-----------------------------------------------------
-_irq06Handler:
-	irqHandlerMaster 6
 
 ;-----------------------------------------------------
 ;	Zero Division Exception
