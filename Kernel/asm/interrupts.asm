@@ -27,6 +27,10 @@ EXTERN exitProces
 EXTERN switchContext
 SECTION .text
 
+;--------------------------------------------------------
+;	Pushea todos los registros al stack. 
+;	Preservar registros
+;--------------------------------------------------------
 %macro pushState 0
 	push rax
 	push rbx
@@ -45,6 +49,10 @@ SECTION .text
 	push r15
 %endmacro
 
+;--------------------------------------------------------
+;	Popea todos los registros del stack. 
+;	Restaurar registros.
+;--------------------------------------------------------
 %macro popState 0
 	pop r15
 	pop r14
@@ -63,6 +71,10 @@ SECTION .text
 	pop rax
 %endmacro
 
+;--------------------------------------------------------
+;	Mueve todos los registros a un arreglo que se recibe
+;	como parametro de la macro.
+;--------------------------------------------------------
 %macro pushContext 1
 	mov [%1], rax
 	mov [%1+8], rbx
@@ -87,6 +99,11 @@ SECTION .text
 	mov [%1+136], rax	        ; lo guardo
 %endmacro
 
+
+;--------------------------------------------------------
+;	Restaura todos los registros de un arreglo que se recibe
+;	como parametro de la macro.
+;--------------------------------------------------------
 %macro popContext 1
 	mov rax, [%1+56]
 	mov [rsp+24],rax
@@ -114,7 +131,6 @@ SECTION .text
 ;-------------------------------------------------------------------------------
 ;
 ;-------------------------------------------------------------------------------
-
 %macro loadTask 1
 	
 	; ---- REGISTROS PUSHEADOS 			<= rsp
@@ -137,6 +153,11 @@ SECTION .text
 ; -------------------------------------------------------
 
 
+;-------------------------------------------------------------------------------
+;	Esta macro sera el codigo que ira en la tabla IDT. Se distinguen mediante
+;	el parametro de la macro que equivale a un codigo que identifica el tipo
+;	de interrupcion.
+;-------------------------------------------------------------------------------
 %macro irqHandlerMaster 1
 	call _cli					; desactivamos las interrupciones
 	pushState					; pusheamos todos los registros para preservarlos
@@ -202,11 +223,10 @@ SECTION .text
 	out 20h, al
 %endmacro
 
-;--------------------------------------------------------
-;
-;--------------------------------------------------------
-; Argumentos: -
-;--------------------------------------------------------
+;-------------------------------------------------------------------------------
+;	Esta macro sera el codigo que ira en la IDT para excepciones (0h - 20h).
+;	Se distingue el tipo de excepcion mediante el parametro de la macro.
+;-------------------------------------------------------------------------------
 %macro exceptionHandler 1
 	pushState							; preservo los registros
 	mov rdi, %1 					
@@ -215,11 +235,10 @@ SECTION .text
 	iretq
 %endmacro
 
-;--------------------------------------------------------
-; 
-;--------------------------------------------------------
-; Argumentos: -
-;--------------------------------------------------------
+;-------------------------------------------------------------------------------
+;	Esta macro sera el codigo que ira a la IDT para la interrupcion de timerTick.
+;	No recibe parametros, pues solo la interrupcion de timerTick usa esta rutina.
+;-------------------------------------------------------------------------------
 %macro scheduler 1
 	call _cli						; desactivo interrupciones
 	pushContext contextHolder		; pusheo el contexto actual al contextHolder
@@ -234,10 +253,11 @@ SECTION .text
 
 
 ;--------------------------------------------------------
-; Esta funcion seteo en 0 el flag de responder a interrupciones
-; maskeables y luego hace un hlt -> hace un sleep del micro
+;	Macro que sera el codigo para la interrupcion de 
+;	teclado.
 ;--------------------------------------------------------
-; Argumentos: -
+;	Argumentos: No recibe, pues solo se utiliza para una 
+;	interrupcion.
 ;--------------------------------------------------------
 %macro teclado 1
 	cli
@@ -318,50 +338,79 @@ picSlaveMask:
 ; FUNCIONES GLOBALES
 ;--------------------------------------------------------------------
 
+;-----------------------------------------------------
 ;8254 Timer (Timer Tick)
+;-----------------------------------------------------
 _irq00Handler:
 	scheduler 0
 
+;-----------------------------------------------------
 ;Keyboard
+;-----------------------------------------------------
 _irq01Handler:
 	teclado 1
 
+;-----------------------------------------------------
 ;Cascade pic never called
+;-----------------------------------------------------
 _irq02Handler:
 	irqHandlerMaster 2
 
+;-----------------------------------------------------
 ;Serial Port 2 and 4
+;-----------------------------------------------------
 _irq03Handler:
 	irqHandlerMaster 3
 
-;Serial Port 1 and 3
+;-----------------------------------------------------
+;Serial Port 1 and 3	
+;-----------------------------------------------------
 _irq04Handler:
 	irqHandlerMaster 4
 
-;USB
+;-----------------------------------------------------
+;	USB
+;-----------------------------------------------------
 _irq05Handler:
 	irqHandlerMaster 5
 
-; -----------------------------------------------------
-;
-; -----------------------------------------------------
+;-----------------------------------------------------
+;	Syscalls
+;-----------------------------------------------------
 _irq06Handler:
 	irqHandlerMaster 6
 
-;Zero Division Exception
+;-----------------------------------------------------
+;	Zero Division Exception
+;-----------------------------------------------------
 _exception0Handler:
 	exceptionHandler 0
 
+; RUTINA DUPLICADA CON _hlt !!
 haltcpu:
 	cli
 	hlt
 	ret
 
 
-
+;-----------------------------------------------------
+;	BSS
+;-----------------------------------------------------
 SECTION .bss
 	aux resq 1
-	contextHolder resq 17			; Seccion donde se guarda el contexto para la comunicacion con el back
-	contextOwner resq 1		; guardo el duenio del contexto
-	contextLoading resq 17			; Seccion donde se guarda el contexto para la comunicacion con el back
+	;-----------------------------------------------------
+	;	Seccion donde se guarda el contexto para la comunicacion con el back
+	;-----------------------------------------------------
+	contextHolder resq 17			
+	;----------------------------------------------------
+	;	Guardo el duenio del contexto
+	;-----------------------------------------------------
+	contextOwner resq 1		
+	;-----------------------------------------------------
+	;	Seccion donde se guarda el contexto para la comunicacion con el back
+	;-----------------------------------------------------
+	contextLoading resq 17			
+	;-----------------------------------------------------
+	;	*DEBUGGING*
+	;-----------------------------------------------------
 	string db "HOLLAAA",0
