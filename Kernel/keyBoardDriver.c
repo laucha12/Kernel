@@ -12,7 +12,6 @@ static char keyMapRow = 0;
 
 void saveBuffer(char code)
 {
-	ncPrintFD0("ACA");
 	if (code < 0x80 && code > 0)
 	{ // Key pressed
 		if (code == LEFT_SHIFT || code == RIGHT_SHIFT)

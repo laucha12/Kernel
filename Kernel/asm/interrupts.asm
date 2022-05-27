@@ -138,13 +138,9 @@ SECTION .text
 .loadtaskHandler:
 	loadTask contextLoading ; asumimos que copio bien
 	mov rdi, contextLoading
-	call _cli
 	call loadProces
-	mov al, 20h
-	out 20h, al
 	popState
 	popContext contextLoading
-	call _sti
 	iretq
 
 ; Maneja la interrupcion al sistema operativo de exit
@@ -180,7 +176,6 @@ SECTION .text
 %endmacro
 
 %macro scheduler 1
-	call _cli
 	pushContext contextHolder		; pusheo el contexto actual al contextHolder
 	mov rdi, contextHolder			; pusheo como primer argumento el puntero al contexto actual
 	mov rsi, contextOwner			; pusheo como segundo parametro el puntero 
@@ -188,12 +183,7 @@ SECTION .text
 	mov al, 20h
 	out 20h, al
 	popContext contextHolder		; copio el context holder a mis registros
-	call _sti
 	iret
-%endmacro
-%macro teclado 1
-	call int_21
-	iretq
 %endmacro
 
 ; esta funcion lo que hace es no hacer nada que reciba una interrupt

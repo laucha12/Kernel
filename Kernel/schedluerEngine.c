@@ -3,10 +3,13 @@
 #include <naiveConsole.h>
 #include <interrupts.h>
 void switchContext(long * contextHolder, long * contextOwner) {
-    pushContext(contextHolder,contextOwner);
-    *contextOwner = nextProcess(contextOwner);
-    popContext(contextHolder,contextOwner);
-    return;
+   
+        pushContext(contextHolder,contextOwner);
+        *contextOwner = nextProcess(contextOwner);
+        popContext(contextHolder,contextOwner);
+        return; 
+    
+  
 }
 
 long  nextProcess(long * contextOwner ) {
@@ -40,6 +43,5 @@ void loadProces(long * contextHolder){
     pushContext(contextHolder, processesRunning);
     procesos[processesRunning].context.registers[RSP] = procesos[processesRunning].stackFrame;
     popContext(contextHolder,0) ;
-    if(processesRunning == SHELL) {
-     } 
+  
 }
