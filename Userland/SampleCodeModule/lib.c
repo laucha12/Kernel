@@ -219,7 +219,9 @@ void deleteChar(Window window){
 
 //!!!!!!!!!!
 void getKey(Window window, char * buffer){
+    //char buffer[1];
     sysRead(window, buffer);
+    //return buffer[0];
 }
 
 

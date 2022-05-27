@@ -208,13 +208,17 @@ SECTION .text
 	iretq
 %endmacro
 
-; esta funcion lo que hace es no hacer nada que reciba una interrupt
-; esto viene bien para el sleep
+; ---------------------------------------------------------
+;
+; ---------------------------------------------------------
 _hlt:
-	sti
+	cli
 	hlt
 	ret
 
+; ---------------------------------------------------------
+;
+; ---------------------------------------------------------
 _cli:
 	cli
 	ret
@@ -223,9 +227,15 @@ _cli:
 _sti:
 	sti
 	ret
+
 movCero:
 	mov dword [contextOwner],0
 	ret
+
+;-----------------------------------------------
+; Recibe un numero de 8 bytes que lo pasa a los registros
+; de in/out donde maskea las entradas, 0 LAS DESHABILITA
+;-----------------------------------------------
 picMasterMask:
 	push rbp
     mov rbp, rsp
@@ -234,6 +244,10 @@ picMasterMask:
     pop rbp
     retn
 
+;-----------------------------------------------
+; Recibe un numero de 8 bytes que lo pasa a los registros
+; de in/out donde maskea las entradas, 0 LAS DESHABILITA
+;-----------------------------------------------
 picSlaveMask:
 	push    rbp
     mov     rbp, rsp
