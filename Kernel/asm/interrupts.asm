@@ -174,7 +174,7 @@ exitSyscall:
 	iretq								; desarmo el stack frame de la interrupcion y hago el ret al proximo proceso
 
 ;-------------------------------------------------------------------------------
-; exitSyscall - ejecuta el borrado del proceso desde donde se llamo de la tabla
+; loadtaskHandler - ejecuta el borrado del proceso desde donde se llamo de la tabla
 ; de procesos para el context switching
 ;-------------------------------------------------------------------------------
 ; @argumentos:  
@@ -188,10 +188,10 @@ loadtaskHandler:
 	call _sti
 	iretq
 
-; -------------------------------------------------------
+;-------------------------------------------------------------------------------
 ; Recibe un numero que determina el numero de interrupcion por hardware y mapea
 ; a la funcion que maneja esa interrupcion
-; -------------------------------------------------------
+;-------------------------------------------------------------------------------
 %macro irqHandlerMaster 1
 	call _cli					; desactivamos las interrupciones
 	pushState					; pusheamos todos los registros para preservarlos
@@ -200,7 +200,8 @@ loadtaskHandler:
 	je .syscallsJump			; 
 	mov rdi,r8
 	call irqDispatcher
-	jmp .fin
+	endHardwareInterrupt
+
 .syscallsJump:
 	cmp rax,8					; ahora comienzo el switch de las syscalls, 
 	je loadtaskHandler			; si es 8 es la de loadTask
@@ -208,26 +209,37 @@ loadtaskHandler:
 	je exitSyscall
 	mov rcx,rax					; si es otro entonces voy al switch de C
 	call syscalls						
-	popState
-	call _sti
-	iretq 						
-
-.fin:
- ; signal pic EOI (End of Interrupt) ES NECESARIO CUANDO HAGO INTERRUPCIONES POR SOFTWARE
-	mov al, 20h
-	out 20h, al
-	popState
-	sti
-	iretq
+	endSoftwareInterrupt						
 	
 %endmacro
 
-;--------------------------------------------------------
-; 	Signal pic EOI (End Of Interrupt)
-;--------------------------------------------------------
+;-------------------------------------------------------------------------------
+;  endInterrupt - recupero los registros pusheados al stack, 
+; habilita interrupciones y desarma el stack de interrupcion 
+;-------------------------------------------------------------------------------
+%macro endInterrupt 0
+	popState
+	sti
+	iretq
+%endmacro
+
+;-------------------------------------------------------------------------------
+;  endHardwareInterrupt - comunico al PIC termino la interrupcion de hardware a
+;  traves el I/0  los registros pusheados al stack, 
+;  habilita interrupciones y desarma el stack de interrupcion 
+;-------------------------------------------------------------------------------
 %macro endHardwareInterrupt 0
 	mov al, 20h
 	out 20h, al
+	endInterrupt
+%endmacro
+
+;-------------------------------------------------------------------------------
+;  endSoftwareInterrupt - recupero los registros pusheados al stack, 
+; habilita interrupciones y desarma el stack de interrupcion 
+;-------------------------------------------------------------------------------
+%macro endSoftwareInterrupt 0
+	endInterrupt
 %endmacro
 
 ;--------------------------------------------------------
