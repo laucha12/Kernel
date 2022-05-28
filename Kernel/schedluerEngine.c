@@ -8,8 +8,8 @@ void initialiseContextSchedluerEngine() {
 }
 void switchContext(long * contextHolder, char * contextOwner) {
     if(processesRunning == 0) return;
-    pushContext(contextHolder, *contextHolder);
-    *contextOwner =(char)nextProcess(contextOwner);
+    pushContext(contextHolder, *contextOwner);
+    *contextOwner =nextProcess(contextOwner);
     popContext(contextHolder, *contextOwner);
     return;
 }
@@ -19,7 +19,7 @@ char  nextProcess(char * contextOwner ) {
     //el Round Robin. La clave del while este es que siempre voy a a tener un proceso
     //corriendo, la shell (funciona como nuestro proceso idle)
 
-    long  next =  (*contextOwner + 1) % processesRunning;
+    char  next =  (*contextOwner + 1) % processesRunning;
     while(!procesos[next].flagRunning) next =  ((*contextOwner) + 1) % processesRunning;
     return next;
 }

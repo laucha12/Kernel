@@ -252,7 +252,7 @@ loadtaskHandler:
 ;-------------------------------------------------------------------------------
 %macro endInterrupt 0
 	popState
-	sti
+	call _sti
 	iretq
 %endmacro
 
