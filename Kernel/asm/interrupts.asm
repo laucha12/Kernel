@@ -32,7 +32,7 @@ EXTERN initialiseContextSchedluerEngine
 SECTION .text
 
 initialiseContextSchedluer:
-	mov byte [contextOwner], 0
+	mov byte [contextOwner],0
 	call initialiseContextSchedluerEngine
 	ret
 
@@ -203,7 +203,7 @@ exitSyscall:
 	mov al, 20h							; signal pic EOI
 	out 20h, al							; signal pic EOI
 	popContext contextHolder			; actualizo el contexto actual al del proximo proceso a ejecutar
-	;call _sti
+	call _sti
 	iretq								; desarmo el stack frame de la interrupcion y hago el ret al proximo proceso
 
 ;-------------------------------------------------------------------------------
@@ -287,8 +287,7 @@ loadtaskHandler:
 	popState							; preservo los registros
 	iretq
 %endmacro
-
-;--------------------------------------------------------
+;-------------------------------------------
 ; 
 ;--------------------------------------------------------
 ; Argumentos: -
@@ -302,7 +301,7 @@ loadtaskHandler:
 	mov al, 20h
 	out 20h, al
 	popContext contextHolder		; copio el context holder a mis registros
-	call _sti						; desactivo las interrupciones (ojo que tiene que ir abajo sino)
+	call _sti
 	iretq
 %endmacro
 
@@ -314,6 +313,7 @@ loadtaskHandler:
 ;	Argumentos: No recibe, pues solo se utiliza para una 
 ;	interrupcion.
 ;--------------------------------------------------------
+
 %macro keyBoardHandler 1
 	cli
 	call int_21
@@ -409,7 +409,6 @@ _irq00Handler:
 ; -----------------------------------------------------
 _irq01Handler:
 	keyBoardHandler 1
-
 ; -----------------------------------------------------
 ; Syscalls
 ; -----------------------------------------------------
@@ -465,7 +464,7 @@ SECTION .bss
 	;----------------------------------------------------
 	;	Guardo el duenio del contexto
 	;-----------------------------------------------------
-	contextOwner resq 1		
+	contextOwner db 0		
 	;-----------------------------------------------------
 	;	Seccion donde se guarda el contexto para la comunicacion con el back
 	;-----------------------------------------------------

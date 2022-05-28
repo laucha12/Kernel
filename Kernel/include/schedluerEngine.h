@@ -46,21 +46,21 @@ void initialiseContextSchedluerEngine();
  * proceso que es duenio de ese contexto. Luego sobreescribe en el contextHolder el contexto
  * del proximo proceso, y en el contextOwner copia el identificador del contexto.
  */
-void switchContext(long * contextHolder, long * contextOwner);
+void switchContext(long * contextHolder, char * contextOwner);
 
 /*
     * Funcion la cual va a copiar todos los registros mandados desde assembler
     * a la struct en el array
 */
-static void pushContext(long * contextHolder, long contextOwner);
-static void popContext(long * contextHolder, long contextOwner);
+static void pushContext(long * contextHolder, char contextOwner);
+static void popContext(long * contextHolder, char contextOwner);
 /*
     * Funcion que recibe el numero de duenio del contexto para sacarlo del array
 */
-void exitProces(long * contextHolder,long * contextOwner);
+void exitProces(long * contextHolder,char * contextOwner);
 /*
     * Funcion la cual va a recibir el contexto para iniciar un nuevo proceso
     * obs: si ya hay mas de 2 procesos no se lo agrega
 */
 void loadProces(long * contextHolder);
-long  nextProcess(long * contextOwner ) ;
+char  nextProcess(char * contextOwner ) ;
