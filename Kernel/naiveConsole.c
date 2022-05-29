@@ -183,6 +183,21 @@ void ncClear()
 	currentVideoFD2 = video + 82;
 }
 
+void fdClear(int fd){
+	if(fd == 0){
+		ncClear();
+		return;
+	}
+	
+	int i;
+
+	for (i = 0; i < height * width; i++)
+		video[i * 2] = ' ';
+	currentVideoFD0 = video;
+	currentVideoFD1 = video;
+	currentVideoFD2 = video + 82;
+}
+
 static uint32_t uintToBase(uint64_t value, char *buffer, uint32_t base)
 {
 	char *p = buffer;

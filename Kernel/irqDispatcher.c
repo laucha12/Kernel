@@ -50,6 +50,12 @@ void syscalls(int fd, char *sysBuffer, int count, int num)
 		time_syscall(sysBuffer);
 		break;
 
+	case 121:
+		// Si es la syscall 121 se ira al driver de pantalla para hacer un clear 
+		// del fd que corresponda.
+		fdClear(fd);
+		break;
+
 	case 1:
 		// Si es la syscall de teclado debemos preguntar para que FD se quiero escribir
 		// pues depende eso donde en la pantalla escribimos para cada uno de los casos
