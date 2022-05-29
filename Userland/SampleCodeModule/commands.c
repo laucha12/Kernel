@@ -87,7 +87,7 @@ void printMem(Window window, int argc, char argv[MAX_ARGUMENT_COUNT][MAX_ARGUMEN
     newLine(window);
 
     char buffer[MEM_BUFFER];
-    //readMem(buffer, (int *) atoi_((argv[1])));
+    readMem(buffer, (int *) atoi_((argv[1])));
     
     puts_(buffer, window);
 }

@@ -9,6 +9,7 @@ GLOBAL sysOpen
 GLOBAL sysClose
 GLOBAL sysClearScreen
 GLOBAL sysWriteFormat
+GLOBAL sysReadMem
 
 GLOBAL loadSO
 GLOBAL loadProces
@@ -198,6 +199,26 @@ sysClearScreen:
 
     mov rax, 121      ; Numero de syscall
     ; En rdi ya tengo el parametro fd
+    int 80h         ; "Che Kernel"
+
+    pop rbx         ; Preservar rbx
+
+    mov rsp, rbp    ; Stack frame
+    pop rbp         ; Stack frame
+
+    ret
+
+
+sysReadMem:
+    push rbp        ; Stack frame
+    mov rbp, rsp    ; Stack frame
+
+    push rbx        ; Preservar rbx
+
+    mov rax, 123    ; Nuemro de syscall
+    ; rdi -> 
+    ; rsi -> 
+    ; rdx -> 
     int 80h         ; "Che Kernel"
 
     pop rbx         ; Preservar rbx

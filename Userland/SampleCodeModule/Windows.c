@@ -22,7 +22,7 @@ void listen(char * command, Window window){
     char c = NULL_;
 
     // Se imprime la leyenda que indica el usuario y el dispositivo
-    putsf_(SHELL_LEGEND, LIGHT_CYAN, window);
+    putsf_(SHELL_LEGEND, CYAN, window);
 
     //leo la key
     getKey(window, &c);

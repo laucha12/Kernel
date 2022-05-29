@@ -3,7 +3,7 @@
 #include <naiveConsole.h>
 #include <lib.h>
 #include <timeDriver.h>
- void int_20();
+ void int_20(); 
  void int_21();
 
 void irqDispatcher(uint64_t irq)
@@ -65,6 +65,13 @@ void syscalls(int fd, char *sysBuffer, int count, int num)
 			ncPrintFD1_Format(sysBuffer, count);
 		if (fd == 2)
 			ncPrintFD2_Format(sysBuffer, count);
+		break;
+
+	case 123:
+		// Si es la syscall 123 tenemos que devolver en buffer lo leido en 
+		// n (parametro) posiciones de memoria a partir de una direccion 
+		// recibida como parametro.
+		readMem(sysBuffer, fd, count);
 		break;
 
 	case 1:
