@@ -9,7 +9,8 @@ void initialiseContextSchedluerEngine() {
 void switchContext(long * contextHolder, char * contextOwner) {
     if(processesRunning == 0) return;
     pushContext(contextHolder, *contextOwner);
-    *contextOwner =nextProcess(contextOwner);
+    *contextOwner = nextProcess(contextOwner);
+    ncPrintDec(processesRunning);
     popContext(contextHolder, *contextOwner);
     return;
 }
@@ -48,6 +49,4 @@ void loadProces(long * contextHolder){
     procesos[processesRunning].flagRunning = 1;
     popContext(contextHolder, processesRunning);
     processesRunning += 1;
-    if(processesRunning == SHELL) {
-     } 
 }

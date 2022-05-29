@@ -10,6 +10,8 @@
  *
  * */
 
+void printUnos(Window window, int argc, char argv[MAX_ARGUMENT_COUNT][MAX_ARGUMENT]);
+
 /*
  * Recibe un comando como unico argumento e imprime informacion sobre sus parametros
  * opcionales entre otros, analogo al comando man de linux.

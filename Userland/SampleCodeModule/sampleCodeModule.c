@@ -16,7 +16,7 @@ extern void sysReadTest(char * pointer);
 extern void sysTimeTest(char * pointer);
 extern void sysOpen(int fd);
 extern void sysExit(int fd);
-extern void loadProces(CommandPtr func, Window window, int argc,  char argv[MAX_ARGUMENT_COUNT][MAX_ARGUMENT]);
+extern void loadSO(CommandPtr func, Window window, int argc,  char argv[MAX_ARGUMENT_COUNT][MAX_ARGUMENT]);
 
 int main() {
 	//All the following code may be removed 
@@ -42,7 +42,7 @@ int main() {
 	} */
 
 	char argv[MAX_ARGUMENT_COUNT][MAX_ARGUMENT];
-	loadProces(windowsEngineInitialize, MAIN_WINDOW, 0, argv);
+	loadSO(windowsEngineInitialize, MAIN_WINDOW, 0, argv);
 
 
 	//Test if BSS is properly set up

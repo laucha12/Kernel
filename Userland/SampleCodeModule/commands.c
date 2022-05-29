@@ -9,6 +9,13 @@
 #define MEM_BUFFER 120
 
 
+void printUnos(Window window, int argc, char argv[MAX_ARGUMENT_COUNT][MAX_ARGUMENT]) {
+    int i = 0;
+    while(1) {
+        if(i % 7) puts_("1 \n", LEFT_WINDOW);
+        i++;
+    }
+}
 
 void man(Window window, int argc, char argv[MAX_ARGUMENT_COUNT][MAX_ARGUMENT]) {
     if(argc != 2) {
@@ -32,6 +39,7 @@ void help(Window window, int argc, char argv[MAX_ARGUMENT_COUNT][MAX_ARGUMENT]) 
 
     puts_("La lista de los comandos disponibles es: \n", window);
     commandsEngineDisplayCommands(window);
+
 }
 
 void diaYHora(Window window, int argc, char argv[MAX_ARGUMENT_COUNT][MAX_ARGUMENT]) {

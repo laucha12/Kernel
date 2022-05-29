@@ -218,10 +218,16 @@ loadtaskHandler:
 	mov rdi, contextLoading
 	call loadProces
 	popState
-	popContext contextLoading
 	call _sti
 	iretq
-
+loadSO:
+	loadTask contextLoading 	; rsp+16 estan los 
+	mov rdi, contextLoading
+	call loadProces
+	popState
+	call _sti
+	popContext contextLoading
+	iretq
 ;-------------------------------------------------------------------------------
 ; Recibe un numero que determina el numero de interrupcion por hardware y mapea
 ; a la funcion que maneja esa interrupcion
@@ -238,7 +244,9 @@ loadtaskHandler:
 
 .syscallsJump:
 	cmp rax,8					; ahora comienzo el switch de las syscalls, 
-	je loadtaskHandler			; si es 8 es la de loadTask
+	je loadSO					; si es 8 es la de loadSO
+	cmp rax,9
+	je loadtaskHandler
 	cmp rax,99					; si es 99 es la de exit
 	je exitSyscall
 	mov rcx,rax					; si es otro entonces voy al switch de C

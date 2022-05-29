@@ -7,7 +7,7 @@ GLOBAL generateDivByZero
 GLOBAL generateInvalidOpCode
 GLOBAL sysOpen
 GLOBAL sysClose
-
+GLOBAL loadSO
 GLOBAL loadProces
 GLOBAL exit
 section .text
@@ -90,6 +90,15 @@ sysTime:
 ;   argumentos: puntero a la funcion,fd, int argc, args
 ;-------------------------------------------
 loadProces:
+    push rbp
+    mov rbp,rsp
+
+    mov rax,9
+    int 80h
+
+    leave
+    ret
+loadSO:
     push rbp
     mov rbp,rsp
 
