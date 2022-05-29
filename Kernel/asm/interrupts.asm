@@ -287,6 +287,7 @@ loadtaskHandler:
 	popState							; preservo los registros
 	iretq
 %endmacro
+
 ;-------------------------------------------
 ; 
 ;--------------------------------------------------------
@@ -298,10 +299,10 @@ loadtaskHandler:
 	mov rdi, contextHolder			; pusheo como primer argumento el puntero al contexto actual
 	mov rsi, contextOwner			; pusheo como segundo parametro el puntero 
 	call switchContext				; llamo a la funcion de C que me va a guardar el contexto y copiar el siguiente
-	mov al, 20h
-	out 20h, al
+	mov al, 20h						; Indicamos al PIC que termino la interrupcion
+	out 20h, al						; Indicamos al PIC que termino la interrupcion
 	popContext contextHolder		; copio el context holder a mis registros
-	call _sti
+	call _sti						; activo interrupciones
 	iretq
 %endmacro
 
@@ -313,7 +314,6 @@ loadtaskHandler:
 ;	Argumentos: No recibe, pues solo se utiliza para una 
 ;	interrupcion.
 ;--------------------------------------------------------
-
 %macro keyBoardHandler 1
 	cli
 	call int_21
@@ -323,6 +323,9 @@ loadtaskHandler:
 	iretq
 %endmacro
 
+;--------------------------------------------------------
+;	DEBUGGING
+;--------------------------------------------------------
 %macro nothing 1
 	mov al, 20h
 	out 20h, al
@@ -445,11 +448,6 @@ _irq05Handler:
 _exception0Handler:
 	exceptionHandler 0
 
-; RUTINA DUPLICADA CON _hlt !!
-haltcpu:
-	cli
-	hlt
-	ret
 
 
 ;-----------------------------------------------------
