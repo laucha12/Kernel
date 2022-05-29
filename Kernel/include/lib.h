@@ -10,4 +10,6 @@ char *cpuVendor(char *result);
 
 void itoa(char* string, int num, int digits);
 
+extern void readMem(char * buffer, long posicionMem, int cant);
+
 #endif

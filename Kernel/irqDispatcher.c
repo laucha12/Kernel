@@ -3,7 +3,7 @@
 #include <naiveConsole.h>
 #include <lib.h>
 #include <timeDriver.h>
- void int_20();
+ void int_20(); 
  void int_21();
 
 void irqDispatcher(uint64_t irq)
@@ -56,24 +56,34 @@ void syscalls(int fd, char *sysBuffer, int count, int num)
 		fdClear(fd);
 		break;
 
+	case 122:
+		// Si es la syscall 122 se ira al driver de pantalla para un print 
+		// con FORMATO del fd que corresponda.
+		if (fd == 0)
+			ncPrintFD0_Format(sysBuffer, count); 
+		if (fd == 1)
+			ncPrintFD1_Format(sysBuffer, count);
+		if (fd == 2)
+			ncPrintFD2_Format(sysBuffer, count);
+		break;
+
+	case 123:
+		// Si es la syscall 123 tenemos que devolver en buffer lo leido en 
+		// n (parametro) posiciones de memoria a partir de una direccion 
+		// recibida como parametro.
+		readMem(sysBuffer, fd, count);
+		break;
+
 	case 1:
 		// Si es la syscall de teclado debemos preguntar para que FD se quiero escribir
 		// pues depende eso donde en la pantalla escribimos para cada uno de los casos
 		// llamamos al driver de pantalla para que escriba en dicho lugar
 		if (fd == 0)
-		{
-			
 			ncPrintFD0(sysBuffer); 
-		}
 		if (fd == 1)
-		{
 			ncPrintFD1(sysBuffer);
-		}
 		if (fd == 2)
-		{
 			ncPrintFD2(sysBuffer);
-		}
-
 		break;
 	case 0:
 		//ncPrintFD0("copio un char del buffer");

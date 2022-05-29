@@ -25,7 +25,7 @@ EXTERN ncPrintFD0
 EXTERN irqDispatcher
 EXTERN exceptionDispatcher
 EXTERN syscalls
-EXTERN loadProces
+EXTERN loadFirstContext
 EXTERN exitProces
 EXTERN switchContext
 EXTERN initialiseContextSchedluerEngine
@@ -34,6 +34,7 @@ SECTION .text
 
 initialiseContextSchedluer:
 	mov byte [contextOwner],0
+	mov byte [aux],0
 	call initialiseContextSchedluerEngine
 	ret
 
@@ -79,13 +80,12 @@ initialiseContextSchedluer:
 	;  Stack Segment (SS - )
 	; -------------------------------------
 
-	mov rax, [rsp+18]			; almaceno el valor del RSP de la interrupcion en rax
-	mov [%1+56], rax	        ; tomo del interrupt frame el valor del RIP
-	
+	mov rax, [rsp+24]			; almaceno el valor del RSP de la interrupcion en rax
+	mov [%1+56], rax	        ; guardamos el valor del RSP en la tabla de contexto 
 	mov rax, [rsp]				; guardamos la posicion del RIP
 
 	mov [%1+128], rax	        ; lo guardamos en la posicion de memoria
-	mov rax, [rsp+10]			; tomo del interrupt frame el valor de los flags
+	mov rax, [rsp+16]			; tomo del interrupt frame el valor de los flags
 	mov [%1+136], rax	        ; lo guardo
 %endmacro
 
@@ -100,11 +100,11 @@ initialiseContextSchedluer:
 	
 	;popeo los registros especiales
 	mov rax, [%1+56]					; almaceno en rax el valor que almacene de RSP de la interrupcion
-	mov [rsp+18],rax					; piso la posicion del 
+	mov [rsp+24],rax					; piso la posicion del 
 	mov rax, [%1+128]
 	mov [rsp],rax
 	mov rax, [%1+136]
-	mov [rsp+10],rax
+	mov [rsp+16],rax
 
 	;popeo los registros generales
 	mov  rax,[%1]
@@ -127,6 +127,7 @@ initialiseContextSchedluer:
 ;-------------------------------------------------------------------------------
 ; Recibe una posicion de memoria desde la cual va a comenzar el stack frame de mi 
 ; funcion
+; loadProcess(cmd, window, 0, args);
 ;-------------------------------------------------------------------------------
 %macro loadTask 1
 	
@@ -136,15 +137,20 @@ initialiseContextSchedluer:
 	; ret
 	; donde REGISTROS PUSHEADOS son 15 registros de 8 bytes, por lo tanto ocupan 120 bytes en mi stack
 	; Por lo tanto rsp + 120 apunta al principio de mi stack de interrupcion
-	; por ultimo, rsp + 120 + 10 apunta al registro de flags
-
+	; por ultimo, rsp + 120 + 16 apunta al registro de flags
+	
 	mov [%1+40], rsi		; alamceno el int fd como primer parametro de mi funcion a loadear
 	mov [%1+32], rdx		; alamceno el int argc como primer parametro de mi funcion a loadear
 	mov [%1+24], rcx		; alamceno el char ** argv como primer parametro de mi funcion a loadear
-	mov [%1+56], rax		; seteo donde va a arrancar el stack de mi funcion A CHEQUEAR
-	mov [%1+128], rdi	 	; alamceno el puntero al comienzo de mi funcion.
-	mov r15, [rsp + 130]	; almaceno el registro de flags
+	
+	mov [%1+128], rdi	 	; alamceno el puntero al comienzo de mi funcion en la posicion donde pusheo el RIP
+
+	mov r15, [rsp + 136]	; almaceno el registro de flags
 	mov [%1+136], r15 		; lo copio a la posicion donde despues pusheo mi context
+	;mov r10,[rsp+24]
+	
+	;sub r10,1000
+	;mov [%1+56],r10
 %endmacro
 
 ;-------------------------------------------------------------------------------
@@ -152,6 +158,7 @@ initialiseContextSchedluer:
 ; para preservarlos.
 ;-------------------------------------------------------------------------------
 %macro pushState 0
+	;rsp
 	push rax
 	push rbx
 	push rcx
@@ -189,6 +196,24 @@ initialiseContextSchedluer:
 	pop rbx
 	pop rax
 %endmacro
+%macro popFirstTask 1
+	mov rdi,[%1+40]		; alamceno el int fd como primer parametro de mi funcion a loadear
+	mov rsi,[%1+32]		; alamceno el int argc como primer parametro de mi funcion a loadear
+	mov rdx,[%1+24] 		; alamceno el char ** argv como primer parametro de mi funcion a loadear
+	
+	
+	mov r10,[%1+128]
+	mov [rsp],r10
+	mov r10,[%1+56]
+	mov [rsp+24],r10
+%endmacro
+
+;-------------------------------------------------------------------------------
+; printMem - copia al buffer recibido por parametro la cantidad de posiciones de 
+; memoria desde 
+;-------------------------------------------------------------------------------
+; @argumentos:  
+;-------------------------------------------------------------------------------
 
 
 ;-------------------------------------------------------------------------------
@@ -198,6 +223,7 @@ initialiseContextSchedluer:
 ; @argumentos:  
 ;-------------------------------------------------------------------------------
 exitSyscall:
+	popState
 	mov rdi,contextHolder				; paso el primer parametro para copiar el siguiente contexto
 										; al exitear el proceso actual
 	mov rsi,contextOwner			    ; paso el segundo parametro para actualizar duenio del contexto
@@ -216,19 +242,34 @@ exitSyscall:
 ; @argumentos:  
 ;-------------------------------------------------------------------------
 loadtaskHandler:
-	loadTask contextLoading 	; rsp+16 estan los 
+	
+	loadTask contextLoading 	; rsp+16 estan los
+	mov  r10,[aux]
+	inc r10
+	mov  [aux],r10
 	mov rdi, contextLoading
-	call loadProces
+	call loadFirstContext
 	popState
 	call _sti
 	iretq
+
+;-------------------------------------------------------------------------------
+; LoadSO - cargo la primer task a mi tabla de procesos
+;-------------------------------------------------------------------------------
+; @argumentos:  
+;-------------------------------------------------------------------------
 loadSO:
-	loadTask contextLoading 	; rsp+16 estan los 
-	mov rdi, contextLoading
-	call loadProces
 	popState
+	mov  r10,[aux]
+	inc r10
+	mov  [aux],r10
+	loadTask contextLoading 	; loadeo la task recibida como primer parametro
+	mov rdi, contextLoading		; copio el puntero a la posicion donde tengo el contexto de 
+								; primer contexto
+	call loadFirstContext
 	call _sti
-	popContext contextLoading
+	popFirstTask contextLoading
+	;popContext contextLoading
 	iretq
 ;-------------------------------------------------------------------------------
 ; Recibe un numero que determina el numero de interrupcion por hardware y mapea
@@ -245,7 +286,7 @@ loadSO:
 	endHardwareInterrupt
 
 .syscallsJump:
-	cmp rax,8					; ahora comienzo el switch de las syscalls, 
+	cmp rax,8					; ahora comienzo el switch de las syscalls,
 	je loadSO					; si es 8 es la de loadSO
 	cmp rax,9
 	je loadtaskHandler
@@ -352,11 +393,14 @@ copyRegs:
 ;	iretq
 ;%endmacro
 
-;-------------------------------------------
-; 
-;--------------------------------------------------------
+;--------------------------------------------------------------------
+; timerTickHandler - Responde a la interrupcion de timer tick a traves,
+; primero pushea el contexto actual, luego llama a una funcion en C
+; que maneja el context switching desde un contextHolder y contextOwner
+; y por ultimo 
+;--------------------------------------------------------------------
 ; Argumentos: -
-;--------------------------------------------------------
+;--------------------------------------------------------------------
 %macro timerTickHandler 1
 	call _cli						; desactivo interrupciones
 	pushContext contextHolder		; pusheo el contexto actual al contextHolder
@@ -365,8 +409,8 @@ copyRegs:
 	call switchContext				; llamo a la funcion de C que me va a guardar el contexto y copiar el siguiente
 	mov al, 20h						; Indicamos al PIC que termino la interrupcion
 	out 20h, al						; Indicamos al PIC que termino la interrupcion
-	popContext contextHolder		; copio el context holder a mis registros
 	call _sti						; activo interrupciones
+	popContext contextHolder		; copio el context holder a mis registros
 	iretq
 
 %endmacro
@@ -526,7 +570,7 @@ SECTION .bss
 	;-----------------------------------------------------
 	;	Seccion donde se guarda el contexto para la comunicacion con el back
 	;-----------------------------------------------------
-	contextHolder resq 17			
+	contextHolder resq 18			
 	;----------------------------------------------------
 	;	Guardo el duenio del contexto
 	;-----------------------------------------------------
@@ -535,10 +579,6 @@ SECTION .bss
 	;	Seccion donde se guarda el contexto para la comunicacion con el back
 	;-----------------------------------------------------
 	contextLoading resq 17			
-	;-----------------------------------------------------
-	;	*DEBUGGING*
-	;-----------------------------------------------------
-	string db "HOLLAAA",0
 	;-----------------------------------------------------
 	;	Arreglo que guarda una copia de los registros 
 	;	al momento de una excepcion.

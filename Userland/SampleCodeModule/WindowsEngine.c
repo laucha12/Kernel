@@ -8,7 +8,8 @@
 void windowsEngineInitialize(int window, int argc, char argv[MAX_ARGUMENT_COUNT][MAX_ARGUMENT]){
   
     // Se inicia mi primera ventan
-    commandsEngineHandle("printUnos", LEFT_WINDOW);
+    //commandsEngineHandle(, LEFT_WINDOW);
+   //commandsEngineHandle("printUnos", LEFT_WINDOW);
 
     windowStart(MAIN_WINDOW);
 

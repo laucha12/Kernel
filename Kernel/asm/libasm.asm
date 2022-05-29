@@ -7,6 +7,7 @@ GLOBAL get_rtc_day
 GLOBAL get_rtc_weekday
 GLOBAL get_rtc_month
 GLOBAL get_rtc_year
+GLOBAL readMem
 
 section .text
 	
@@ -240,6 +241,42 @@ get_rtc_year:
     out 70h, al     ; Indico el registro de rtc
     in al, 71h      ; Leo el rtc
 
+    pop rbx         ; Preservar rbx
+    
+    mov rsp, rbp   ; Stack frame
+	pop rbp         ; Stack frame
+
+    ret
+
+
+;---------------------------------------------------
+;	Funcion la cual retorna un arreglo de datos 
+;   leidos a partir de una posicion de memoria
+;---------------------------------------------------
+;	Argumentos: rdi: arreglo a escribir
+;               rsi: posicion de memoria
+;               rdx: cantidad de posiciones a leer
+;---------------------------------------------------
+;	Retorno: Arreglo con los datos de memoria 
+;---------------------------------------------------
+
+readMem:
+    push rbp        ; Stack frame
+    mov rbp, rsp    ; Stack frame
+
+    push rbx        ; Preservar rbx
+
+    mov rax, 0      ; Puntero relativo al arreglo 
+
+    ciclo:
+    cmp rdx, rax            ; Pregunto si mi contador llego al limite
+    je fin                  ; Si son iguales, termine
+    mov rbx, [rsi + rax]    ; Muevo el dato leido en puntero + rax
+    mov [rdi + rax], rbx    ; Muevo el dato leido en puntero + rax
+    inc rax                 ; Incremento el contador
+    jmp ciclo               ; Repito
+    
+    fin:
     pop rbx         ; Preservar rbx
     
     mov rsp, rbp   ; Stack frame
