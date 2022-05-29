@@ -48,10 +48,10 @@ void commandsEngineRunPipe(const char *command, Window window) {
     //copio hasta el final de la string al segundo comando
     while (command[i] != NULL_) cmd2[dim2++] = command[i++];
 
-    // Limpio la pantalla
-    sysClearScreen(LEFT_WINDOW);
-    sysClearScreen(RIGHT_WINDOW);
+    sysOpen(LEFT_WINDOW);
     commandsEngineRun(cmd1, LEFT_WINDOW);
+
+    sysOpen(RIGHT_WINDOW);
     commandsEngineRun(cmd2, RIGHT_WINDOW);
 }
 
@@ -85,7 +85,8 @@ void commandsEngineRun(char *command, Window window) {
             //que tengo que manejar los argumentos, que tambien deben
             //ir copiados sobre la posicion de memoria de la funcion.
             CommandPtr cmd = commands[i].apply;
-            cmd(window, argc, args); //(por ahora simplemente la llamo)
+            loadProces(cmd, window, 0, args);
+            //cmd(window, argc, args); //(por ahora simplemente la llamo)
         }
     }
 

@@ -54,11 +54,11 @@ void listen(char * command, Window window){
 
 
 void windowStart(Window window){
-
     
-    sysOpen(MAIN_WINDOW);
+    sysOpen(window);
+
     //Se imprime un mensaje de bienvenida al iniciar la ventana
-    welcomeScreen(MAIN_WINDOW);
+    welcomeScreen(window);
     
     // Arreglo de caracteres donde tendre mi comando
     char command[MAX_COMMAND_SIZE];
