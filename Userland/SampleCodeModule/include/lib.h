@@ -12,7 +12,7 @@
 #define ENTER '\n'
 #define TAB '\t'
 #define SPACE ' '
-#define PIPE '|'
+#define PIPE '['
 
 #define REGS_CANT 17
 
