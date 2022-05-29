@@ -3,11 +3,18 @@
 #include <naiveConsole.h>
 #include <interrupts.h>
 
+static int ticks = 0;
+
 void initialiseContextSchedluerEngine() {
     for (int i = 0; i < MAX_PROCESSES; i++) procesos[i].flagRunning = 0;
 }
 
 void switchContext(long * contextHolder, char * contextOwner) {
+    
+    ticks++;
+    if(ticks % TICKS != 0) 
+        return;
+
     if(processesRunning == 0) return;
     pushContext(contextHolder, *contextOwner);
     *contextOwner = nextProcess(contextOwner);

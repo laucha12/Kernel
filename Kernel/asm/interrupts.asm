@@ -54,6 +54,7 @@ initialiseContextSchedluer:
 	mov [%1+32], rsi
 	mov [%1+40], rdi
 	mov [%1+48], rbp
+	
 	; un hueco de un registro 
 	mov [%1+64], r8
 	mov [%1+72], r9
@@ -380,21 +381,10 @@ copyRegs:
 	endInterrupt
 %endmacro
 
-;--------------------------------------------------------
-; 
-;--------------------------------------------------------
-; Argumentos: -
-;--------------------------------------------------------
-;%macro exceptionHandler 1
-;	pushState							; preservo los registros
-;	mov rdi, %1 					
-;	call exceptionDispatcher
-;	popState							; preservo los registros
-;	iretq
-;%endmacro
+
 
 ;--------------------------------------------------------------------
-; timerTickHandler - Responde a la interrupcion de timer tick a traves,
+; timerTickHandler - Responde a un numero fijo de timer ticks
 ; primero pushea el contexto actual, luego llama a una funcion en C
 ; que maneja el context switching desde un contextHolder y contextOwner
 ; y por ultimo 
@@ -412,9 +402,7 @@ copyRegs:
 	call _sti						; activo interrupciones
 	popContext contextHolder		; copio el context holder a mis registros
 	iretq
-
 %endmacro
-
 
 ;--------------------------------------------------------
 ; keyBoardHandler - Esta funcion seteo en 0 el flag de responder a interrupciones
@@ -566,7 +554,11 @@ _exception06Handler:
 ;	BSS
 ;-----------------------------------------------------
 SECTION .bss
+	;-----------------------------------------------------
+	;	Seccion donde se guarda el contexto para la comunicacion con el back
+	;-----------------------------------------------------
 	aux resq 1
+
 	;-----------------------------------------------------
 	;	Seccion donde se guarda el contexto para la comunicacion con el back
 	;-----------------------------------------------------
