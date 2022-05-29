@@ -20,7 +20,8 @@ void ncPrint(const char *string)
 		ncPrintChar(string[i]);
 }
 void open(int fd)
-{
+{	
+	ncClear();
 	actualFd = fd;
 }
 void close(int fd)
@@ -30,16 +31,31 @@ void close(int fd)
 }
 void ncPrintChar(char character)
 {
-	printFD0Char(character);
+	ncPrintFD0Char(character);
 }
 
+// ---------------------------------------------------
+// FD0
+// ---------------------------------------------------
 void ncPrintFD0(char *string)
 {
 	int i;
 	for (i = 0; string[i] != 0; i++)
-		printFD0Char(string[i]);
+		ncPrintFD0Char_Format(string[i], WHITE);
 }
-void printFD0Char(char character)
+
+void ncPrintFD0_Format(char *string, char format)
+{
+	int i;
+	for (i = 0; string[i] != 0; i++)
+		ncPrintFD0Char_Format(string[i], format);
+}
+
+void ncPrintFD0Char(char character){
+	ncPrintFD0Char_Format(character, WHITE);
+}
+
+void ncPrintFD0Char_Format(char character, char format)
 {
 	if (character == '\n')
 	{
@@ -49,9 +65,11 @@ void printFD0Char(char character)
 		if(currentVideoFD0 != video)
 			currentVideoFD0 -= 2;
 			*currentVideoFD0 = ' ';
+			*(currentVideoFD0 + 1) = WHITE;
 	} else
 	{
 		*currentVideoFD0 = character;
+		*(currentVideoFD0 + 1) = format;
 		currentVideoFD0 += 2;
 	}
 
@@ -60,25 +78,41 @@ void printFD0Char(char character)
 		resetVideo();
 	}
 }
-void ncPrintFD1(char *string)
-{
+
+// ---------------------------------------------------
+// FD1
+// ---------------------------------------------------
+void ncPrintFD1(char *string){
 	int i;
 	for (i = 0; string[i] != 0; i++)
-		printFD1Char(string[i]);
+		ncPrintFD1Char_Format(string[i], WHITE);
 }
-void printFD1Char(char character)
+
+void ncPrintFD1_Format(char *string, char format){
+	int i;
+	for (i = 0; string[i] != 0; i++)
+		ncPrintFD1Char_Format(string[i], format);
+}
+
+void ncPrintFD1Char(char character){
+	ncPrintFD1Char_Format(character, WHITE);
+}
+
+void ncPrintFD1Char_Format(char character, char format)
 {
 	if (character == '\n')
 	{
 		currentVideoFD1 += OFFSET - ((currentVideoFD1 - video) % OFFSET);
 	}
 	else if(character == '\b'){
-		if(currentVideoFD0 != video)
-			currentVideoFD0 -= 2;
-			*currentVideoFD0 = ' ';
+		if(currentVideoFD1 != video)
+			currentVideoFD1 -= 2;
+			*currentVideoFD1 = ' ';
+			*(currentVideoFD1 + 1) = WHITE;
 	} else
 	{
 		*currentVideoFD1 = character;
+		*(currentVideoFD1 + 1) = format;
 		currentVideoFD1 += 2;
 	}
 
@@ -92,13 +126,29 @@ void printFD1Char(char character)
 		resetVideo();
 	}
 }
+
+
+// ---------------------------------------------------
+// FD2
+// ---------------------------------------------------
 void ncPrintFD2(char *string)
 {
 	int i;
 	for (i = 0; string[i] != 0; i++)
-		printFD2Char(string[i]);
+		ncPrintFD2Char_Format(string[i], WHITE);
 }
-void printFD2Char(char character)
+
+void ncPrintFD2_Format(char *string, char format){
+	int i;
+	for (i = 0; string[i] != 0; i++)
+		ncPrintFD2Char_Format(string[i], format);
+}
+
+void ncPrintFD2Char(char character){
+	ncPrintFD2Char_Format(character, WHITE);
+}
+
+void ncPrintFD2Char_Format(char character, char format)
 {
 	if (character == '\n')
 	{
@@ -107,6 +157,7 @@ void printFD2Char(char character)
 	else
 	{
 		*currentVideoFD2 = character;
+		*(currentVideoFD2 + 1) = format;
 		currentVideoFD2 += 2;
 	}
 	if (!((currentVideoFD2 - video) % OFFSET))
@@ -119,6 +170,10 @@ void printFD2Char(char character)
 		resetVideo();
 	}
 }
+
+// ---------------------------------------------------
+// 
+// ---------------------------------------------------
 void resetVideo()
 {
 	// Leer una linea y escribirla un renglon arriba
@@ -186,16 +241,29 @@ void ncClear()
 void fdClear(int fd){
 	if(fd == 0){
 		ncClear();
-		return;
+		currentVideoFD0 = video;
+	}else if(fd == 1){
+		ncClearFD1();
+		currentVideoFD1 = video;
+	}else{
+		ncClearFD2();
+		currentVideoFD2 = video + 82;
 	}
 	
-	int i;
+}
 
-	for (i = 0; i < height * width; i++)
-		video[i * 2] = ' ';
-	currentVideoFD0 = video;
-	currentVideoFD1 = video;
-	currentVideoFD2 = video + 82;
+void ncClearFD1(){
+	for (int i = 0; i < (height*2) * (width*2); i+=2){
+		if(i % 160 < OFFSET)
+			video[i] = ' ';
+	}
+}
+
+void ncClearFD2(){
+	for (int i = 0; i < (height*2) * (width*2); i+=2){
+		if(i % 160 >= OFFSET)
+			video[i] = ' ';
+	}
 }
 
 static uint32_t uintToBase(uint64_t value, char *buffer, uint32_t base)

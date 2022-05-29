@@ -45,16 +45,16 @@ typedef struct {
 } Command;
 
 
-static Command commands[] = {{"help",          HELP_DESCRIPTION,           (CommandPtr)  &help},
-                             {"diaYHora",      DIA_Y_HORA_DESCRIPTION,     (CommandPtr) &diaYHora},
-                             {"divideByZero",  DIVIDE_BY_ZERO_DESCRIPTION, (CommandPtr) &divideByZero},
-                             {"invalidOpCode", INVALID_OPCODE_DESCRIPTION, (CommandPtr) &invalidOpCode},
-                             {"printMem",      PRINT_MEM_DESCRIPTION,      (CommandPtr) &printMem},
-                             {"infoReg",       INFO_REG_DESCRIPTION,       (CommandPtr) &infoReg},
-                             {"primos",        PRIMOS_DESCRIPTION,         (CommandPtr) &primos},
-                             {"fibonacci",     FIBONACCI_DESCRIPTION,      (CommandPtr) &fibonacci},
-                             {"man",           MAN_DESCRIPTION,            (CommandPtr) &man},
-                             {"printUnos", "",(CommandPtr) &printUnos}};
+static Command commands[] = {{"help",          HELP_DESCRIPTION,           help},
+                             {"diaYHora",      DIA_Y_HORA_DESCRIPTION,     diaYHora},
+                             {"divideByZero",  DIVIDE_BY_ZERO_DESCRIPTION, divideByZero},
+                             {"invalidOpCode", INVALID_OPCODE_DESCRIPTION, invalidOpCode},
+                             {"printMem",      PRINT_MEM_DESCRIPTION,      printMem},
+                             {"infoReg",       INFO_REG_DESCRIPTION,       infoReg},
+                             {"primos",        PRIMOS_DESCRIPTION,         primos},
+                             {"fibonacci",     FIBONACCI_DESCRIPTION,      fibonacci},
+                             {"man",           MAN_DESCRIPTION,            man},
+                             {"clear",         CLEAR_DESCRIPTION,          clear}};
 
 //OJO AL AGREGAR A LA LISTA DE ACTUALIZAR LA CANTIDAD DE COMANDOS
 static int commandsCount = 10;

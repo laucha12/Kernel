@@ -170,3 +170,11 @@ void fibonacci(Window window, int argc, char argv[MAX_ARGUMENT_COUNT][MAX_ARGUME
 
     exit();
 }
+
+void clear(Window window, int argc, char argv[MAX_ARGUMENT_COUNT][MAX_ARGUMENT]){
+    if (!(argc == 0 || argc == 1 || argc == 2)) {
+        puts_(INVALID_NUMBER_COMMANDS, window);
+        return;
+    }
+    sysClearScreen(window);
+}

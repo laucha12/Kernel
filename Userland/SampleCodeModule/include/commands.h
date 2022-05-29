@@ -80,5 +80,12 @@ void primos(Window window, int argc, char argv[MAX_ARGUMENT_COUNT][MAX_ARGUMENT]
 
 void fibonacci(Window window, int argc, char argv[MAX_ARGUMENT_COUNT][MAX_ARGUMENT]);
 
+/*
+ * Recibe una ventana, donde computara e imprimira los numeros de fibonacci, 
+ * partiendo del primero.
+ */
+#define CLEAR_DESCRIPTION "Limpia la pantalla"
+
+void clear(Window window, int argc, char argv[MAX_ARGUMENT_COUNT][MAX_ARGUMENT]);
 
 #endif
