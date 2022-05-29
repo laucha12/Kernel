@@ -275,6 +275,10 @@ loadSO:
 	popFirstTask contextLoading
 	;popContext contextLoading
 	iretq
+processRunning:
+	popState
+	mov rax,[aux]
+	iretq
 ;-------------------------------------------------------------------------------
 ; Recibe un numero que determina el numero de interrupcion por hardware y mapea
 ; a la funcion que maneja esa interrupcion
@@ -294,6 +298,8 @@ loadSO:
 	je loadSO					; si es 8 es la de loadSO
 	cmp rax,9
 	je loadtaskHandler
+	cmp rax,10
+	je processRunning
 	cmp rax,99					; si es 99 es la de exit
 	je exitSyscall
 	mov rcx,rax					; si es otro entonces voy al switch de C
@@ -337,7 +343,7 @@ loadSO:
 	mov rsi, regsArray			; Pasaje de 2 parametro - > Arreglo de registros asi los imprimo desde C
 	mov rdx,contextOwner
 	call exceptionDispatcher	; Llamo al que maneja la excepcion en particular
-	jmp .exitSyscall
+	jmp exitSyscall
 
 	; !! Esto esta mal, hay que sentarse a ver como implementamos la vuelta al proceso/shell
 	;mov rax, [rsp]					; Paso a RAX la copia del RIP donde ocurrio la excepcion
