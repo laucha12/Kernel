@@ -80,8 +80,10 @@ initialiseContextSchedluer:
 	; -------------------------------------
 
 	mov rax, [rsp+18]			; almaceno el valor del RSP de la interrupcion en rax
-	mov [%1+56], rax	        ; guardamos el valor del RSP en la tabla de contexto 
+	mov [%1+56], rax	        ; tomo del interrupt frame el valor del RIP
+	
 	mov rax, [rsp]				; guardamos la posicion del RIP
+
 	mov [%1+128], rax	        ; lo guardamos en la posicion de memoria
 	mov rax, [rsp+10]			; tomo del interrupt frame el valor de los flags
 	mov [%1+136], rax	        ; lo guardo
