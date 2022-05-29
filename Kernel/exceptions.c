@@ -12,8 +12,22 @@ static const char *registerNames[REGS_CANT + 1] = {
             "R14", "R15", "RIP"
     };
 
-void exceptionDispatcher(int exception, long regs[],char * fd) {
+static void reportRegs(long regs[], char fd){
+	ncPrintAtFD("    -Exception at -> RIP: ", fd);
+	ncPrintHexAtFD(regs[REGS_CANT], fd);
+	ncPrintAtFD("\n", fd);
+	for(int i = 0; i < REGS_CANT; i++){
+		ncPrintAtFD("    -", fd);
+		ncPrintAtFD(registerNames[i], fd);
+		ncPrintAtFD(": ", fd);
+		ncPrintHexAtFD(regs[i], fd);
+		ncPrintAtFD("\n", fd);
+	}
+}
 
+void exceptionDispatcher(int exception, long regs[],char * fd) {
+	(*fd)--;
+	fdClear(*fd);
 	switch (exception)
 	{
 	case ZERO_EXCEPTION_ID:
@@ -32,31 +46,11 @@ void exceptionDispatcher(int exception, long regs[],char * fd) {
 }
 
 static void zero_division(long regs[],char fd) {
-	ncPrintFD0("\n---------------------------EXCEPTION - DIVIDE BY ZERO---------------------------\n");
-	ncPrintFD0("    -Exception at -> RIP: ");
-	ncPrintHex(regs[REGS_CANT]);
-	ncPrintFD0("\n");
-	for(int i = 0; i < REGS_CANT; i++){
-		ncPrintFD0("    -");
-		ncPrintFD0(registerNames[i]);
-		ncPrintFD0(": ");
-		ncPrintHex(regs[i]);
-		ncPrintFD0("\n");
-	}
-	ncPrintFD0("--------------------------------------------------------------------------------\n");
+	ncPrintAtFD("\n---------------------------EXCEPTION - DIVIDE BY ZERO---------------------------\n",0);
+	reportRegs(regs, fd);
 }
 
 static void invalid_opcode(long regs[],char fd) {
-	ncPrintFD0("\n---------------------------EXCEPTION - INVALID OPCODE---------------------------\n");
-	ncPrintFD0("    -Exception at -> RIP: ");
-	ncPrintHex(regs[REGS_CANT]);
-	ncPrintFD0("\n");
-	for(int i = 0; i < REGS_CANT; i++){
-		ncPrintFD0("    -");
-		ncPrintFD0(registerNames[i]);
-		ncPrintFD0(": ");
-		ncPrintHex(regs[i]);
-		ncPrintFD0("\n");
-	}
-	ncPrintFD0("--------------------------------------------------------------------------------\n");
+	ncPrintAtFD("\n---------------------------EXCEPTION - INVALID OPCODE---------------------------\n", 0);
+	reportRegs(regs, fd);
 }

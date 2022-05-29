@@ -12,31 +12,56 @@ static int actualFd = 0;
 static const uint32_t width = 80;
 static const uint32_t height = 25;
 
-void ncPrint(const char *string)
-{
+
+void ncPrint(const char *string){
 	int i;
 
 	for (i = 0; string[i] != 0; i++)
-		ncPrintChar(string[i]);
+		ncPrintChar(string[i], 0);
 }
-void open(int fd)
-{	
+
+void ncPrintAtFD(const char *string, int fd){
+	int i;
+
+	for (i = 0; string[i] != 0; i++)
+		ncPrintChar(string[i], fd);
+}
+
+void ncPrintChar(char character, int fd){
+	
+	switch (fd)
+	{
+	case 0:
+		ncPrintFD0Char(character);
+		break;
+	
+	case 1:
+		ncPrintFD1Char(character);
+		break;
+
+	case 2:
+		ncPrintFD2Char(character);
+		break;
+
+	default:
+		ncPrintFD0Char(character);
+		break;
+	}
+}
+
+void open(int fd){	
 	ncClear();
 	actualFd = fd;
 }
-void close(int fd)
-{
+
+void close(int fd){
 	actualFd = (fd) ? 0 : 1;
 	ncClear();
 }
-void ncPrintChar(char character)
-{
-	ncPrintFD0Char(character);
-}
 
-// ---------------------------------------------------
+// -------------------------------------------------------------------------------
 // FD0
-// ---------------------------------------------------
+// -------------------------------------------------------------------------------
 void ncPrintFD0(char *string)
 {
 	int i;
@@ -79,9 +104,9 @@ void ncPrintFD0Char_Format(char character, char format)
 	}
 }
 
-// ---------------------------------------------------
+// -------------------------------------------------------------------------------
 // FD1
-// ---------------------------------------------------
+// -------------------------------------------------------------------------------
 void ncPrintFD1(char *string){
 	int i;
 	for (i = 0; string[i] != 0; i++)
@@ -128,9 +153,9 @@ void ncPrintFD1Char_Format(char character, char format)
 }
 
 
-// ---------------------------------------------------
+// -------------------------------------------------------------------------------
 // FD2
-// ---------------------------------------------------
+// -------------------------------------------------------------------------------
 void ncPrintFD2(char *string)
 {
 	int i;
@@ -171,9 +196,9 @@ void ncPrintFD2Char_Format(char character, char format)
 	}
 }
 
-// ---------------------------------------------------
+// -------------------------------------------------------------------------------
 // 
-// ---------------------------------------------------
+// -------------------------------------------------------------------------------
 void resetVideo()
 {
 	// Leer una linea y escribirla un renglon arriba
@@ -198,17 +223,43 @@ void resetVideo()
 	}
 }
 
+// -------------------------------------------------------------------------------
+// 
+// -------------------------------------------------------------------------------
 void ncNewline(int FD)
 {
 	do
 	{
-		ncPrintChar(' ');
+		ncPrintChar(' ', 0);
 	} while ((uint64_t)(currentVideoFD0 - video) % (width * 2) != 0);
 }
 
+// -------------------------------------------------------------------------------
+// 	NUMEROS
+// -------------------------------------------------------------------------------
 void ncPrintDec(uint64_t value)
 {
 	ncPrintBase(value, 10);
+}
+
+void ncPrintDecAtFD(uint64_t value, int fd)
+{
+	uintToBase(value, buffer, 10);
+	switch (fd)
+	{
+	case 0:
+		ncPrintFD0(buffer);
+		break;
+	case 1:
+		ncPrintFD1(buffer);
+		break;
+	case 2:
+		ncPrintFD2(buffer);
+		break;
+	default:
+		break;
+	}
+	
 }
 
 void ncPrintHex(uint64_t value)
@@ -216,9 +267,45 @@ void ncPrintHex(uint64_t value)
 	ncPrintBase(value, 16);
 }
 
-void ncPrintBin(uint64_t value)
+void ncPrintHexAtFD(uint64_t value, int fd)
 {
+	uintToBase(value, buffer, 16);
+	switch (fd)
+	{
+	case 0:
+		ncPrintFD0(buffer);
+		break;
+	case 1:
+		ncPrintFD1(buffer);
+		break;
+	case 2:
+		ncPrintFD2(buffer);
+		break;
+	default:
+		break;
+	}
+}
+
+void ncPrintBin(uint64_t value){
 	ncPrintBase(value, 2);
+}
+
+void ncPrintBinAtFD(uint64_t value, int fd){
+	uintToBase(value, buffer, 2);
+	switch (fd)
+	{
+	case 0:
+		ncPrintFD0(buffer);
+		break;
+	case 1:
+		ncPrintFD1(buffer);
+		break;
+	case 2:
+		ncPrintFD2(buffer);
+		break;
+	default:
+		break;
+	}
 }
 
 void ncPrintBase(uint64_t value, uint32_t base)
