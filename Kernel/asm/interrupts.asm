@@ -225,6 +225,9 @@ initialiseContextSchedluer:
 ;-------------------------------------------------------------------------------
 exitSyscall:
 	popState
+	mov  r10,[aux]
+	dec r10
+	mov  [aux],r10
 	mov rdi,contextHolder				; paso el primer parametro para copiar el siguiente contexto
 										; al exitear el proceso actual
 	mov rsi,contextOwner			    ; paso el segundo parametro para actualizar duenio del contexto
@@ -327,15 +330,14 @@ loadSO:
 ;--------------------------------------------------------
 %macro exceptionHandler 1
 	
-	;pushState
+	pushState
 
 	call copyRegs				; Llamo a la macro que me copia los registros en regsArray
 	mov rdi, %1 				; Pasaje de 1 parametro -> Tipo de excepciom
 	mov rsi, regsArray			; Pasaje de 2 parametro - > Arreglo de registros asi los imprimo desde C
+	mov rdx,contextOwner
 	call exceptionDispatcher	; Llamo al que maneja la excepcion en particular
-
-	;popState
-
+	jmp .exitSyscall
 
 	; !! Esto esta mal, hay que sentarse a ver como implementamos la vuelta al proceso/shell
 	;mov rax, [rsp]					; Paso a RAX la copia del RIP donde ocurrio la excepcion
