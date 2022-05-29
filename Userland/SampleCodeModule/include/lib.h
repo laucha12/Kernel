@@ -21,6 +21,8 @@ extern void sysRead(int fd, char * buffer);
 extern void sysTime(char * buffer);
 extern void sysOpen(int fd);
 extern void sysClose(int fd);
+extern void exit();
+
 /*
 extern void sysRegs(char * buffer);
 extern void sysMemFrom(char * buffer, int * from);*/

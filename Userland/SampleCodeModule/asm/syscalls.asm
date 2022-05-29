@@ -8,9 +8,10 @@ GLOBAL generateInvalidOpCode
 GLOBAL sysOpen
 GLOBAL sysClose
 GLOBAL loadSO
-GLOBAL loadProces
+GLOBAL loadProcess
 GLOBAL exit
 section .text
+
 
 ;------------------------------
 ;   Rutina de asm que realiza 
@@ -39,6 +40,20 @@ sysWrite:
 
     ret    
 
+;------------------------------
+; exit - hace la syscall de sysExit 
+;------------------------------
+; Parametro: un char* buffer, que toma solo un caracter de la lectura.
+;------------------------------
+exit:
+    push rbp
+    mov rbp,rsp
+
+    mov rax, 99
+    int 80h
+
+    leave
+    ret
 
 ;------------------------------
 ; Rutina de asm que realiza 
@@ -89,7 +104,7 @@ sysTime:
 ;   rutina la cual hace la syscall de load una funcion
 ;   argumentos: puntero a la funcion,fd, int argc, args
 ;-------------------------------------------
-loadProces:
+loadProcess:
     push rbp
     mov rbp,rsp
 
@@ -98,6 +113,7 @@ loadProces:
 
     leave
     ret
+
 loadSO:
     push rbp
     mov rbp,rsp
@@ -108,16 +124,6 @@ loadSO:
     leave
     ret
     
-exit:
-    push rbp
-    mov rbp,rsp
-
-    mov rax,99
-    int 80h
-
-    mov rsp,rbp
-    pop rbp
-    ret
 
 ;------------------------------
 ;   Rutina de asm que realiza 
