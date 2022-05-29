@@ -42,7 +42,7 @@ int main() {
 	} */
 
 	char argv[MAX_ARGUMENT_COUNT][MAX_ARGUMENT];
-	loadSO(windowsEngineInitialize, MAIN_WINDOW, 0, argv);
+	loadSO((CommandPtr) &windowsEngineInitialize, MAIN_WINDOW, 0, argv);
 
 
 	//Test if BSS is properly set up

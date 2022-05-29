@@ -12,9 +12,10 @@
 void printUnos(Window window, int argc, char argv[MAX_ARGUMENT_COUNT][MAX_ARGUMENT]) {
     int i = 0;
     while(1) {
-        if(i % 7) puts_("1 \n", LEFT_WINDOW);
+        if(!(i % 100000)) puts_("1", MAIN_WINDOW);
         i++;
     }
+    exit();
 }
 
 void man(Window window, int argc, char argv[MAX_ARGUMENT_COUNT][MAX_ARGUMENT]) {
@@ -29,6 +30,7 @@ void man(Window window, int argc, char argv[MAX_ARGUMENT_COUNT][MAX_ARGUMENT]) {
     }
 */
     puts_("Todavia no tenemos soporte de man :) \n", window);
+    exit();
 }
 
 void help(Window window, int argc, char argv[MAX_ARGUMENT_COUNT][MAX_ARGUMENT]) {
@@ -40,6 +42,7 @@ void help(Window window, int argc, char argv[MAX_ARGUMENT_COUNT][MAX_ARGUMENT]) 
     puts_("La lista de los comandos disponibles es: \n", window);
     commandsEngineDisplayCommands(window);
 
+    exit();
 }
 
 void diaYHora(Window window, int argc, char argv[MAX_ARGUMENT_COUNT][MAX_ARGUMENT]) {
@@ -52,6 +55,8 @@ void diaYHora(Window window, int argc, char argv[MAX_ARGUMENT_COUNT][MAX_ARGUMEN
     getTime(buffer);
     puts_(buffer, window);
     puts_("\n", window);
+    exit();
+
 }
 
 void divideByZero(Window window, int argc, char argv[MAX_ARGUMENT_COUNT][MAX_ARGUMENT]) {
@@ -62,6 +67,7 @@ void divideByZero(Window window, int argc, char argv[MAX_ARGUMENT_COUNT][MAX_ARG
     puts_("Intentamos dividir por cero...", window);
     divideByZeroAsm();
     puts_("Luego de la excepcion continuo con el programa \n", window);
+    exit();
 }
 
 void invalidOpCode(Window window, int argc, char argv[MAX_ARGUMENT_COUNT][MAX_ARGUMENT]) {
@@ -72,6 +78,7 @@ void invalidOpCode(Window window, int argc, char argv[MAX_ARGUMENT_COUNT][MAX_AR
     puts_("Intentamos un invalid op code...", window);
     generateInvalidOpCode();
     puts_("Luego de la excepcion continuo con el programa \n", window);
+    exit();
 }
 
 void printMem(Window window, int argc, char argv[MAX_ARGUMENT_COUNT][MAX_ARGUMENT]) {
@@ -90,6 +97,7 @@ void printMem(Window window, int argc, char argv[MAX_ARGUMENT_COUNT][MAX_ARGUMEN
     readMem(buffer, (int *) atoi_((argv[1])));
     
     puts_(buffer, window);
+    exit();
 }
 
 extern long * getRegs();
@@ -118,6 +126,7 @@ void infoReg(Window window, int argc, char argv[MAX_ARGUMENT_COUNT][MAX_ARGUMENT
     }
     
     puts_("\n", window);
+    exit();
 }
 
 
@@ -132,6 +141,7 @@ void primos(Window window, int argc, char argv[MAX_ARGUMENT_COUNT][MAX_ARGUMENT]
     while (1)
         if (isPrime(num))
             putInteger(num, window);
+    exit();
 }
 
 void fibonacci(Window window, int argc, char argv[MAX_ARGUMENT_COUNT][MAX_ARGUMENT]) {
@@ -157,6 +167,8 @@ void fibonacci(Window window, int argc, char argv[MAX_ARGUMENT_COUNT][MAX_ARGUME
         putInteger(current, window);
         newLine(window);
     }
+
+    exit();
 }
 
 void clear(Window window, int argc, char argv[MAX_ARGUMENT_COUNT][MAX_ARGUMENT]){

@@ -2,7 +2,7 @@
 #define MAX_PROCESSES 3
 
 #define MAX_STACK 10000
-#define REGISTER_COUNT 17
+#define REGISTER_COUNT 18
 
 #define RSP 7               // defino el indice donde guardo el RSP en mi arreglo de registros
 #define SHELL 0
@@ -62,5 +62,5 @@ void exitProces(long * contextHolder,char * contextOwner);
     * Funcion la cual va a recibir el contexto para iniciar un nuevo proceso
     * obs: si ya hay mas de 2 procesos no se lo agrega
 */
-void loadProces(long * contextHolder);
+void loadFirstContext(long * contextHolder);
 char  nextProcess(char * contextOwner ) ;
