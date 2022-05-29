@@ -48,6 +48,9 @@ void commandsEngineRunPipe(const char *command, Window window) {
     //copio hasta el final de la string al segundo comando
     while (command[i] != NULL_) cmd2[dim2++] = command[i++];
 
+    // Limpio la pantalla
+    sysClearScreen(LEFT_WINDOW);
+    sysClearScreen(RIGHT_WINDOW);
     commandsEngineRun(cmd1, LEFT_WINDOW);
     commandsEngineRun(cmd2, RIGHT_WINDOW);
 }

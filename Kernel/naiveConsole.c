@@ -20,7 +20,8 @@ void ncPrint(const char *string)
 		ncPrintChar(string[i]);
 }
 void open(int fd)
-{
+{	
+	ncClear();
 	actualFd = fd;
 }
 void close(int fd)
@@ -186,16 +187,29 @@ void ncClear()
 void fdClear(int fd){
 	if(fd == 0){
 		ncClear();
-		return;
+		currentVideoFD0 = video;
+	}else if(fd == 1){
+		ncClearFD1();
+		currentVideoFD1 = video;
+	}else{
+		ncClearFD2();
+		currentVideoFD2 = video + 82;
 	}
 	
-	int i;
+}
 
-	for (i = 0; i < height * width; i++)
-		video[i * 2] = ' ';
-	currentVideoFD0 = video;
-	currentVideoFD1 = video;
-	currentVideoFD2 = video + 82;
+void ncClearFD1(){
+	for (int i = 0; i < (height*2) * (width*2); i+=2){
+		if(i % 160 < OFFSET)
+			video[i] = ' ';
+	}
+}
+
+void ncClearFD2(){
+	for (int i = 0; i < (height*2) * (width*2); i+=2){
+		if(i % 160 >= OFFSET)
+			video[i] = ' ';
+	}
 }
 
 static uint32_t uintToBase(uint64_t value, char *buffer, uint32_t base)

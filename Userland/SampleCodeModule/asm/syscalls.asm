@@ -7,6 +7,7 @@ GLOBAL generateDivByZero
 GLOBAL generateInvalidOpCode
 GLOBAL sysOpen
 GLOBAL sysClose
+GLOBAL sysClearScreen
 
 GLOBAL loadProces
 GLOBAL exit
@@ -140,6 +141,23 @@ sysClose:
     push rbx        ; Preservar rbx
 
     mov rax, 3      ; Numero de syscall
+    ; En rdi ya tengo el parametro fd
+    int 80h         ; "Che Kernel"
+
+    pop rbx         ; Preservar rbx
+
+    mov rsp, rbp    ; Stack frame
+    pop rbp         ; Stack frame
+
+    ret
+
+sysClearScreen:
+    push rbp        ; Stack frame
+    mov rbp, rsp    ; Stack frame
+
+    push rbx        ; Preservar rbx
+
+    mov rax, 121      ; Numero de syscall
     ; En rdi ya tengo el parametro fd
     int 80h         ; "Che Kernel"
 
