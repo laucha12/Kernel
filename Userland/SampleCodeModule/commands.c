@@ -144,9 +144,14 @@ void primos(Window window, int argc, char argv[MAX_ARGUMENT_COUNT][MAX_ARGUMENT]
 
     int num = 0;
 
-    while (1)
-        if (isPrime(num))
+    while (1) {
+        if (isPrime(num)) {
             putInteger(num, window);
+            newLine(window);
+        }
+        num++;
+    }
+
     exit();
 }
 
@@ -156,23 +161,26 @@ void fibonacci(Window window, int argc, char argv[MAX_ARGUMENT_COUNT][MAX_ARGUME
         return;
     }
 
-    //Computo los numeros fibonacci con programacion dinamica
-
-    int previousLast = 0, last = 1, current;
-
-    putInteger(previousLast, window);
+    int previousToLast = 0;
+    putInteger(previousToLast, window);
     newLine(window);
-
+    
+    int last = 1;
     putInteger(last, window);
     newLine(window);
 
-    while (1) {
-        current = last + previousLast;
-        previousLast = last;
+    int current, i = 2;
+
+    while(!integerOverflowAddition(last, current)) {
+        current = last + previousToLast;
+        previousToLast = last;
         last = current;
         putInteger(current, window);
         newLine(window);
     }
+
+    if(integerOverflowAddition(last, current)) 
+        puts_("Se corta el fibonacci porque se hubiese generado un overflow", window);
 
     exit();
 }
