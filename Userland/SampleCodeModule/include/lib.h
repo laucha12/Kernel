@@ -22,11 +22,34 @@ extern void sysTime(char * buffer);
 extern void sysOpen(int fd);
 extern void sysClose(int fd);
 extern void sysClearScreen(int fd);
+extern void sysWriteFormat(int fd, char * buffer, char format);
 /*
 extern void sysRegs(char * buffer);
 extern void sysMemFrom(char * buffer, int * from);*/
 extern void generateInvalidOpCode();
 extern void divideByZeroAsm();
+
+/*
+ *  VGA text mode: codigos para formato de texto (color y fondo)
+ */
+#define BLACK 0x0
+#define BLUE 0x1
+#define GREEN 0x2 
+#define CYAN 0x3
+#define RED 0x4
+#define MAGENTA 0x5
+#define BROWN 0x6
+#define LIGHT_GRAY 0x7
+#define DARK_GRAY 0x8
+#define LIGHT_BLUE 0x9
+#define LIGHT_GREEN 0xa
+#define LIGHT_CYAN 0xb
+#define LIGHT_RED 0xc
+#define PINK 0xd
+#define YELLOW 0xe
+#define WHITE 0xf
+
+
 
 int atoi_(char * str);
 
@@ -90,6 +113,16 @@ void puts_(char * string, Window window);
  * Recibe un caracter y lo imprime 
  */
 void putc_(char c, Window window);
+
+/*
+ * Recibe una cadena de caracteres, su formato y las imprima 
+ */
+void putsf_(char * string, char format, Window window);
+
+/*
+ * Recibe un caracter, su formato y lo imprime
+ */
+void putcf_(char c, char format, Window window);
 
 /*
  * Recibe una ventana a la cual borrara el ultimo caracter

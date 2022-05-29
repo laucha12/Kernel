@@ -27,6 +27,10 @@ void puts_(char * string, Window window){
     sysWrite(window, string);
 }
 
+void putsf_(char * string, char format, Window window){
+    sysWriteFormat(window, string, format);
+}
+
 int strlen_(const char *str) {
     const char *s;
 
@@ -211,6 +215,11 @@ void putc_(char c, Window window){
     sysWrite(window, character);
 }
 
+
+void putcf_(char c, char format, Window window){
+    char character[2] = {c, 0};
+    sysWriteFormat(window, character, format);
+}
 
 void deleteChar(Window window){
     putc_('\b', window);

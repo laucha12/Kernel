@@ -55,10 +55,9 @@ static Command commands[] = {{"help",          HELP_DESCRIPTION,           help}
                              {"fibonacci",     FIBONACCI_DESCRIPTION,      fibonacci},
                              {"man",           MAN_DESCRIPTION,            man},
                              {"clear",         CLEAR_DESCRIPTION,          clear}};
-                             {"printUnos", "", printUnos}};
 
 //OJO AL AGREGAR A LA LISTA DE ACTUALIZAR LA CANTIDAD DE COMANDOS
-static int commandsCount = 11;
+static int commandsCount = 10;
 
 
 /*
