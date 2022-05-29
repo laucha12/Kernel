@@ -238,8 +238,8 @@ void getTime(char * buffer){
     sysTime(buffer);
 }
 
-void readMem(char * buffer, int * from){
-    //sysMemFrom(buffer, from);
+void readMem(char * buffer, int * from, int cant){
+    sysReadMem(buffer, from, 32);
 }
 
 

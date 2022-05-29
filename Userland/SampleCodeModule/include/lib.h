@@ -22,6 +22,7 @@ extern void sysTime(char * buffer);
 extern void sysOpen(int fd);
 extern void sysClose(int fd);
 extern void exit();
+extern void sysReadMem(char * buffer, int * posicionMem, int cant);
 
 extern void sysClearScreen(int fd);
 extern void sysWriteFormat(int fd, char * buffer, char format);
@@ -152,7 +153,7 @@ void getTime(char * buffer);
  * Retorna una copia de los primeros 32 bytes desde la posicion de memoria from 
  * como un arreglo de caractres.
  */
-void readMem(char * buffer, int * from);
+void readMem(char * buffer, int * from, int cant);
 
 /*
  * Retorna una copia de los valores de los registros, 

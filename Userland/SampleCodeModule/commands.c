@@ -84,6 +84,7 @@ void invalidOpCode(Window window, int argc, char argv[MAX_ARGUMENT_COUNT][MAX_AR
 void printMem(Window window, int argc, char argv[MAX_ARGUMENT_COUNT][MAX_ARGUMENT]) {
     if (argc != 2) {
         puts_(INVALID_NUMBER_COMMANDS, window);
+        exit();
         return;
     }
 
@@ -94,7 +95,12 @@ void printMem(Window window, int argc, char argv[MAX_ARGUMENT_COUNT][MAX_ARGUMEN
     newLine(window);
 
     char buffer[MEM_BUFFER];
-    readMem(buffer, (int *) atoi_((argv[1])));
+    readMem(buffer, (int *) atoi_((argv[1])), 32);
+
+    for(int i = 0; i < 32; i++){
+        putHex(buffer[i], window);
+        puts_("\n", window);
+    }
     
     puts_(buffer, window);
     exit();
@@ -175,6 +181,7 @@ void clear(Window window, int argc, char argv[MAX_ARGUMENT_COUNT][MAX_ARGUMENT])
     if (!(argc == 0 || argc == 1 || argc == 2)) {
         puts_(INVALID_NUMBER_COMMANDS, window);
         exit();
+        return;
     }
     sysClearScreen(window);
     exit();
