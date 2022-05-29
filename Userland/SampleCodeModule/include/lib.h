@@ -6,7 +6,8 @@
 #define IS_DIGIT(c)  ((c) >= '0' && (c)<='9')
 #define IS_LETTER(c) (((c) >= 'a' && (c)<='z') || ((c) >= 'A' && (c)<='Z'))
 
-#define NULL_ 0L //https://www.tutorialspoint.com/c_standard_library/c_macro_null.htm
+#define MAX_INT 2147483647 
+#define NULL_ 0L 
 
 #define BACKSPACE '\b'
 #define ENTER '\n'
@@ -32,6 +33,7 @@ extern void sysMemFrom(char * buffer, int * from);*/
 extern void generateInvalidOpCode();
 extern void divideByZeroAsm();
 
+
 /*
  *  VGA text mode: codigos para formato de texto (color y fondo)
  */
@@ -52,6 +54,10 @@ extern void divideByZeroAsm();
 #define YELLOW 0xe
 #define WHITE 0xf
 
+/*
+ * Devuelve si se genera un overflow al sumar los dos enteros
+ */
+int integerOverflowAddition(int a, int b);
 
 
 int atoi_(char * str);

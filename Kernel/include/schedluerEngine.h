@@ -33,12 +33,21 @@ typedef struct {
 */
 Process procesos[MAX_PROCESSES];
 
+/*
+ * Cuento la 
+ */
+static int ticks = 0;
 
 /*
     * Defino la cantidad de procesos que tengo corriendo en este mismo momento
     * Obs: siempre tiene que ser menor que MAX_PROCESES
 */
 int processesRunning = 0;
+
+/*
+ * Devuelve si hay que hacer un switch de contexto o no
+ */
+int toSwitch();
 
 /**/
 void initialiseContextSchedluerEngine();
