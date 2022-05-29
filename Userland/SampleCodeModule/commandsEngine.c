@@ -48,7 +48,6 @@ void commandsEngineRunPipe(const char *command, Window window) {
     //copio hasta el final de la string al segundo comando
     while (command[i] != NULL_) cmd2[dim2++] = command[i++];
 
-
     commandsEngineRun(cmd1, LEFT_WINDOW);
     commandsEngineRun(cmd2, RIGHT_WINDOW);
 }

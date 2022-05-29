@@ -61,6 +61,16 @@ void ncPrintBase(uint64_t value, uint32_t base);
     Return: void
 */
 void ncClear();
+
+/*
+    Funcion la cual borra todo el contenido de la pantalla 
+    en un fd determinado.
+    
+    Params: void
+    Return: void
+*/
+void fdClear(int fd);
+
 /*
     Funcion la cual resetea los FD y limpia la pantalla
 

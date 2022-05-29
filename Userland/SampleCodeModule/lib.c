@@ -217,10 +217,11 @@ void deleteChar(Window window){
 }
 
 
-char getKey(Window window){
-    char buffer[2] = {0};
+//!!!!!!!!!!
+void getKey(Window window, char * buffer){
+    //char buffer[1];
     sysRead(window, buffer);
-    return buffer[0];
+    //return buffer[0];
 }
 
 

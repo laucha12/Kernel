@@ -3,8 +3,8 @@
 #include <naiveConsole.h>
 #include <lib.h>
 #include <timeDriver.h>
-static void int_20();
-static void int_21();
+ void int_20();
+ void int_21();
 
 void irqDispatcher(uint64_t irq)
 {
@@ -26,12 +26,10 @@ void irqDispatcher(uint64_t irq)
 }
 
 void int_21()
-{
-	// Llamamos al driver del teclado para que guarde en su buffer
+{	// Llamamos al driver del teclado para que guarde en su buffer
 	// la tecla leida desde la interrupcion del mismo
 	char c = readKey();
 	saveBuffer(c);
-	
 }
 
 void int_20()
@@ -47,9 +45,15 @@ void syscalls(int fd, char *sysBuffer, int count, int num)
 	{
 
 	case 120:
-		// Si es la syscall 120 se hira al driver de la hora para que le copie
+		// Si es la syscall 120 se ira al driver de la hora para que le copie
 		// en el buffer que formato de dicha hora
 		time_syscall(sysBuffer);
+		break;
+
+	case 121:
+		// Si es la syscall 121 se ira al driver de pantalla para hacer un clear 
+		// del fd que corresponda.
+		fdClear(fd);
 		break;
 
 	case 1:
@@ -72,6 +76,7 @@ void syscalls(int fd, char *sysBuffer, int count, int num)
 
 		break;
 	case 0:
+		//ncPrintFD0("copio un char del buffer");
 		// si se llama a la syscall 0 esta misma es la syscall de read la cual
 		// le guardara en el sysBuffer el caracter que hay en el buffer de teclado
 		getBufferChar(sysBuffer);

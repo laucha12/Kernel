@@ -1,8 +1,8 @@
 
 #ifndef INTERRUPTS_H_
 #define INTERRUPTS_H_
-
-/* 
+#include <stdint.h>
+/*
     Interrup hander la cual llama a el masterHander con un 0 como parametro
     pues es la interrupcion de timerTick
     

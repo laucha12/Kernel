@@ -8,6 +8,8 @@ GLOBAL generateInvalidOpCode
 GLOBAL sysOpen
 GLOBAL sysClose
 
+GLOBAL loadProces
+GLOBAL exit
 section .text
 
 ;------------------------------
@@ -82,6 +84,30 @@ sysTime:
     mov rsp, rbp    ; Stack frame
     pop rbp         ; Stack frame
     
+    ret
+;-------------------------------------------
+;   rutina la cual hace la syscall de load una funcion
+;   argumentos: puntero a la funcion,fd, int argc, args
+;-------------------------------------------
+loadProces:
+    push rbp
+    mov rbp,rsp
+
+    mov rax,8
+    int 80h
+
+    leave
+    ret
+    
+exit:
+    push rbp
+    mov rbp,rsp
+
+    mov rax,99
+    int 80h
+
+    mov rsp,rbp
+    pop rbp
     ret
 
 ;------------------------------

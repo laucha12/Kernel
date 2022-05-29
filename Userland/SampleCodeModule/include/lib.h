@@ -12,7 +12,7 @@
 #define ENTER '\n'
 #define TAB '\t'
 #define SPACE ' '
-#define PIPE '|'
+#define PIPE '['
 
 #define REGS_CANT 17
 
@@ -105,7 +105,7 @@ char getChar(Window window);
  * Recibe una ventana donde leera el buffer de teclado, y en el caso de no 
  * haber nada, lo esperara.
  */
-char getKey(Window window);
+void getKey(Window window, char buffer[1]);
 
 /*
  * Retorna un string con la hora
