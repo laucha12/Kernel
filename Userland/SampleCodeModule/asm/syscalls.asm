@@ -60,7 +60,7 @@ sysWriteFormat:
     ;mov rsi, [2 argumento]     ; buffer
     mov rax,122       ; Numero de syscall
 ;    mov rdi,0     ; fd
-    mov rdx,0x3       ; Longitud (not supported)
+    ;mov rdx,0x3       ; Longitud (not supported)
     int 80h         ; "Che kernel"
     
     pop rbx         ; Preservar rbx

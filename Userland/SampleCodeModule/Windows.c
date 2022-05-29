@@ -4,11 +4,11 @@
 
 
 void welcomeScreen(Window window){
-    puts_("____________________________________ GDH OS ____________________________________", window);
+    putsf_("____________________________________ GDH OS ____________________________________", CYAN, window);
     puts_(" Bienvenido a GHD OS! \n \n", window);
     puts_(" Los comandos disponibes son: \n", window);
     commandsEngineDisplayCommands(window);
-    puts_("____________________________________ GDH OS ____________________________________", window);
+    putsf_("________________________________________________________________________________", CYAN, window);
     puts_("\n", window);
 }
 
@@ -22,7 +22,7 @@ void listen(char * command, Window window){
     char c = NULL_;
 
     // Se imprime la leyenda que indica el usuario y el dispositivo
-    putsf_(SHELL_LEGEND, RED, window);
+    putsf_(SHELL_LEGEND, LIGHT_CYAN, window);
 
     //leo la key
     getKey(window, &c);

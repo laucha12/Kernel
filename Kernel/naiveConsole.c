@@ -46,7 +46,6 @@ void ncPrintFD0(char *string)
 
 void ncPrintFD0_Format(char *string, char format)
 {
-	ncPrintFD0("Llegue aca\n");
 	int i;
 	for (i = 0; string[i] != 0; i++)
 		ncPrintFD0Char_Format(string[i], format);
