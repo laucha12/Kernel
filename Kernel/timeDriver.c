@@ -11,52 +11,6 @@ int bcd_decimal(uint8_t hex)
 	return dec;
 }
 
-void convert_weekday(char *buffer, int weekday)
-{
-	switch (weekday)
-	{
-	case 1:
-		buffer[0] = 'M';
-		buffer[1] = 'O';
-		buffer[2] = 'N';
-		break;
-	case 2:
-		buffer[0] = 'T';
-		buffer[1] = 'U';
-		buffer[2] = 'E';
-		break;
-	case 3:
-		buffer[0] = 'W';
-		buffer[1] = 'E';
-		buffer[2] = 'D';
-		break;
-	case 4:
-		buffer[0] = 'T';
-		buffer[1] = 'H';
-		buffer[2] = 'R';
-		break;
-	case 5:
-		buffer[0] = 'F';
-		buffer[1] = 'R';
-		buffer[2] = 'I';
-		break;
-	case 6:
-		buffer[0] = 'S';
-		buffer[1] = 'A';
-		buffer[2] = 'T';
-		break;
-	case 7:
-		buffer[0] = 'S';
-		buffer[1] = 'U';
-		buffer[2] = 'N';
-		break;
-	default:
-		buffer[0] = '-';
-		buffer[1] = '-';
-		buffer[2] = '-';
-		break;
-	}
-}
 
 void time_syscall(char *buffer)
 {
@@ -68,18 +22,17 @@ void time_syscall(char *buffer)
 	int month = bcd_decimal(get_rtc_month());
 	int year = bcd_decimal(get_rtc_year());
 
-	convert_weekday(buffer, weekday);
-	buffer[3] = ' ';
-	itoa(buffer + 4, day, 2);
-	buffer[6] = '/';
-	itoa(buffer + 7, month, 2);
-	buffer[9] = '/';
-	itoa(buffer + 10, year, 4);
-	buffer[14] = ' ';
-	itoa(buffer + 15, hours, 2);
-	buffer[17] = ':';
-	itoa(buffer + 18, minutes, 2);
-	buffer[20] = ':';
-	itoa(buffer + 21, seconds, 2);
-	buffer[23] = '\0';
+
+	itoa(buffer, day, 2);
+	buffer[2] = '/';
+	itoa(buffer + 3, month, 2);
+	buffer[5] = '/';
+	itoa(buffer + 6, year, 2);
+	buffer[8] = ' ';
+	itoa(buffer + 9, hours, 2);
+	buffer[11] = ':';
+	itoa(buffer + 12, minutes, 2);
+	buffer[14] = ':';
+	itoa(buffer + 15, seconds, 2);
+	buffer[17] = '\0';
 }
