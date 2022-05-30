@@ -139,6 +139,7 @@ void infoReg(Window window, int argc, char argv[MAX_ARGUMENT_COUNT][MAX_ARGUMENT
 void primos(Window window, int argc, char argv[MAX_ARGUMENT_COUNT][MAX_ARGUMENT]) {
     if (argc != 0) {
         puts_(INVALID_NUMBER_COMMANDS, window);
+        exit();
         return;
     }
 

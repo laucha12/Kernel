@@ -45,3 +45,6 @@ Userland/0000-sampleCodeModule.elf
 Kernel/kernel.bin
 Kernel/kernel.elf
 .gitignore
+Userland/0000-sampleCodeModule.elf
+Kernel/kernel.elf
+Kernel/kernel.bin
