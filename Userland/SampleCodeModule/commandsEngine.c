@@ -55,8 +55,10 @@ void commandsEngineRunPipe(const char *command, Window window) {
     //sysOpen(RIGHT_WINDOW);
 
     commandsEngineRun(cmd2, RIGHT_WINDOW);
-
+    
     waitProcess();
+    waitEnter();
+
 }
 
 void commandsEngineRun(char *command, Window window) {
