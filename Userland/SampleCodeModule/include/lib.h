@@ -173,6 +173,10 @@ void readRegs(long * buffer);
    * Funcion la cual espera a que terminen todos los procesos para luego seguir ejecutando con la shell
 */
 void waitProcess();
+/*
+   * Funcion la cual espera a un enter ingresado por el usuario
+*/
+void waitEnter();
 
 
 #endif
