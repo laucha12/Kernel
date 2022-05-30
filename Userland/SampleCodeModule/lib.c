@@ -251,3 +251,9 @@ void readRegs(long * buffer){
     //    buffer[i] = array[i];
     //}
 }
+void waitProcess(){
+    while (SysProcesses())
+    {
+    }
+}
+

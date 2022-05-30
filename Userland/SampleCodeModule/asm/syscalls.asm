@@ -10,7 +10,7 @@ GLOBAL sysClose
 GLOBAL sysClearScreen
 GLOBAL sysWriteFormat
 GLOBAL sysReadMem
-
+GLOBAL SysProcesses
 GLOBAL loadSO
 GLOBAL loadProcess
 GLOBAL exit
@@ -232,4 +232,20 @@ sysReadMem:
     mov rsp, rbp    ; Stack frame
     pop rbp         ; Stack frame
 
+    ret
+;------------------------------------------------------
+; Sycall la cual te divide la cantidad de procesos corriendo en un momento
+;
+;--------------------------------------------------------
+;    Retorno la cantidad de procesos
+;------------------------------------------------------
+SysProcesses:
+    push rbp
+    mov rbp,rsp
+
+    mov rax,10
+    int 80h
+
+    mov rsp,rbp
+    pop rbp
     ret
