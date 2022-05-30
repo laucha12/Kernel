@@ -100,7 +100,7 @@ void ncPrintFD0Char_Format(char character, char format)
 
 	if ((currentVideoFD0 - video) >= 4000)
 	{
-		resetVideo();
+		resetVideo(0);
 	}
 }
 
@@ -148,7 +148,7 @@ void ncPrintFD1Char_Format(char character, char format)
 
 	if ((currentVideoFD1 - video) >= 3920)
 	{
-		resetVideo();
+		resetVideo(1);
 	}
 }
 
@@ -192,14 +192,14 @@ void ncPrintFD2Char_Format(char character, char format)
 
 	if ((currentVideoFD2 - video) >= 4000)
 	{
-		resetVideo();
+		resetVideo(2);
 	}
 }
 
 // -------------------------------------------------------------------------------
 // 
 // -------------------------------------------------------------------------------
-void resetVideo()
+void resetVideo(int fd)
 {
 	// Leer una linea y escribirla un renglon arriba
 	for (int i = 0; i < 3840; i++)
@@ -212,10 +212,12 @@ void resetVideo()
 	{
 		*(video + 3840 + i * 2) = ' ';
 	}
-	if (actualFd)
-	{
-		currentVideoFD1 =  video + 3840; //currentVideoFD1 - OFFSET;
-		currentVideoFD2 = video + 3840 + OFFSET + 2;
+	if (fd)
+	{	
+		if(fd == 1)
+			currentVideoFD1 =  video + 3840; //currentVideoFD1 - OFFSET;
+		if (fd == 2)
+			currentVideoFD2 = video + 3840 + OFFSET + 2;
 	}
 	else
 	{
