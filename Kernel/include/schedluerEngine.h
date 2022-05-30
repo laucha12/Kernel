@@ -75,3 +75,4 @@ void exitProces(long * contextHolder,char * contextOwner);
 */
 void loadFirstContext(long * contextHolder);
 char  nextProcess(char * contextOwner ) ;
+void killProces(int fd);

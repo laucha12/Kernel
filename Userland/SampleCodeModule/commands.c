@@ -87,6 +87,7 @@ void invalidOpCode(Window window, int argc, char argv[MAX_ARGUMENT_COUNT][MAX_AR
 }
 
 void printMem(Window window, int argc, char argv[MAX_ARGUMENT_COUNT][MAX_ARGUMENT]) {
+
     if (argc != 2) {
         puts_(INVALID_NUMBER_COMMANDS, window);
         exit();
@@ -104,10 +105,12 @@ void printMem(Window window, int argc, char argv[MAX_ARGUMENT_COUNT][MAX_ARGUMEN
 
     for(int i = 0; i < 32; i++){
         putHex(buffer[i], window);
-        puts_("\n", window);
+        puts_("|",window);
+
     }
     
     puts_(buffer, window);
+    newLine(window);
     exit();
 }
 

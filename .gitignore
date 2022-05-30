@@ -48,3 +48,5 @@ Kernel/kernel.elf
 Userland/0000-sampleCodeModule.elf
 Kernel/kernel.elf
 Kernel/kernel.bin
+Kernel/kernel.bin
+Kernel/kernel.elf

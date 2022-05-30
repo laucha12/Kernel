@@ -23,6 +23,7 @@ extern void sysTime(char * buffer);
 extern void sysOpen(int fd);
 extern void sysClose(int fd);
 extern void exit();
+extern void sysKillProcess(int fd);
 extern void sysReadMem(char * buffer, int * posicionMem, int cant);
 
 extern void sysClearScreen(int fd);

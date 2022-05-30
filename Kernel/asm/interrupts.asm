@@ -16,10 +16,10 @@ GLOBAL _irq03Handler
 GLOBAL _irq04Handler
 GLOBAL _irq05Handler
 GLOBAL _irq06Handler
-
 GLOBAL _exception0Handler
 GLOBAL _exception06Handler
 
+EXTERN killProces
 EXTERN int_21
 EXTERN ncPrintFD0
 EXTERN irqDispatcher
@@ -272,7 +272,10 @@ loadSO:
 	call _sti
 	popFirstTask contextLoading
 	iretq
-
+sysKillProcess:
+	call killProces
+	popState
+	iretq
 ;------------------------------------------------------------------------------------
 ;	syscall la cual devuelve la cantidad de procesos que se corren
 ;------------------------------------------------------------------------------------
@@ -305,6 +308,8 @@ processRunning:
 	je processRunning
 	cmp rax,99					; si es 99 es la de exit
 	je exitSyscall
+	cmp rax,98
+	je sysKillProcess
 	mov rcx,rax					; si es otro entonces voy al switch de C
 	call syscalls						
 	endSoftwareInterrupt						

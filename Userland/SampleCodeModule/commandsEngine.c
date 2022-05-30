@@ -91,7 +91,7 @@ void commandsEngineRun(char *command, Window window) {
             //que tengo que manejar los argumentos, que tambien deben
             //ir copiados sobre la posicion de memoria de la funcion.
             CommandPtr cmd = commands[i].apply;
-            loadProcess(cmd, window, 0, args);
+            loadProcess(cmd, window, argc, args);
             //cmd(window, argc, args); //(por ahora simplemente la llamo)
         }
     }

@@ -256,9 +256,9 @@ void readRegs(long * buffer){
 }
 void waitProcess(){
     
-    while (SysProcesses())
-   {
-  }
+    while (SysProcesses()){
+    
+    }
 }
 
 
@@ -269,7 +269,7 @@ void waitEnter(){
     //leo la key
     getKey(MAIN_WINDOW, &c);
 
-    //Por cada letra, la guardo en el string command y valido que no sea enter, si no, termine con mi comando
+
     while(c != '\n'){
         getKey(MAIN_WINDOW, &c);
     }

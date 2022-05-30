@@ -59,6 +59,23 @@ exit:
     leave
     ret
 
+
+;------------------------------
+; sysKillProcess - hace la syscall de image.png 
+;------------------------------
+; Parametro: el fd del programa a matar
+;------------------------------
+sysKillProcess:
+    push rbp
+    mov rbp,rsp
+
+    mov rax, 98
+    ; rdi -> fd
+    int 80h
+
+    leave
+    ret
+
 ;------------------------------
 ;   Rutina de asm que realiza 
 ;   la syscall write con formato

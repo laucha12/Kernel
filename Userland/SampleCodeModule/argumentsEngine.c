@@ -27,10 +27,14 @@ int argumentsEngineHandle(Window window, char *arguments, char argv[MAX_ARGUMENT
             }
         }
 
+        argv[currentArgument][currentCharacter] = NULL_;
+
+
 
         //si leo tabs o espacio los salteo
         while (arguments[i] != NULL_ && (arguments[i] == TAB || arguments[i] == SPACE))
             i++;
+        
 
         //aca agrego uno al numero de argumentos porque o termine (y recordar que
         //empeze en cero) o
