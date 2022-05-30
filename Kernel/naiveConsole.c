@@ -100,7 +100,7 @@ void ncPrintFD0Char_Format(char character, char format)
 
 	if ((currentVideoFD0 - video) >= 4000)
 	{
-		resetVideo();
+		resetVideo(0);
 	}
 }
 
@@ -199,7 +199,7 @@ void ncPrintFD2Char_Format(char character, char format)
 // -------------------------------------------------------------------------------
 // 	reset video
 // -------------------------------------------------------------------------------
-void resetVideo()
+void resetVideo(int fd)
 {
 	// Leer una linea y escribirla un renglon arriba
 	for (int i = 0; i < 3840; i++)
