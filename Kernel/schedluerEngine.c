@@ -3,17 +3,32 @@
 #include <naiveConsole.h>
 #include <interrupts.h>
 
-static int ticks = 0;
+
 
 void initialiseContextSchedluerEngine() {
     for (int i = 0; i < MAX_PROCESSES; i++) procesos[i].flagRunning = 0;
 }
 
-void switchContext(long * contextHolder, char * contextOwner) {
+int toSwitch() {
+    // Aca implementamos la manera mas basica de switchear los procesos 
+    // en base a los timer ticks. El mismo numbero de timer ticks para
+    // todos los procesos. En si aca se podria crear una tabla adicional
+    // con los timer tick que cada comando deberia esperar para ser
+    //switcheado
     
     ticks++;
-    if(ticks % TICKS != 0) 
-        return;
+
+    if(ticks == TICKS) {
+        ticks = 0;
+        return 1;
+    }
+
+    return 0;
+}
+
+void switchContext(long * contextHolder, char * contextOwner) {
+    
+    if(!toSwitch()) return;
 
     if(processesRunning == 0) return;
     pushContext(contextHolder, *contextOwner);
@@ -21,6 +36,8 @@ void switchContext(long * contextHolder, char * contextOwner) {
     popContext(contextHolder, *contextOwner);
     return;
 }
+
+
 
 char  nextProcess(char * contextOwner ) {
     //Aca planteamos el algoritmo de schedluing, en si implementamos el mas simple

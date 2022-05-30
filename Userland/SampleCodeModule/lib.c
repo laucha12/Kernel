@@ -2,6 +2,9 @@
 #include "include/Windows.h"
 #include <stdint.h>
 
+int integerOverflowAddition(int a, int b) {
+    return !(0 < (a + b) && (a + b)  < MAX_INT- 1);
+}
 
 int atoi_(char * str) {
   int result;

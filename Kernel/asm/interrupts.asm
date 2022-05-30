@@ -343,8 +343,8 @@ processRunning:
 
 	call copyRegs				; Llamo a la macro que me copia los registros en regsArray
 	mov rdi, %1 				; Pasaje de 1 parametro -> Tipo de excepciom
-	mov rsi, regsArray			; Pasaje de 2 parametro - > Arreglo de registros asi los imprimo desde C
-	mov rdx,contextOwner
+	mov rsi, regsArray			; Pasaje de 2 parametro -> Arreglo de registros asi los imprimo desde C
+	mov rdx, contextOwner		; Pasaje de 3 paranetri -> contexto actual (fd actual)
 	call exceptionDispatcher	; Llamo al que maneja la excepcion en particular
 	jmp exitSyscall
 

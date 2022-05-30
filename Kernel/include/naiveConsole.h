@@ -27,6 +27,17 @@
 
 
 /*
+    Funcion la cual imprime en el fd indicado lo que 
+    hay en String debe estar pues la usa al inicializar 
+    el kernel.
+
+    Params: const char * string lo que se va a imprimir 
+            fd
+    Retunr: void
+*/
+void ncPrintAtFD(const char *string, int fd);
+
+/*
     Funcion la cual imprime en el FD0 lo que hay en String
     debe estar pues la usa al inicializar el kernel
 
@@ -40,7 +51,7 @@ void ncPrint(const char * string);
     Params: char caracter
     Return: void
 */
-void ncPrintChar(char character);
+void ncPrintChar(char character, int fd);
 /*
     Funcion la cual te genera una nueva linea en el FD0
 
@@ -55,6 +66,9 @@ void ncNewline();
     Return: void
 */
 void ncPrintDec(uint64_t value);
+
+
+void ncPrintDecAtFD(uint64_t value, int fd);
 /*
     Funcion la cual te imprime un numero hexa
 
@@ -62,6 +76,9 @@ void ncPrintDec(uint64_t value);
     Return: void
 */
 void ncPrintHex(uint64_t value);
+
+void ncPrintHexAtFD(uint64_t value, int fd);
+
 /*
     Funcion la cual te imprime un numero binario
 
@@ -69,6 +86,9 @@ void ncPrintHex(uint64_t value);
     Return: void
 */
 void ncPrintBin(uint64_t value);
+
+void ncPrintBinAtFD(uint64_t value, int fd);
+
 /*
     Funcion la cual te imprime un numero en cualquier base
 
