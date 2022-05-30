@@ -14,6 +14,7 @@ GLOBAL SysProcesses
 GLOBAL loadSO
 GLOBAL loadProcess
 GLOBAL exit
+GLOBAL sysKillProcess
 section .text
 
 

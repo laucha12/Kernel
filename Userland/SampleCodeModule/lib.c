@@ -256,8 +256,18 @@ void readRegs(long * buffer){
 }
 void waitProcess(){
     
+    char c;
+    //leo la key
+    getKey(MAIN_WINDOW, &c);
+
     while (SysProcesses()){
     
+    if(c == '1')
+        sysKillProcess(LEFT_WINDOW);
+    else if(c == '2')
+        sysKillProcess(RIGHT_WINDOW);;
+    
+    getKey(MAIN_WINDOW, &c);
     }
 }
 
