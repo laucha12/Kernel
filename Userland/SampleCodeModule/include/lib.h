@@ -32,6 +32,7 @@ extern void sysRegs(char * buffer);
 extern void sysMemFrom(char * buffer, int * from);*/
 extern void generateInvalidOpCode();
 extern void divideByZeroAsm();
+extern int SysProcesses();
 
 
 /*
@@ -168,8 +169,10 @@ void readMem(char * buffer, int * from, int cant);
  *  "R8 ", "R9 ", "R10", "R11", "R12", "R13", "R14", "R15"};
  */
 void readRegs(long * buffer);
-
-
+/*
+   * Funcion la cual espera a que terminen todos los procesos para luego seguir ejecutando con la shell
+*/
+void waitProcess();
 
 
 #endif

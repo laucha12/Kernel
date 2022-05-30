@@ -264,17 +264,20 @@ loadtaskHandler:
 ;-------------------------------------------------------------------------
 loadSO:
 	popState
-	mov  r10,[aux]
-	inc r10
-	mov  [aux],r10
+
 	loadTask contextLoading 	; loadeo la task recibida como primer parametro
 	mov rdi, contextLoading		; copio el puntero a la posicion donde tengo el contexto de 
 								; primer contexto
 	call loadFirstContext
 	call _sti
 	popFirstTask contextLoading
-	;popContext contextLoading
 	iretq
+
+;------------------------------------------------------------------------------------
+;	syscall la cual devuelve la cantidad de procesos que se corren
+;------------------------------------------------------------------------------------
+; @argumentos:
+;-----------------------------------------------------------------------------------
 processRunning:
 	popState
 	mov rax,[aux]

@@ -21,6 +21,7 @@ void commandsEngineHandle(char *command, Window window) {
 
         //le digo al engine de comandos que lo corra en la window
     else commandsEngineRun(command, window);
+    waitProcess();
 }
 
 
@@ -47,12 +48,15 @@ void commandsEngineRunPipe(const char *command, Window window) {
 
     //copio hasta el final de la string al segundo comando
     while (command[i] != NULL_) cmd2[dim2++] = command[i++];
+    sysClearScreen(MAIN_WINDOW);
 
-   // sysOpen(LEFT_WINDOW);
+    //sysOpen(LEFT_WINDOW);
     commandsEngineRun(cmd1, LEFT_WINDOW);
-
     //sysOpen(RIGHT_WINDOW);
+
     commandsEngineRun(cmd2, RIGHT_WINDOW);
+
+    waitProcess();
 }
 
 void commandsEngineRun(char *command, Window window) {
@@ -86,7 +90,6 @@ void commandsEngineRun(char *command, Window window) {
             //ir copiados sobre la posicion de memoria de la funcion.
             CommandPtr cmd = commands[i].apply;
             loadProcess(cmd, window, 0, args);
-            
             //cmd(window, argc, args); //(por ahora simplemente la llamo)
         }
     }

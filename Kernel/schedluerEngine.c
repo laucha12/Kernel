@@ -44,9 +44,9 @@ char  nextProcess(char * contextOwner ) {
     //el Round Robin. La clave del while este es que siempre voy a a tener un proceso
     //corriendo, la shell (funciona como nuestro proceso idle)
 
-    char  next =  (*contextOwner + 1) % processesRunning;
+    char  next =  (*contextOwner + 1) % MAX_PROCESSES;
     while(!procesos[next].flagRunning) {
-        next =  ((*contextOwner) + 1) % processesRunning;
+        next =  (next +  1) % MAX_PROCESSES;
     }
     return next;
 }
