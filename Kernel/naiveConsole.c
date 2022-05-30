@@ -148,7 +148,7 @@ void ncPrintFD1Char_Format(char character, char format)
 
 	if ((currentVideoFD1 - video) >= 3920)
 	{
-		resetVideo();
+		resetVideoFD1();
 	}
 }
 
@@ -192,12 +192,12 @@ void ncPrintFD2Char_Format(char character, char format)
 
 	if ((currentVideoFD2 - video) >= 4000)
 	{
-		resetVideo();
+		resetVideoFD2();
 	}
 }
 
 // -------------------------------------------------------------------------------
-// 
+// 	reset video
 // -------------------------------------------------------------------------------
 void resetVideo()
 {
@@ -212,15 +212,55 @@ void resetVideo()
 	{
 		*(video + 3840 + i * 2) = ' ';
 	}
-	if (actualFd)
-	{
-		currentVideoFD1 =  video + 3840; //currentVideoFD1 - OFFSET;
-		currentVideoFD2 = video + 3840 + OFFSET + 2;
-	}
-	else
-	{
+	//if (actualFd)
+	//{
+	//	currentVideoFD1 =  video + 3840; //currentVideoFD1 - OFFSET;
+	//	currentVideoFD2 = video + 3840 + OFFSET + 2;
+	//}
+	//else
+	//{
 		currentVideoFD0 = currentVideoFD0 - COLUMS;
+	//}
+}
+
+void resetVideoFD1()
+{
+
+	// Leer una linea y escribirla un renglon arriba
+	for (int i = 0; i < 3840; i++)
+	{
+		if(i % 160 < OFFSET)
+			*(video + i) = *(video + i + COLUMS);
 	}
+	
+	// Limpio la ultima linea que sera donde comienza a escribir
+	for (int i = 0; i < OFFSET; i++)
+	{
+		if(i % 160 < OFFSET)
+			*(video + 3840 + i * 2) = ' ';
+	}
+	
+	currentVideoFD1 =  video + 3840; //currentVideoFD1 - OFFSET;
+
+}
+
+void resetVideoFD2()
+{
+	// Leer una linea y escribirla un renglon arriba
+	for (int i = 0; i < 3840; i++)
+	{
+		if(i % 160 >= OFFSET)
+			*(video + i) = *(video + i + COLUMS);
+	}
+	
+	// Limpio la ultima linea que sera donde comienza a escribir
+	for (int i = 0; i < OFFSET; i++)
+	{
+		if(i % 160 >= OFFSET)
+			*(video + 3840 + i * 2) = ' ';
+	}
+	
+	currentVideoFD2 = video + 3840 + OFFSET + 2;
 }
 
 // -------------------------------------------------------------------------------
@@ -314,6 +354,9 @@ void ncPrintBase(uint64_t value, uint32_t base)
 	ncPrint(buffer);
 }
 
+//--------------------------------------------------------------------------
+//	Clear
+//--------------------------------------------------------------------------
 void ncClear()
 {
 	int i;

@@ -21,6 +21,7 @@ void printUnos(Window window, int argc, char argv[MAX_ARGUMENT_COUNT][MAX_ARGUME
 void man(Window window, int argc, char argv[MAX_ARGUMENT_COUNT][MAX_ARGUMENT]) {
     if(argc != 2) {
         puts_(INVALID_NUMBER_COMMANDS, window);
+        exit();
         return;
     }
 /*
@@ -36,6 +37,7 @@ void man(Window window, int argc, char argv[MAX_ARGUMENT_COUNT][MAX_ARGUMENT]) {
 void help(Window window, int argc, char argv[MAX_ARGUMENT_COUNT][MAX_ARGUMENT]) {
     if (argc != 0) {
         puts_(INVALID_NUMBER_COMMANDS, window);
+        exit();
         return;
     }
 
@@ -48,6 +50,7 @@ void help(Window window, int argc, char argv[MAX_ARGUMENT_COUNT][MAX_ARGUMENT]) 
 void diaYHora(Window window, int argc, char argv[MAX_ARGUMENT_COUNT][MAX_ARGUMENT]) {
     if (argc != 0) {
         puts_(INVALID_NUMBER_COMMANDS, window);
+        exit();
         return;
     }
 
@@ -62,6 +65,7 @@ void diaYHora(Window window, int argc, char argv[MAX_ARGUMENT_COUNT][MAX_ARGUMEN
 void divideByZero(Window window, int argc, char argv[MAX_ARGUMENT_COUNT][MAX_ARGUMENT]) {
     if (argc != 0) {
         puts_(INVALID_NUMBER_COMMANDS, window);
+        exit();
         return;
     }
     puts_("Intentamos dividir por cero...", window);
@@ -73,6 +77,7 @@ void divideByZero(Window window, int argc, char argv[MAX_ARGUMENT_COUNT][MAX_ARG
 void invalidOpCode(Window window, int argc, char argv[MAX_ARGUMENT_COUNT][MAX_ARGUMENT]) {
     if (argc != 0) {
         puts_(INVALID_NUMBER_COMMANDS, window);
+        exit();
         return;
     }
     puts_("Intentamos un invalid op code...", window);
@@ -111,6 +116,7 @@ extern long * getRegs();
 void infoReg(Window window, int argc, char argv[MAX_ARGUMENT_COUNT][MAX_ARGUMENT]) {
     if (argc != 0) {
         puts_(INVALID_NUMBER_COMMANDS, window);
+        exit();
         return;
     }
 
@@ -159,18 +165,19 @@ void primos(Window window, int argc, char argv[MAX_ARGUMENT_COUNT][MAX_ARGUMENT]
 void fibonacci(Window window, int argc, char argv[MAX_ARGUMENT_COUNT][MAX_ARGUMENT]) {
     if (argc != 0) {
         puts_(INVALID_NUMBER_COMMANDS, window);
+        exit();
         return;
     }
 
-    int previousToLast = 0;
+    long previousToLast = 0;
     putInteger(previousToLast, window);
     newLine(window);
     
-    int last = 1;
+    long last = 1;
     putInteger(last, window);
     newLine(window);
 
-    int current, i = 2;
+    long current, i = 2;
 
     while(!integerOverflowAddition(last, current)) {
         current = last + previousToLast;

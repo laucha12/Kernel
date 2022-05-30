@@ -7,7 +7,7 @@
 #define RSP 7               // defino el indice donde guardo el RSP en mi arreglo de registros
 #define SHELL 0
 
-#define TICKS 10
+#define TICKS 1
 
 /*
  * Definido el formato donde voy a almacenar los contextos de los diferentes proyectos que van a correr,
