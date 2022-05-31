@@ -71,6 +71,12 @@ void killProces(int pid){
     procesos[pid].flagRunning = 0;
     processesRunning -= 1;
 }
+void reloadProcess(int pid){
+    if(!procesos[pid].flagRunning){
+        procesos[pid].flagRunning = 1;
+        processesRunning += 1;
+    }
+}
 void loadFirstContext(long * contextHolder){
     if (processesRunning == MAX_PROCESSES) return;
     pushContext(contextHolder, processesRunning);

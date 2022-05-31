@@ -19,6 +19,7 @@ GLOBAL _irq06Handler
 GLOBAL _exception0Handler
 GLOBAL _exception06Handler
 
+EXTERN reloadProcess
 EXTERN killProces
 EXTERN int_21
 EXTERN ncPrintFD0
@@ -272,8 +273,28 @@ loadSO:
 	call _sti
 	popFirstTask contextLoading
 	iretq
+;---------------------------------------------
+;	Syscall la cual te termina la ejecucion de un proceso
+;---------------------------------------------
+;	@arguments: PID
+;----------------------------------------------
 sysKillProcess:
+	mov  r10,[aux]
+	dec r10
+	mov  [aux],r10
 	call killProces
+	popState
+	iretq
+;----------------------------------------------
+;	Syscall la cual reloadea el proceso recibido por rdi
+;----------------------------------------------
+;	@argumentos: PID
+;-----------------------------------------------
+sysReloadProcess:
+	mov  r10,[aux]
+	inc r10
+	mov  [aux],r10
+	call reloadProcess
 	popState
 	iretq
 ;------------------------------------------------------------------------------------
@@ -285,6 +306,7 @@ processRunning:
 	popState
 	mov rax,[aux]
 	iretq
+
 ;-------------------------------------------------------------------------------
 ; Recibe un numero que determina el numero de interrupcion por hardware y mapea
 ; a la funcion que maneja esa interrupcion
@@ -308,8 +330,10 @@ processRunning:
 	je processRunning
 	cmp rax,99					; si es 99 es la de exit
 	je exitSyscall
-	cmp rax,98
+	cmp rax,98					; si es 98 es la syscall de exitear un process
 	je sysKillProcess
+	cmp rax,97					; si es la 97 es la syscall de reloudear un proceso
+	je sysReloadProcess		
 	mov rcx,rax					; si es otro entonces voy al switch de C
 	call syscalls						
 	endSoftwareInterrupt						

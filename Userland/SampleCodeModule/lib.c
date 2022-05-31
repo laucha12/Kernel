@@ -260,18 +260,23 @@ void waitProcess(){
     //leo la key
     getKey(MAIN_WINDOW, &c);
 
-    while (SysProcesses()){
+    while ( c != '\n'){
     
     if(c == '1')
         sysKillProcess(LEFT_WINDOW);
     else if(c == '2')
         sysKillProcess(RIGHT_WINDOW);;
+    if (c == '3')
+        sysReloadProcess(LEFT_WINDOW);
+    if (c == '4')
+        sysReloadProcess(RIGHT_WINDOW);
+    
     
     getKey(MAIN_WINDOW, &c);
     }
 }
 
-
+/*
 void waitEnter(){
     
 
@@ -286,4 +291,4 @@ void waitEnter(){
 
     sysClearScreen(MAIN_WINDOW);
 
-}
+}*/

@@ -15,6 +15,7 @@ GLOBAL loadSO
 GLOBAL loadProcess
 GLOBAL exit
 GLOBAL sysKillProcess
+GLOBAL sysReloadProcess
 section .text
 
 
@@ -262,6 +263,21 @@ SysProcesses:
     mov rbp,rsp
 
     mov rax,10
+    int 80h
+
+    mov rsp,rbp
+    pop rbp
+    ret
+;--------------------------------------------------------
+;   Sycall la cual mandandole el PID de un proceso lo relodea
+;---------------------------------------------------------
+;   @argumentos: int PID
+;--------------------------------------------------------
+sysReloadProcess:
+    push rbp
+    mov rbp,rsp
+
+    mov rax,97
     int 80h
 
     mov rsp,rbp

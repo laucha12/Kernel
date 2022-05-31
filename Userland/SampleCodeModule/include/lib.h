@@ -25,7 +25,7 @@ extern void sysClose(int fd);
 extern void exit();
 extern void sysKillProcess(int fd);
 extern void sysReadMem(char * buffer, int * posicionMem, int cant);
-
+extern void sysReloadProcess(int PID);
 extern void sysClearScreen(int fd);
 extern void sysWriteFormat(int fd, char * buffer, char format);
 /*
@@ -178,6 +178,5 @@ void waitProcess();
    * Funcion la cual espera a un enter ingresado por el usuario
 */
 void waitEnter();
-
 
 #endif

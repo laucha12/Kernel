@@ -57,7 +57,7 @@ void commandsEngineRunPipe(const char *command, Window window) {
     commandsEngineRun(cmd2, RIGHT_WINDOW);
     
     waitProcess();
-    waitEnter();
+  //  waitEnter();
 
 }
 

@@ -75,4 +75,15 @@ void exitProces(long * contextHolder,char * contextOwner);
 */
 void loadFirstContext(long * contextHolder);
 char  nextProcess(char * contextOwner ) ;
-void killProces(int fd);
+/*
+    * Funcion la cual cierra un proceso
+
+    *Args: int PID
+*/
+void killProces(int pid);
+/*
+    *Funcion la cual hace que vuelva a correr un proceso
+
+    *Args : int PID
+*/
+void reloadProcess(int pid);
