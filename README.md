@@ -9,7 +9,7 @@ The main goal of the project is in the design, clearly defining a kernel and use
 
 ### Instalation:
 
-`
+```
 #Dependecies
 sudo apt-get update
 sudo apt install qemu docker
@@ -25,4 +25,4 @@ sudo usermod -aG docker $USER
 docker run hello-world
 sudo chmod 666 /var/run/docker.sock
 docker run -v ${PWD}:/root --security-opt seccomp:unconfined -ti agodio/itba-so:1.0
-`
+```
