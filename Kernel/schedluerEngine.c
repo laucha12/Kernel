@@ -66,18 +66,23 @@ int exitProces(long * contextHolder,char * contextOwner){
     processesRunning -= 1;
     *contextOwner = nextProcess(contextOwner);
     popContext(contextHolder, *contextOwner);
+    return processesRunning - 1;
+
 }
 int killProces(int pid){
     if(procesos[pid].flagRunning){
     procesos[pid].flagRunning = 0;
     processesRunning -= 1;
     }
+    return processesRunning - 1;
+
 }
 int reloadProcess(int pid){
     if(!procesos[pid].flagRunning){
         procesos[pid].flagRunning = 1;
         processesRunning += 1;
     }
+    return processesRunning - 1;
 }
 void loadFirstContext(long * contextHolder){
     if (processesRunning == MAX_PROCESSES) return;
