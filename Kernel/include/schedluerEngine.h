@@ -1,3 +1,5 @@
+#ifndef SCHEDLUER_ENGINE_H
+#define SCHEDLUER_ENGINE_H
 
 #define MAX_PROCESSES 3
 
@@ -87,3 +89,5 @@ void killProces(int pid);
     *Args : int PID
 */
 void reloadProcess(int pid);
+
+#endif

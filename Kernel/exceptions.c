@@ -4,6 +4,8 @@
 #define INVALID_OPCODE_ID 6
 #define REGS_CANT 16
 
+extern void killProces(int fd);
+
 static void zero_division(long regs[],char fd);
 static void invalid_opcode(long regs[],char fd);
 
@@ -41,16 +43,17 @@ void exceptionDispatcher(int exception, long regs[],char * fd) {
 	default:
 		break;
 	}
-	ncPrintFD0("Falta implementar retorno al proceso/shell");
-	while(1);
+	killProces(*fd);
+	//ncPrintFD0("Falta implementar retorno al proceso/shell");
+	//while(1);
 }
 
 static void zero_division(long regs[],char fd) {
-	ncPrintAtFD("\n---------------------------EXCEPTION - DIVIDE BY ZERO---------------------------\n",0);
+	ncPrintAtFD("\n-- EXCEPTION - DIVIDE BY ZERO --n",0);
 	reportRegs(regs, fd);
 }
 
 static void invalid_opcode(long regs[],char fd) {
-	ncPrintAtFD("\n---------------------------EXCEPTION - INVALID OPCODE---------------------------\n", 0);
+	ncPrintAtFD("\n-- EXCEPTION - INVALID OPCODE --/n", 0);
 	reportRegs(regs, fd);
 }
