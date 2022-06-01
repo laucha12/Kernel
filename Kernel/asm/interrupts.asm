@@ -226,14 +226,12 @@ initialiseContextSchedluer:
 ;-------------------------------------------------------------------------------
 exitSyscall:
 	popState
-	mov  r10,[aux]
-	dec r10
-	mov  [aux],r10
 	mov rdi,contextHolder				; paso el primer parametro para copiar el siguiente contexto
 										; al exitear el proceso actual
 	mov rsi,contextOwner			    ; paso el segundo parametro para actualizar duenio del contexto
 										; que estoy copiando al context holder
 	call exitProces						; llamo a la funcion de C que maneja el exit
+	mov [aux],rax
 	mov al, 20h							; signal pic EOI
 	out 20h, al							; signal pic EOI
 	popContext contextHolder			; actualizo el contexto actual al del proximo proceso a ejecutar
@@ -249,11 +247,9 @@ exitSyscall:
 loadtaskHandler:
 	
 	loadTask contextLoading 	; rsp+16 estan los
-	mov  r10,[aux]
-	inc r10
-	mov  [aux],r10
 	mov rdi, contextLoading
 	call loadFirstContext
+	mov [aux],rax
 	popState
 	call _sti
 	iretq
@@ -279,10 +275,8 @@ loadSO:
 ;	@arguments: PID
 ;----------------------------------------------
 sysKillProcess:
-	mov  r10,[aux]
-	dec r10
-	mov  [aux],r10
 	call killProces
+	mov [aux],rax
 	popState
 	iretq
 ;----------------------------------------------
@@ -291,10 +285,8 @@ sysKillProcess:
 ;	@argumentos: PID
 ;-----------------------------------------------
 sysReloadProcess:
-	mov  r10,[aux]
-	inc r10
-	mov  [aux],r10
 	call reloadProcess
+	mov [aux],rax
 	popState
 	iretq
 ;------------------------------------------------------------------------------------

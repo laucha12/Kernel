@@ -68,7 +68,7 @@ static void popContext(long * contextHolder, char contextOwner);
 /*
     * Funcion que recibe el numero de duenio del contexto para sacarlo del array
 */
-void exitProces(long * contextHolder,char * contextOwner);
+int exitProces(long * contextHolder,char * contextOwner);
 /*
     * Funcion la cual va a recibir el contexto para iniciar un nuevo proceso
     * obs: si ya hay mas de 2 procesos no se lo agrega
@@ -80,10 +80,10 @@ char  nextProcess(char * contextOwner ) ;
 
     *Args: int PID
 */
-void killProces(int pid);
+int killProces(int pid);
 /*
     *Funcion la cual hace que vuelva a correr un proceso
 
     *Args : int PID
 */
-void reloadProcess(int pid);
+int reloadProcess(int pid);

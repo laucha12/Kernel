@@ -61,17 +61,19 @@ static void popContext(long * contextHolder, char  contextOwner){
        contextHolder[i] = procesos[(int)contextOwner].context.registers[i];
 }
 
-void exitProces(long * contextHolder,char * contextOwner){
+int exitProces(long * contextHolder,char * contextOwner){
     procesos[(int)(*contextOwner)].flagRunning = 0;
     processesRunning -= 1;
     *contextOwner = nextProcess(contextOwner);
     popContext(contextHolder, *contextOwner);
 }
-void killProces(int pid){
+int killProces(int pid){
+    if(procesos[pid].flagRunning){
     procesos[pid].flagRunning = 0;
     processesRunning -= 1;
+    }
 }
-void reloadProcess(int pid){
+int reloadProcess(int pid){
     if(!procesos[pid].flagRunning){
         procesos[pid].flagRunning = 1;
         processesRunning += 1;
