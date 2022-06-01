@@ -6,6 +6,8 @@
 
 extern void killProces(int fd);
 
+extern void _hlt();
+
 static void zero_division(long regs[],char fd);
 static void invalid_opcode(long regs[],char fd);
 
@@ -32,28 +34,29 @@ void exceptionDispatcher(int exception, long regs[],char * fd) {
 	fdClear(*fd);
 	switch (exception)
 	{
-	case ZERO_EXCEPTION_ID:
-		zero_division(regs,*fd);
-		break;
-	
-	case INVALID_OPCODE_ID:
-		invalid_opcode(regs,*fd);
-		break;
+		case ZERO_EXCEPTION_ID:
+			zero_division(regs,*fd);
+			break;
+		
+		case INVALID_OPCODE_ID:
+			invalid_opcode(regs,*fd);
+			break;
 
-	default:
-		break;
+		default:
+			break;
 	}
-	killProces(*fd);
+	killProces(*fd + 1);
+	_hlt();
 	//ncPrintFD0("Falta implementar retorno al proceso/shell");
 	//while(1);
 }
 
 static void zero_division(long regs[],char fd) {
-	ncPrintAtFD("\n-- EXCEPTION - DIVIDE BY ZERO --n",0);
+	ncPrintAtFD("\n-- EXCEPTION - DIVIDE BY ZERO --n",fd);
 	reportRegs(regs, fd);
 }
 
 static void invalid_opcode(long regs[],char fd) {
-	ncPrintAtFD("\n-- EXCEPTION - INVALID OPCODE --/n", 0);
+	ncPrintAtFD("\n-- EXCEPTION - INVALID OPCODE --/n", fd);
 	reportRegs(regs, fd);
 }

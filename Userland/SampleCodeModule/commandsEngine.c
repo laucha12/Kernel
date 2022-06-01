@@ -21,7 +21,7 @@ void commandsEngineHandle(char *command, Window window) {
 
         //le digo al engine de comandos que lo corra en la window
     else commandsEngineRun(command, window);
-    waitProcess();
+    waitProcessMain();
 }
 
 
@@ -56,7 +56,7 @@ void commandsEngineRunPipe(const char *command, Window window) {
 
     commandsEngineRun(cmd2, RIGHT_WINDOW);
     
-    waitProcess();
+    waitProcessPipe();
   //  waitEnter();
 
 }

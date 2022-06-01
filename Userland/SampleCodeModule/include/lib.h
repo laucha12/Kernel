@@ -179,4 +179,8 @@ void waitProcess();
 */
 void waitEnter();
 
+void waitProcessPipe();
+
+void waitProcessMain();
+
 #endif
