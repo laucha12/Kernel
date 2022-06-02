@@ -361,7 +361,6 @@ processRunning:
 %macro exceptionHandler 1
 	
 	pushState
-
 	call copyRegs				; Llamo a la macro que me copia los registros en regsArray
 	mov rdi, %1 				; Pasaje de 1 parametro -> Tipo de excepciom
 	mov rsi, regsArray			; Pasaje de 2 parametro -> Arreglo de registros asi los imprimo desde C
@@ -369,7 +368,6 @@ processRunning:
 	call exceptionDispatcher	; Llamo al que maneja la excepcion en particular
 	jmp exitSyscall
 
-	; !! Esto esta mal, hay que sentarse a ver como implementamos la vuelta al proceso/shell
 	;mov rax, [rsp]					; Paso a RAX la copia del RIP donde ocurrio la excepcion
 	;inc rax							; Incremento el RIP en uno, para que continue con la ejecuccion del programa
 	;mov [rsp], rax					; Actualizo el RIP en el stack (Donde se saltara)
@@ -377,7 +375,8 @@ processRunning:
 
 
 ;--------------------------------------------------------
-;
+; TODO ESTO SE PUEDE MEJORAR YA QUE TENEMOS UNA FUNCION QUE 
+; HACE LO MISMO
 ;--------------------------------------------------------
 ; Argumentos 
 ;--------------------------------------------------------

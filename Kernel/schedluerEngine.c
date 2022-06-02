@@ -63,18 +63,16 @@ static void popContext(long * contextHolder, char  contextOwner){
 }
 
 int exitProces(long * contextHolder,char * contextOwner){
-    procesos[(int)(*contextOwner)].flagRunning = 0;
-    processesRunning -= 1;
+    killProces(*contextOwner);
     *contextOwner = nextProcess(contextOwner);
     popContext(contextHolder, *contextOwner);
-    return processesRunning - 1;
+    return processesRunning;
 
 }
 int killProces(int pid){
     if(procesos[pid].flagRunning){
         procesos[pid].flagRunning = 0;
-        processesRunning -= 1;
-        
+        processesRunning -= 1;   
     }
     
     return processesRunning;
@@ -91,6 +89,14 @@ void loadFirstContext(long * contextHolder){
     pushContext(contextHolder, processesRunning);
     procesos[processesRunning].context.registers[RSP] = (procesos[processesRunning].stackFrame + MAX_STACK -1);
     procesos[processesRunning].flagRunning = 1;
+    /*
+        Lo que hago en la siguiente linea es tomar el valor guardado en RDI para tomar su primer parametro
+        el cual por la firma de cada una de las funciones es el FD para luego utilizarlo
+    */
+    procesos[processesRunning].fileDescriptor = procesos[processesRunning].context.registers[RDI];
     popContext(contextHolder, processesRunning);
     processesRunning += 1;
+}
+int getFD(char contexOwner){
+    return procesos[contexOwner].fileDescriptor;
 }
