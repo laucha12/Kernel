@@ -20,8 +20,9 @@ void commandsEngineHandle(char *command, Window window) {
     if (isPipeCommand(command)) commandsEngineRunPipe(command, window);
 
         //le digo al engine de comandos que lo corra en la window
-    else commandsEngineRun(command, window);
-    waitProcessMain();
+    else {commandsEngineRun(command, window);
+        waitProcessMain();
+        }
 }
 
 
