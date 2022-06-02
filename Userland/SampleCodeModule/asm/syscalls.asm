@@ -63,7 +63,7 @@ exit:
 
 
 ;------------------------------
-; sysKillProcess - hace la syscall de image.png 
+; sysKillProcess - hace la syscall de matar un proceso
 ;------------------------------
 ; Parametro: el fd del programa a matar
 ;------------------------------
@@ -253,8 +253,7 @@ sysReadMem:
 
     ret
 ;------------------------------------------------------
-; Sycall la cual te divide la cantidad de procesos corriendo en un momento
-;
+; Sycall la cual te devuelve la cantidad de procesos corriendo en un momento
 ;--------------------------------------------------------
 ;    Retorno la cantidad de procesos
 ;------------------------------------------------------
