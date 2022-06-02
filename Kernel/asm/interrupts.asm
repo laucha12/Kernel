@@ -360,49 +360,14 @@ processRunning:
 ;--------------------------------------------------------
 %macro exceptionHandler 1
 	
-	pushState
-
-	call copyRegs				; Llamo a la macro que me copia los registros en regsArray
+	pushContext regsArray
 	mov rdi, %1 				; Pasaje de 1 parametro -> Tipo de excepciom
 	mov rsi, regsArray			; Pasaje de 2 parametro -> Arreglo de registros asi los imprimo desde C
 	mov rdx, contextOwner		; Pasaje de 3 paranetri -> contexto actual (fd actual)
 	call exceptionDispatcher	; Llamo al que maneja la excepcion en particular
+	pushState
 	jmp exitSyscall
-
-	; !! Esto esta mal, hay que sentarse a ver como implementamos la vuelta al proceso/shell
-	;mov rax, [rsp]					; Paso a RAX la copia del RIP donde ocurrio la excepcion
-	;inc rax							; Incremento el RIP en uno, para que continue con la ejecuccion del programa
-	;mov [rsp], rax					; Actualizo el RIP en el stack (Donde se saltara)
 %endmacro	
-
-
-;--------------------------------------------------------
-;
-;--------------------------------------------------------
-; Argumentos 
-;--------------------------------------------------------
-copyRegs:
-
-	mov [regsArray], rax
-	mov [regsArray + 8], rbx
-	mov [regsArray + 16], rcx
-	mov [regsArray + 24], rdx
-	mov [regsArray + 32], rsi
-	mov [regsArray + 40], rdi
-	mov [regsArray + 48], rbp
-	mov [regsArray + 56], rsp 
-	mov [regsArray + 64], r8
-	mov [regsArray + 72], r9
-	mov [regsArray + 80], r10
-	mov [regsArray + 88], r11
-	mov [regsArray + 96], r12
-	mov [regsArray + 104], r13
-	mov [regsArray + 112], r14
-	mov [regsArray + 120], r15
-	mov rax, [rsp + 8]					; Paso a RAX la copia del RIP donde ocurrio la excepcion
-	mov [regsArray + 128], rax		; En la ultima posicion del Arreglo pongo el RIP
-	
-	ret
 
 
 ;-------------------------------------------------------------------------------
@@ -607,4 +572,4 @@ SECTION .bss
 	;	Arreglo que guarda una copia de los registros 
 	;	al momento de una excepcion.
 	;-----------------------------------------------------
-	regsArray resq 16
+	regsArray resq 18

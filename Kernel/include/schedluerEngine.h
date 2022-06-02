@@ -7,6 +7,7 @@
 #define REGISTER_COUNT 18
 
 #define RSP 7               // defino el indice donde guardo el RSP en mi arreglo de registros
+#define RDI 5               // defino el indice en donde guardo el registro RDI
 #define SHELL 0
 
 #define TICKS 1
@@ -25,6 +26,7 @@ typedef struct {
 typedef struct {
     Context context;
     int flagRunning;
+    int fileDescriptor;
     char stackFrame[MAX_STACK];
 } Process;
           
@@ -89,5 +91,13 @@ int killProces(int pid);
     *Args : int PID
 */
 int reloadProcess(int pid);
+/*
 
+    *Funcion la cual devuelve el FD de un proceso segun su PID
+
+    * Args = int pid
+    *Return = int FD
+
+*/
+int getFD(char contexOwner);
 #endif
