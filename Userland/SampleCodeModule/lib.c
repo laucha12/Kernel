@@ -2,8 +2,13 @@
 #include "include/Windows.h"
 #include <stdint.h>
 
+
 int integerOverflowAddition(int a, int b) {
     return !(0 < (a + b) && (a + b)  < MAX_INT- 1);
+}
+
+int longOverflowAddition(unsigned long long a, unsigned long long b) {
+    return !(0 < (a + b) && (a + b)  < MAX_UNSIGNED_LONG_LONG -  1);
 }
 
 int atoi_(char * str) {
@@ -247,82 +252,3 @@ void readMem(char * buffer, int * from, int cant){
 
 
 extern void getRegs(long * buffer);
-void readRegs(long * buffer){
-    //long * array = getRegs();
-    
-    //for(int i = 0; i < REGS_CANT; i++){
-    //    buffer[i] = array[i];
-    //}
-}
-void waitProcess(){
-    
-    char c;
-    //leo la key
-    getKey(MAIN_WINDOW, &c);
-
-    while ( c != '\n'){
-    
-    if(c == '1')
-        sysKillProcess(LEFT_WINDOW);
-    else if(c == '2')
-        sysKillProcess(RIGHT_WINDOW);;
-    if (c == '3')
-        sysReloadProcess(LEFT_WINDOW);
-    if (c == '4')
-        sysReloadProcess(RIGHT_WINDOW);
-    
-    
-    getKey(MAIN_WINDOW, &c);
-    }
-    sysKillProcess(LEFT_WINDOW);
-    sysKillProcess(RIGHT_WINDOW);
-    sysClearScreen(LEFT_WINDOW);
-    sysClearScreen(RIGHT_WINDOW);
-}
-
-void waitProcessPipe(){
-    
-    char c;
-    //leo la key
-    getKey(MAIN_WINDOW, &c);
-
-    while ( c != '\n'){
-    
-    if(c == '1')
-        sysKillProcess(LEFT_WINDOW);
-    else if(c == '2')
-        sysKillProcess(RIGHT_WINDOW);;
-    if (c == '3')
-        sysReloadProcess(LEFT_WINDOW);
-    if (c == '4')
-        sysReloadProcess(RIGHT_WINDOW);
-    
-    
-    getKey(MAIN_WINDOW, &c);
-    }
-    sysKillProcess(LEFT_WINDOW);
-    sysKillProcess(RIGHT_WINDOW);
-    sysClearScreen(LEFT_WINDOW);
-    sysClearScreen(RIGHT_WINDOW);
-}
-
-
-
-void waitProcessMain(){
-    
-    char c;
-    //leo la key
-    getKey(MAIN_WINDOW, &c);
-
-    while ( c != '\n' && SysProcesses()){
-        
-        if(c == '1')
-            sysKillProcess(LEFT_WINDOW);
-        if (c == '3')
-            sysReloadProcess(LEFT_WINDOW);
-            
-        getKey(MAIN_WINDOW, &c);
-    }
-    sysKillProcess(LEFT_WINDOW);
-    //sysClearScreen(MAIN_WINDOW);
-}

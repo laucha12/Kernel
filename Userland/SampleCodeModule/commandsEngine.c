@@ -1,15 +1,7 @@
 #include "include/commandsEngine.h"
 #include "include/lib.h"
+#include "include/WindowsEngine.h"
 
-void commandsEngineDisplayCommands(Window window) {
-    for (int i = 0; i < commandsCount; ++i) {
-        puts_("     ", window);
-        puts_(commands[i].name, window);
-        puts_(" : ", window);
-        puts_(commands[i].description, window);
-        newLine(window);
-    }
-}
 
 void commandsEngineHandle(char *command, Window window) {
 
@@ -19,10 +11,11 @@ void commandsEngineHandle(char *command, Window window) {
     //chequeo si tiene un pipe, analogo al manejo de "<" para comandos especiales.
     if (isPipeCommand(command)) commandsEngineRunPipe(command, window);
 
-        //le digo al engine de comandos que lo corra en la window
-    else {commandsEngineRun(command, window);
+    //le digo al engine de comandos que lo corra en la window
+    else {
+        commandsEngineRun(command, window);
         waitProcessMain();
-        }
+    }
 }
 
 
@@ -51,15 +44,11 @@ void commandsEngineRunPipe(const char *command, Window window) {
     while (command[i] != NULL_) cmd2[dim2++] = command[i++];
     sysClearScreen(MAIN_WINDOW);
 
-    //sysOpen(LEFT_WINDOW);
     commandsEngineRun(cmd1, LEFT_WINDOW);
-    //sysOpen(RIGHT_WINDOW);
 
     commandsEngineRun(cmd2, RIGHT_WINDOW);
     
     waitProcessPipe();
-  //  waitEnter();
-
 }
 
 void commandsEngineRun(char *command, Window window) {
@@ -100,6 +89,28 @@ void commandsEngineRun(char *command, Window window) {
     if (!found) puts_(INVALID_MSG, window);
 }
 
+void printCommand(Window window, const char * name, const char * description) {
+    puts_(DOUBLE_TAB, window);
+    putsf_(name, LIGHT_CYAN, window);
+    puts_(" : ", window);
+    puts_(description, window);
+    newLine(window);
+}
+
+void commandsEngineDisplayCommands(Window window) {
+
+    //imprimo todos los comandos normales
+    for (int i = 0; i < commandsCount; ++i) 
+        printCommand(window, commands[i].name, commands[i].description);
+
+    newLine(window);
+
+    //imprimo todos los comandos especiales
+    puts_("Comandos especiales tenemos: \n", window);
+   
+    //como solo es uno lo hago asi, sino crearia otro arreglo con ellos
+    printCommand(window, PIPE_CMD, PIPE_DESCRIPTION PIPE_MORE_INFO);
+}
 
 int isPipeCommand(const char *command) {
 

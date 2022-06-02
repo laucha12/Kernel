@@ -2,12 +2,10 @@
 #include "include/commandsEngine.h"
 #include "include/lib.h"
 
-
-#define INVALID_NUMBER_COMMANDS "No ingreso el numero de argumentos validos \n"
-#define INVALID_ARGUMENTS "No ingreso el tipo de argumentos validos \n, haga $> man "
+#define INVALID_ARGUMENT_NUMBER "No ingreso el numero de argumentos validos \n"
+#define INVALID_ARGUMENTS "No ingreso el tipo de argumentos validos \n"
 #define TIME_BUFFER 50
 #define MEM_BUFFER 120
-
 
 void printUnos(Window window, int argc, char argv[MAX_ARGUMENT_COUNT][MAX_ARGUMENT]) {
     int i = 0;
@@ -20,23 +18,37 @@ void printUnos(Window window, int argc, char argv[MAX_ARGUMENT_COUNT][MAX_ARGUME
 
 void man(Window window, int argc, char argv[MAX_ARGUMENT_COUNT][MAX_ARGUMENT]) {
     if(argc != 2) {
-        puts_(INVALID_NUMBER_COMMANDS, window);
+        puts_(INVALID_ARGUMENT_NUMBER, window);
         exit();
         return;
     }
-/*
-    if(!isLetterString(argv[1])) {
-        puts_(INVALID_ARGUMENTS "man", window);
-        return;
+
+    int found = 0;
+
+    for(int i = 0; i < commandsCount && !found; i++) {
+        if(strcmp_(argv[1], commands[i].name) == 0) {
+            printCommand(window, commands[i].name, commands[i].description);
+            found = 1;
+        }
     }
-*/
-    puts_("Todavia no tenemos soporte de man :) \n", window);
+    
+    //hago un chequeo a mano porque solo tengo un comando especial,
+    //sino haria otro for para los especiales
+    if(strcmp_(argv[1], "pipe") == 0) {
+        printCommand(window, PIPE_CMD, PIPE_DESCRIPTION);
+        putsf_(PIPE_MAN, MAGENTA, window);
+        found = 1;
+    }
+
+    if(!found) 
+        puts_("No se encontro el comando, intente de nuevo \n", window);
+    
     exit();
 }
 
 void help(Window window, int argc, char argv[MAX_ARGUMENT_COUNT][MAX_ARGUMENT]) {
     if (argc != 0) {
-        puts_(INVALID_NUMBER_COMMANDS, window);
+        puts_(INVALID_ARGUMENT_NUMBER, window);
         exit();
         return;
     }
@@ -49,7 +61,7 @@ void help(Window window, int argc, char argv[MAX_ARGUMENT_COUNT][MAX_ARGUMENT]) 
 
 void diaYHora(Window window, int argc, char argv[MAX_ARGUMENT_COUNT][MAX_ARGUMENT]) {
     if (argc != 0) {
-        puts_(INVALID_NUMBER_COMMANDS, window);
+        puts_(INVALID_ARGUMENT_NUMBER, window);
         exit();
         return;
     }
@@ -64,7 +76,7 @@ void diaYHora(Window window, int argc, char argv[MAX_ARGUMENT_COUNT][MAX_ARGUMEN
 
 void divideByZero(Window window, int argc, char argv[MAX_ARGUMENT_COUNT][MAX_ARGUMENT]) {
     if (argc != 0) {
-        puts_(INVALID_NUMBER_COMMANDS, window);
+        puts_(INVALID_ARGUMENT_NUMBER, window);
         exit();
         return;
     }
@@ -76,7 +88,7 @@ void divideByZero(Window window, int argc, char argv[MAX_ARGUMENT_COUNT][MAX_ARG
 
 void invalidOpCode(Window window, int argc, char argv[MAX_ARGUMENT_COUNT][MAX_ARGUMENT]) {
     if (argc != 0) {
-        puts_(INVALID_NUMBER_COMMANDS, window);
+        puts_(INVALID_ARGUMENT_NUMBER, window);
         exit();
         return;
     }
@@ -89,7 +101,7 @@ void invalidOpCode(Window window, int argc, char argv[MAX_ARGUMENT_COUNT][MAX_AR
 void printMem(Window window, int argc, char argv[MAX_ARGUMENT_COUNT][MAX_ARGUMENT]) {
 
     if (argc != 2) {
-        puts_(INVALID_NUMBER_COMMANDS, window);
+        puts_(INVALID_ARGUMENT_NUMBER, window);
         exit();
         return;
     }
@@ -118,7 +130,7 @@ extern long * getRegs();
 
 void infoReg(Window window, int argc, char argv[MAX_ARGUMENT_COUNT][MAX_ARGUMENT]) {
     if (argc != 0) {
-        puts_(INVALID_NUMBER_COMMANDS, window);
+        puts_(INVALID_ARGUMENT_NUMBER, window);
         exit();
         return;
     }
@@ -147,7 +159,7 @@ void infoReg(Window window, int argc, char argv[MAX_ARGUMENT_COUNT][MAX_ARGUMENT
 
 void primos(Window window, int argc, char argv[MAX_ARGUMENT_COUNT][MAX_ARGUMENT]) {
     if (argc != 0) {
-        puts_(INVALID_NUMBER_COMMANDS, window);
+        puts_(INVALID_ARGUMENT_NUMBER, window);
         exit();
         return;
     }
@@ -167,10 +179,41 @@ void primos(Window window, int argc, char argv[MAX_ARGUMENT_COUNT][MAX_ARGUMENT]
 
 void fibonacci(Window window, int argc, char argv[MAX_ARGUMENT_COUNT][MAX_ARGUMENT]) {
     if (argc != 0) {
-        puts_(INVALID_NUMBER_COMMANDS, window);
+        puts_(INVALID_ARGUMENT_NUMBER, window);
         exit();
         return;
     }
+
+    //Para el mejor manejo de overflow podriamos almacenar los numeros como strings,
+    //definiendo digamos 300 digitos, y asi poder evitar cualquier tipo de overflow.
+    //como manejo
+
+    /*
+    BigInt previousToLast[BIG_INT_SIZE];
+    initBigInt(previousToLast);
+    putBigInt(previousToLast, window);
+    newLine(window);
+    
+    BigInt last[BIG_INT_SIZE];
+    initBigInt(last);
+    putBigInt(last, window);
+    newLine(window);
+
+    BigInt current[BIG_INT_SIZE];
+    initBigInt(current);
+
+
+    while(!bigIntOverflow(previousToLast, last)) {
+        addBigIntInto(previousToLast, last, current);
+        copyBigIntTo(last, previousToLast);
+        copyBigIntTo(current, last);
+        putBigInt(current, window);
+        newLine(window);
+    }
+
+    if(bigIntOverflow(previousToLast, last)) 
+        puts_("Se corta el fibonacci porque se hubiese generado un overflow", window);
+    */
 
     long previousToLast = 0;
     putInteger(previousToLast, window);
@@ -191,14 +234,15 @@ void fibonacci(Window window, int argc, char argv[MAX_ARGUMENT_COUNT][MAX_ARGUME
     }
 
     if(integerOverflowAddition(last, current)) 
-        puts_("Se corta el fibonacci porque se hubiese generado un overflow", window);
+        puts_("Se corta el fibonacci porque se hubiese generado un overflow \n", window);
+
 
     exit();
 }
 
 void clear(Window window, int argc, char argv[MAX_ARGUMENT_COUNT][MAX_ARGUMENT]){
     if (!(argc == 0 || argc == 1 || argc == 2)) {
-        puts_(INVALID_NUMBER_COMMANDS, window);
+        puts_(INVALID_ARGUMENT_NUMBER, window);
         exit();
         return;
     }

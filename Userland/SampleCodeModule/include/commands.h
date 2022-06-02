@@ -10,7 +10,20 @@
  *
  * */
 
-void printUnos(Window window, int argc, char argv[MAX_ARGUMENT_COUNT][MAX_ARGUMENT]);
+#define PIPE_CMD "CMD1 | CMD2 "
+#define PIPE_DESCRIPTION "Corre CMD1 a la izquierda y CMD2 a la derecha de la screen. " 
+#define PIPE_MORE_INFO   DOUBLE_TAB "Para saber mas utilizar el comando man pipe" 
+
+#define PIPE_MAN DOUBLE_TAB "Una vez divida la pantalla para suspender la pantallas o reanudar: \n" \
+                 DOUBLE_TAB DOUBLE_TAB "Suspender pantalla izquierda: presionar 1 \n" \
+                 DOUBLE_TAB DOUBLE_TAB "Suspender pantalla derecha: presionar 2 \n" \
+                 DOUBLE_TAB DOUBLE_TAB "Reanudar pantalla izquierda: presionar 3 \n" \
+                 DOUBLE_TAB DOUBLE_TAB "Reanudar pantalla derecha: presionar 4 \n" \
+                 DOUBLE_TAB DOUBLE_TAB "Terminar el pipe: presionar enter \n"
+
+
+
+
 
 /*
  * Recibe un comando como unico argumento e imprime informacion sobre sus parametros

@@ -32,7 +32,6 @@
 #define MAX_NAME 100
 #define MAX_DESCRIPTION 300
 
-
 //defino CommandPtr como un puntero a funcion de mis comandos
 //(su signature siempre debe ser el mismo void que toman una window y
 //una string con sus argumentos)
@@ -55,6 +54,7 @@ static Command commands[] = {{"help",          HELP_DESCRIPTION,           help}
                              {"fibonacci",     FIBONACCI_DESCRIPTION,      fibonacci},
                              {"man",           MAN_DESCRIPTION,            man},
                              {"clear",         CLEAR_DESCRIPTION,          clear}};
+
 
 //OJO AL AGREGAR A LA LISTA DE ACTUALIZAR LA CANTIDAD DE COMANDOS
 static int commandsCount = 10;
@@ -87,5 +87,11 @@ int isPipeCommand(const char *command);
  * Recibe una window a la cual imprimir todos los comandos que actualmente maneja
  */
 void commandsEngineDisplayCommands(Window window);
+
+/*
+ * Imprime en la window el nombre y la descripcion del comando con su formato
+ */
+
+void printCommand(Window window, const char * name, const char * description);
 
 #endif

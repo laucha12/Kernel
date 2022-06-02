@@ -6,6 +6,7 @@
 #define IS_DIGIT(c)  ((c) >= '0' && (c)<='9')
 #define IS_LETTER(c) (((c) >= 'a' && (c)<='z') || ((c) >= 'A' && (c)<='Z'))
 
+#define MAX_UNSIGNED_LONG_LONG 18446744073709551615l 
 #define MAX_INT 2147483647 
 #define NULL_ 0L 
 
@@ -16,6 +17,8 @@
 #define PIPE '['
 
 #define REGS_CANT 17
+
+#define DOUBLE_TAB "     "
 
 extern void sysWrite(int fd, char * buffer);
 extern void sysRead(int fd, char * buffer);
@@ -61,6 +64,10 @@ extern int SysProcesses();
  */
 int integerOverflowAddition(int a, int b);
 
+/*
+ * Devuelve si se genera un overflow al sumar los dos unsigned long
+ */
+int longOverflowAddition(unsigned long long a, unsigned long long b);
 
 int atoi_(char * str);
 
@@ -170,17 +177,6 @@ void readMem(char * buffer, int * from, int cant);
  *  "R8 ", "R9 ", "R10", "R11", "R12", "R13", "R14", "R15"};
  */
 void readRegs(long * buffer);
-/*
-   * Funcion la cual espera a que terminen todos los procesos para luego seguir ejecutando con la shell
-*/
-void waitProcess();
-/*
-   * Funcion la cual espera a un enter ingresado por el usuario
-*/
-void waitEnter();
 
-void waitProcessPipe();
-
-void waitProcessMain();
 
 #endif
