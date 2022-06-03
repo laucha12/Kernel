@@ -2,6 +2,7 @@
 #define LIB_H
 
 #include "Windows.h"
+#include <stdint.h>
 
 #define IS_DIGIT(c)  ((c) >= '0' && (c)<='9')
 #define IS_LETTER(c) (((c) >= 'a' && (c)<='z') || ((c) >= 'A' && (c)<='Z'))
@@ -27,7 +28,7 @@ extern void sysOpen(int fd);
 extern void sysClose(int fd);
 extern void exit();
 extern void sysKillProcess(int fd);
-extern void sysReadMem(char * buffer, unsigned long * from, int cant);
+extern void sysReadMem(char * buffer, uint8_t * from, int cant);
 extern void sysReloadProcess(int PID);
 extern void sysClearScreen(int fd);
 extern void sysWriteFormat(int fd, char * buffer, char format);
@@ -187,7 +188,7 @@ void getTime(char * buffer);
  * Retorna una copia de los primeros 32 bytes desde la posicion de memoria from 
  * como un arreglo de caractres.
  */
-void readMem(char * buffer, unsigned long * from, int cant);
+void readMem(char * buffer, uint8_t * from, int cant);
 
 /*
  * Retorna una copia de los valores de los registros, 

@@ -244,8 +244,9 @@ void getTime(char * buffer){
     sysTime(buffer);
 }
 
-void readMem(char * buffer, unsigned long * from, int cant){
-    sysReadMem(buffer, from, cant);
+void readMem(char * buffer, uint8_t * from, int cant){
+    //sysReadMem(buffer, from, cant);
+    sysReadMem(from, buffer, cant);
 }
 
 

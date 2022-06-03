@@ -7,7 +7,7 @@
 #define TIME_BUFFER 50
 
 #define ADDRESSES_READ_MEM 32
-#define BYTES_PER_ADDRESS 8
+#define BYTES_PER_ADDRESS 1
 
 
 
@@ -115,14 +115,18 @@ void printMem(Window window, int argc, char argv[MAX_ARGUMENT_COUNT][MAX_ARGUMEN
     newLine(window);
 
     char bufferMemory[ADDRESSES_READ_MEM * BYTES_PER_ADDRESS + 1];
-    readMem(bufferMemory, (unsigned long *) 0x380000, ADDRESSES_READ_MEM * BYTES_PER_ADDRESS);
+
+    readMem(bufferMemory, (uint8_t *) 0x100, ADDRESSES_READ_MEM * BYTES_PER_ADDRESS);
     
     newLine(window);
 
     for(int i = 0; i < ADDRESSES_READ_MEM * BYTES_PER_ADDRESS; i++) {
-        putc_(*(bufferMemory + i), window);
+        //putc_(*(bufferMemory + i), window);s
+        putHex(bufferMemory[i], window);
+        //Que carajo pasa aca
+        puts_(" - ", window);
     }
-    
+
     newLine(window);
     exit();
 }
