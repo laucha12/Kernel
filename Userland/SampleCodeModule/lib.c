@@ -251,3 +251,7 @@ void readMem(char * buffer, uint8_t * from, int cant){
 
 
 extern void getRegs(long * buffer);
+
+void getRegsSnapshot(uint64_t * buffer){
+    sysGetRegsSnapshot(buffer);
+}

@@ -136,7 +136,18 @@ void infoReg(Window window, int argc, char argv[MAX_ARGUMENT_COUNT][MAX_ARGUMENT
 
     puts_("Los registros tienen los valores: \n", window);
 
-    long * buffer = getRegs();
+    uint64_t buffer[18];
+    sysGetRegsSnapshot(buffer);
+
+    //if(buffer[0] == 0)
+//        puts_("No registers to show\n", window);
+  //  else{
+        for(int i = 0; i < 18; i++){
+            putHex(buffer[i], window);
+            puts_("\n", window);
+        }
+    //}
+    /*long * buffer = getRegs();
 
     for(int i = 0; i < REGS_CANT; i++){
         puts_("    -", window);
@@ -145,7 +156,7 @@ void infoReg(Window window, int argc, char argv[MAX_ARGUMENT_COUNT][MAX_ARGUMENT
         putHex(buffer[i], window);
         puts_("h\n", window);
     }
-    
+*/  
     puts_("\n", window);
     exit();
 }

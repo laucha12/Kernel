@@ -34,6 +34,7 @@ extern void sysReadMem(char * buffer, uint8_t * from, int cant);
 extern void sysReloadProcess(int PID);
 extern void sysClearScreen(int fd);
 extern void sysWriteFormat(int fd, char * buffer, char format);
+extern void sysGetRegsSnapshot(uint64_t * buffer);
 /*
 extern void sysRegs(char * buffer);
 extern void sysMemFrom(char * buffer, int * from);*/
@@ -164,6 +165,8 @@ void putsf_(char * string, char format, Window window);
  */
 void putcf_(char c, char format, Window window);
 
+void putHex(int num, Window window);
+
 /*
  * Recibe una ventana a la cual borrara el ultimo caracter
  */
@@ -200,5 +203,12 @@ void readMem(char * buffer, uint8_t * from, int cant);
  */
 void readRegs(long * buffer);
 
+/*
+ * Retorna un snapshot de los registros en un momento previo
+ * como un arreglo de unit64.
+ *  ??ORDEN??{"RIP", "RAX", "RBX", "RCX", "RDX", "RSI", "RDI", "RBP", "RSP",
+ *  "R8 ", "R9 ", "R10", "R11", "R12", "R13", "R14", "R15"};
+ */
+void getRegsSnapshot(uint64_t * buffer);
 
 #endif

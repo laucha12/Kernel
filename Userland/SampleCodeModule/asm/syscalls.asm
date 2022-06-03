@@ -1,3 +1,4 @@
+GLOBAL sysGetRegsSnapshot
 GLOBAL sysWrite
 GLOBAL sysRead
 GLOBAL sysTime
@@ -305,4 +306,17 @@ sysReloadProcess:
 
     mov rsp,rbp
     pop rbp
+    ret
+
+
+sysGetRegsSnapshot:
+    push rbp                ; Stack frame
+    mov rbp,rsp             ; Stack frame
+
+    mov rax,124             ; Numero de syscall
+    mov rsi, rdi            ; Le paso como 2 argumento mi 1 argumento (buffer)
+    int 80h                 ; "Che kernel"
+
+    mov rsp,rbp             ; Stack frame
+    pop rbp                 ; Stack frame
     ret

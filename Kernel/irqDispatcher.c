@@ -8,7 +8,7 @@ extern void readMemory(unsigned int * buffer, int * from, int qty);
 
 
 void int_20(); 
-void int_21();
+void int_21(uint64_t * regs);
 
 void readMemoryTo(uint64_t * mem_address, int fd) {
 
@@ -40,19 +40,24 @@ void irqDispatcher(uint64_t irq)
 	case 1:
 		// Se llama a la funcion que debera ejecutar
 	   //  la interrupcion que se guardo en la posicion 21 del IDT
-		int_21();
+		//int_21();
 		break;
 	}
 	return;
 }
 
-void int_21()
+void int_21(uint64_t * regs)
 {	// Llamamos al driver del teclado para que guarde en su buffer
 	// la tecla leida desde la interrupcion del mismo
 	char c = readKey();
+	
+	// Si la tecla presionada es '=' se guarda un snapshot de los registros.
+	if(scancodeLToAscii[c] == '='){
+		regsSnapshot(regs);
+	}
+
 	saveBuffer(c);
 }
-
 void int_20()
 {
 	// timer_handler();
@@ -93,6 +98,10 @@ void syscalls(int fd, char *sysBuffer, int count, int num)
 		// n (parametro) posiciones de memoria a partir de una direccion 
 		// recibida como parametro.
 		readMemoryTo( (uint64_t *) fd, count);
+		break;
+
+	case 124:
+		getRegsSnapshot(sysBuffer);
 		break;
 
 	case 1:
