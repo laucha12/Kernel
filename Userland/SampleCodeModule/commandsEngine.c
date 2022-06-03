@@ -47,7 +47,7 @@ void commandsEngineRunPipe(const char *command, Window window) {
     commandsEngineRun(cmd1, LEFT_WINDOW);
 
     commandsEngineRun(cmd2, RIGHT_WINDOW);
-    
+
     waitProcessPipe();
 }
 
