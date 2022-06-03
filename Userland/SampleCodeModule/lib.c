@@ -39,6 +39,10 @@ void putsf_(char * string, char format, Window window){
     sysWriteFormat(window, string, format);
 }
 
+void printHeader(char * string, int format){
+    sysWriteHeaderFormat(string, format);
+}
+
 int strlen_(const char *str) {
     const char *s;
 

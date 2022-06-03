@@ -36,6 +36,8 @@ void exceptionDispatcher(int exception, long regs[],char * contextOwner) {
 }
 
 static void zero_division(long regs[],char fd) {
+	ncClearHeader();
+	ncPrintHeader("                                   EXCEPTION                                    ", LIGHT_RED_BACKGROUND | WHITE);
 	ncPrintAtFD_Format("\n-- EXCEPTION - DIVIDE BY ZERO --\n",fd, LIGHT_RED_BACKGROUND | WHITE);
 	reportRegs(regs, fd);
 }

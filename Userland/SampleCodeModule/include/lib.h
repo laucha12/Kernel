@@ -31,6 +31,7 @@ extern void sysReadMem(char * buffer, unsigned long * from, int cant);
 extern void sysReloadProcess(int PID);
 extern void sysClearScreen(int fd);
 extern void sysWriteFormat(int fd, char * buffer, char format);
+extern void sysWriteHeaderFormat(char * buffer, char format);
 /*
 extern void sysRegs(char * buffer);
 extern void sysMemFrom(char * buffer, int * from);*/
@@ -145,6 +146,11 @@ void newLine(Window window);
  * Recibe una cadena de caracteres y las imprima 
  */
 void puts_(char * string, Window window);
+
+/*
+ * Recibe un string y lo imprime en el header
+ */
+void printHeader(char * string, int format);
 
 /*
  * Recibe un caracter y lo imprime 

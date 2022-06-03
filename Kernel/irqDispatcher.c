@@ -71,10 +71,13 @@ void syscalls(int fd, char *sysBuffer, int count, int num)
 		break;
 
 	case 123:
-		// Si es la syscall 123 tenemos que devolver en buffer lo leido en 
-		// n (parametro) posiciones de memoria a partir de una direccion 
-		// recibida como parametro.
 		readMemory(sysBuffer, fd, count);
+		break;
+
+	case 124:
+		// Si es la syscall 124 se ira al driver de pantalla para un print 
+		// con FORMATO del Header de pantalla.
+		ncPrintHeader(sysBuffer, count);
 		break;
 
 	case 1:

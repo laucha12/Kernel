@@ -3,17 +3,18 @@
 static uint32_t uintToBase(uint64_t value, char *buffer, uint32_t base);
 
 static char buffer[64] = {'0'};
-static uint8_t *const video = (uint8_t *)0xB8000;
-static uint8_t *currentVideoFD0 = (uint8_t *)0xB8000;
-static uint8_t *currentVideoFD1 = (uint8_t *)0xB8000;
-static uint8_t *currentVideoFD2 = (uint8_t *)0xB8000 + 82;
+
+//static uint8_t *const video = (uint8_t *)0xB8000;
+//static uint8_t *currentVideoFD0 = (uint8_t *)0xB8000;
+//static uint8_t *currentVideoFD1 = (uint8_t *)0xB8000;
+//static uint8_t *currentVideoFD2 = (uint8_t *)0xB8000 + 82;
 
 
-//static uint8_t *const videoBegin = (uint8_t *)0xB8000;
-//static uint8_t *const video = (uint8_t *)0xB8000 + 160;
-//static uint8_t *currentVideoFD0 = (uint8_t *)0xB8000 + 160;
-//static uint8_t *currentVideoFD1 = (uint8_t *)0xB8000 + 160;
-//static uint8_t *currentVideoFD2 = (uint8_t *)0xB8000 + 160 + 82;
+static uint8_t *const videoBegin = (uint8_t *)0xB8000;
+static uint8_t *const video = (uint8_t *)0xB8000 + 160;
+static uint8_t *currentVideoFD0 = (uint8_t *)0xB8000 + 160;
+static uint8_t *currentVideoFD1 = (uint8_t *)0xB8000 + 160;
+static uint8_t *currentVideoFD2 = (uint8_t *)0xB8000 + 160 + 82;
 
 static int actualFd = 0;
 
@@ -135,7 +136,7 @@ void ncPrintFD0Char_Format(char character, char format)
 		currentVideoFD0 += 2;
 	}
 
-	if ((currentVideoFD0 - video) >= 4000)
+	if ((currentVideoFD0 - video) >= 3840)
 	{
 		resetVideo(0);
 	}
@@ -227,11 +228,36 @@ void ncPrintFD2Char_Format(char character, char format)
 		currentVideoFD2 += OFFSET + 2;
 	}
 
-	if ((currentVideoFD2 - video) >= 4000)
+	if ((currentVideoFD2 - video) >= 3840)
 	{
 		resetVideoFD2();
 	}
 }
+
+// -------------------------------------------------------------------------------
+// 	Header
+// -------------------------------------------------------------------------------
+
+void ncPrintHeader(char * string, int format){
+	int i = 0;
+	for(; i < 160  && string[i/2] != 0; i+=2){
+		videoBegin[i] = string[i/2];
+		videoBegin[i + 1] = format;
+	}
+
+	for(; i < 160; i+=2){
+		videoBegin[i] = ' ';
+		videoBegin[i + 1] = format;
+	}
+}
+
+void ncClearHeader(){
+	for(int i = 0; i < 160; i+=2){
+			videoBegin[i] = ' ';
+			videoBegin[i + 1] = WHITE;
+	}
+}
+
 
 // -------------------------------------------------------------------------------
 // 	reset video
