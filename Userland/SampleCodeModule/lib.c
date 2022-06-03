@@ -191,6 +191,12 @@ void putHex(int num, Window window){
     puts_(numToStr, window);
 }
 
+void putBin(int num, Window window){
+    char numToStr[11];
+    uintToBase(num, numToStr, 2);
+    puts_(numToStr, window);
+}
+
 int isPrime(int num) {
     int i;
 

@@ -129,9 +129,9 @@ void infoReg(Window window, int argc, char argv[MAX_ARGUMENT_COUNT][MAX_ARGUMENT
         return;
     }
 
-    static const char *registerNames[REGS_CANT] = {
+    static const char *registerNames[REGS_CANT + 1] = {
             "RAX", "RBX", "RCX", "RDX", "RSI", "RDI", "RBP", "RSP", "R8 ", "R9 ", "R10", "R11", "R12", "R13",
-            "R14", "R15", "RIP"
+            "R14", "R15", "RIP", "FLAGS"
     };
 
     puts_("Los registros tienen los valores: \n", window);
@@ -139,24 +139,26 @@ void infoReg(Window window, int argc, char argv[MAX_ARGUMENT_COUNT][MAX_ARGUMENT
     uint64_t buffer[18];
     sysGetRegsSnapshot(buffer);
 
-    //if(buffer[0] == 0)
-//        puts_("No registers to show\n", window);
-  //  else{
-        for(int i = 0; i < 18; i++){
-            putHex(buffer[i], window);
-            puts_("\n", window);
-        }
-    //}
-    /*long * buffer = getRegs();
+
 
     for(int i = 0; i < REGS_CANT; i++){
-        puts_("    -", window);
+        //if(i%6 == 0 && i !=0)
+            //puts_("\n", window);
         puts_(registerNames[i], window);
         puts_(": ", window);
         putHex(buffer[i], window);
-        puts_("h\n", window);
+        puts_("h", window);
+        puts_("\n", window);
+        
     }
-*/  
+
+    puts_(registerNames[REGS_CANT], window);
+    puts_(": ", window);
+    putBin(buffer[REGS_CANT], window);
+    puts_("b", window);
+    puts_("\n", window);
+
+
     puts_("\n", window);
     exit();
 }

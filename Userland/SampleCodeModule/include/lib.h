@@ -167,6 +167,8 @@ void putcf_(char c, char format, Window window);
 
 void putHex(int num, Window window);
 
+void putBin(int num, Window window);
+
 /*
  * Recibe una ventana a la cual borrara el ultimo caracter
  */
