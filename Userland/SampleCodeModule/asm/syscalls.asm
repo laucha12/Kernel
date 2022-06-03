@@ -16,7 +16,11 @@ GLOBAL loadProcess
 GLOBAL exit
 GLOBAL sysKillProcess
 GLOBAL sysReloadProcess
+GLOBAL printMemFrom
+
 section .text
+
+
 
 
 ;------------------------------
@@ -242,6 +246,22 @@ sysClearScreen:
 ;   rdx -> cantidad de caracteres en copiar
 ;------------------------------------------------------
 sysReadMem:
+    push rbp        ; Stack frame
+    mov rbp, rsp    ; Stack frame
+
+    push rbx        ; Preservar rbx
+
+    mov rax, 123    ; Nuemro de syscall
+    int 80h         ; "Che Kernel"
+
+    pop rbx         ; Preservar rbx
+
+    mov rsp, rbp    ; Stack frame
+    pop rbp         ; Stack frame
+
+    ret
+
+printMemFrom:
     push rbp        ; Stack frame
     mov rbp, rsp    ; Stack frame
 

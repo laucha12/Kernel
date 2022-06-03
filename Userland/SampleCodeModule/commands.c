@@ -115,15 +115,8 @@ void printMem(Window window, int argc, char argv[MAX_ARGUMENT_COUNT][MAX_ARGUMEN
     newLine(window);
 
     char bufferMemory[ADDRESSES_READ_MEM * BYTES_PER_ADDRESS + 1];
-    readMem(bufferMemory, (unsigned long *) 0x380000, ADDRESSES_READ_MEM * BYTES_PER_ADDRESS);
+    printMemFrom((unsigned long *) 0x380000, window);
     
-    newLine(window);
-
-    for(int i = 0; i < ADDRESSES_READ_MEM * BYTES_PER_ADDRESS; i++) {
-        putc_(*(bufferMemory + i), window);
-    }
-    
-    newLine(window);
     exit();
 }
 

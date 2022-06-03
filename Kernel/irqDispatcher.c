@@ -4,10 +4,28 @@
 #include <lib.h>
 #include <timeDriver.h>
 
- extern void readMemory(unsigned int * buffer, int  * from, int qty);
+extern void readMemory(unsigned int * buffer, int * from, int qty);
 
- void int_20(); 
- void int_21();
+
+void int_20(); 
+void int_21();
+
+void readMemoryTo(uint64_t * mem_address, int fd) {
+
+
+	if((uint64_t) mem_address > (0x20000000 - 32)) ncPrintFD0("Invalid adress \n");
+    
+    uint8_t * aux = (uint8_t *) mem_address;
+
+    for(int i=0; i < 32 ; ++i){
+        ncPrintHexAtFD((uint64_t) aux, fd);
+        ncPrintAtFD(" = ", fd);
+        ncPrintHexAtFD(*aux, fd);
+        ncPrintAtFD("\n", fd);
+        ++aux;
+    }
+    
+}
 
 void irqDispatcher(uint64_t irq)
 {
@@ -74,7 +92,7 @@ void syscalls(int fd, char *sysBuffer, int count, int num)
 		// Si es la syscall 123 tenemos que devolver en buffer lo leido en 
 		// n (parametro) posiciones de memoria a partir de una direccion 
 		// recibida como parametro.
-		readMemory(sysBuffer, fd, count);
+		readMemoryTo( (uint64_t *) fd, count);
 		break;
 
 	case 1:

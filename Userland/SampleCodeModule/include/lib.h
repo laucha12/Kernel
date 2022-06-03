@@ -20,6 +20,8 @@
 
 #define DOUBLE_TAB "     "
 
+extern void printMemFrom(unsigned long * pos, Window window);
+
 extern void sysWrite(int fd, char * buffer);
 extern void sysRead(int fd, char * buffer);
 extern void sysTime(char * buffer);
