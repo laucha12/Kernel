@@ -3,6 +3,9 @@
 #include <naiveConsole.h>
 #include <lib.h>
 #include <timeDriver.h>
+
+ extern void readMemory(unsigned int * buffer, int  * from, int qty);
+
  void int_20(); 
  void int_21();
 
@@ -71,7 +74,7 @@ void syscalls(int fd, char *sysBuffer, int count, int num)
 		// Si es la syscall 123 tenemos que devolver en buffer lo leido en 
 		// n (parametro) posiciones de memoria a partir de una direccion 
 		// recibida como parametro.
-		readMem(sysBuffer, fd, count);
+		readMemory(sysBuffer, fd, count);
 		break;
 
 	case 1:

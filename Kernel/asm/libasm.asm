@@ -7,7 +7,9 @@ GLOBAL get_rtc_day
 GLOBAL get_rtc_weekday
 GLOBAL get_rtc_month
 GLOBAL get_rtc_year
-GLOBAL readMem
+GLOBAL readMemory
+
+EXTERN ncPrintDec
 
 section .text
 	
@@ -253,33 +255,51 @@ get_rtc_year:
 ;	Funcion la cual retorna un arreglo de datos 
 ;   leidos a partir de una posicion de memoria
 ;---------------------------------------------------
-;	Argumentos: rdi: arreglo a escribir
-;               rsi: posicion de memoria
-;               rdx: cantidad de posiciones a leer
+;	Argumentos: rdi: arreglo a escribir char *
+;               rsi: desde donde leer unsigned long *
+;               rdx: cantidad de bytes a leer
 ;---------------------------------------------------
 ;	Retorno: Arreglo con los datos de memoria 
 ;---------------------------------------------------
 
-readMem:
+readMemory:
     push rbp        ; Stack frame
     mov rbp, rsp    ; Stack frame
 
-    push rbx        ; Preservar rbx
+    push rdi
+    push rsi
+    push rdx
+    push rcx
 
-    mov rax, 0      ; Puntero relativo al arreglo 
+    mov rcx, 0      
 
-    ciclo:
-    cmp rdx, rax            ; Pregunto si mi contador llego al limite
-    je fin                  ; Si son iguales, termine
-    mov rbx, [rsi + rax]    ; Muevo el dato leido en puntero + rax
-    mov [rdi + rax], rbx    ; Muevo el dato leido en puntero + rax
-    inc rax                 ; Incremento el contador
-    jmp ciclo               ; Repito
+    .cicloReadMem:
+
+    cmp rdx, 0                  ; Pregunto si mi contador llego al limite
+    je .finReadMem              ; Si son iguales, termine
+
+    add rsi, rcx
+    movsx rbx, byte [rsi]       ; Muevo el dato leido en puntero rsi
+
+    add rdi, rcx
+    mov [rdi], byte rbx              ; Muevo el dato en el registro al buffer
+
+    add rcx, 1                  ; apunto al siguiente byte
+    dec rdx
+
+    jmp .cicloReadMem           ; Repito
     
-    fin:
-    pop rbx         ; Preservar rbx
-    
-    mov rsp, rbp   ; Stack frame
+    .finReadMem:
+
+    pop rcx
+    pop rdx
+    pop rsi
+    pop rdi
+
+    mov rsp, rbp    ; Stack frame
 	pop rbp         ; Stack frame
 
     ret
+
+section .data
+    msg db "hola como va",0

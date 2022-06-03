@@ -233,7 +233,14 @@ sysClearScreen:
 
     ret
 
-
+;------------------------------------------------------
+; Sycall la cual la memoria desd
+;--------------------------------------------------------
+; Argumentos:
+;   rdi -> puntero al buffer de unsigned int donde copiar
+;   rsi -> posicion desde donde se comienza a copiar
+;   rdx -> cantidad de caracteres en copiar
+;------------------------------------------------------
 sysReadMem:
     push rbp        ; Stack frame
     mov rbp, rsp    ; Stack frame
@@ -241,9 +248,6 @@ sysReadMem:
     push rbx        ; Preservar rbx
 
     mov rax, 123    ; Nuemro de syscall
-    ; rdi -> 
-    ; rsi -> 
-    ; rdx -> 
     int 80h         ; "Che Kernel"
 
     pop rbx         ; Preservar rbx

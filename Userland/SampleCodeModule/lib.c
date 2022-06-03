@@ -162,7 +162,7 @@ static uint32_t uintToBase(uint64_t value, char *buffer, uint32_t base)
 	return digits;
 }
 
-void putInteger(int num, Window window) {
+void putInteger(unsigned int num, Window window) {
     /*char strInverse[10], numToStr[11];
     int strLen = 0;
 
@@ -179,7 +179,7 @@ void putInteger(int num, Window window) {
 
     puts_(numToStr, window);*/
 
-    char numToStr[11];
+    char numToStr[64];
     uintToBase(num, numToStr, 10);
     puts_(numToStr, window);
 
@@ -234,11 +234,9 @@ void deleteChar(Window window){
 }
 
 
-//!!!!!!!!!!
+
 void getKey(Window window, char * buffer){
-    //char buffer[1];
     sysRead(window, buffer);
-    //return buffer[0];
 }
 
 
@@ -246,8 +244,8 @@ void getTime(char * buffer){
     sysTime(buffer);
 }
 
-void readMem(char * buffer, int * from, int cant){
-    sysReadMem(buffer, from, 32);
+void readMem(char * buffer, unsigned long * from, int cant){
+    sysReadMem(buffer, from, cant);
 }
 
 

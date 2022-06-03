@@ -27,7 +27,7 @@ extern void sysOpen(int fd);
 extern void sysClose(int fd);
 extern void exit();
 extern void sysKillProcess(int fd);
-extern void sysReadMem(char * buffer, int * posicionMem, int cant);
+extern void sysReadMem(char * buffer, unsigned long * from, int cant);
 extern void sysReloadProcess(int PID);
 extern void sysClearScreen(int fd);
 extern void sysWriteFormat(int fd, char * buffer, char format);
@@ -90,7 +90,7 @@ int KMP(const char *text, const char *pattern, int textLen, int patternLen);
 /*
  * Recibe un entero y lo imprime
  */
-void putInteger(int num, Window window);
+void putInteger(unsigned int num, Window window);
 
 /*
  * Recibe dos strings y las compara
@@ -168,7 +168,7 @@ void getTime(char * buffer);
  * Retorna una copia de los primeros 32 bytes desde la posicion de memoria from 
  * como un arreglo de caractres.
  */
-void readMem(char * buffer, int * from, int cant);
+void readMem(char * buffer, unsigned long * from, int cant);
 
 /*
  * Retorna una copia de los valores de los registros, 

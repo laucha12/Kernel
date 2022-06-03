@@ -5,7 +5,11 @@
 #define INVALID_ARGUMENT_NUMBER "No ingreso el numero de argumentos validos \n"
 #define INVALID_ARGUMENTS "No ingreso el tipo de argumentos validos \n"
 #define TIME_BUFFER 50
-#define MEM_BUFFER 120
+
+#define ADDRESSES_READ_MEM 32
+#define BYTES_PER_ADDRESS 8
+
+
 
 void printUnos(Window window, int argc, char argv[MAX_ARGUMENT_COUNT][MAX_ARGUMENT]) {
     int i = 0;
@@ -106,22 +110,19 @@ void printMem(Window window, int argc, char argv[MAX_ARGUMENT_COUNT][MAX_ARGUMEN
         return;
     }
 
-    //verificar es una posicion de memoria valida!
-
     puts_("La informacion desde la posicion de memoria ", window);
     puts_(argv[1], window);
     newLine(window);
 
-    char buffer[MEM_BUFFER];
-    readMem(buffer, (int *) atoi_((argv[1])), 32);
+    char bufferMemory[ADDRESSES_READ_MEM * BYTES_PER_ADDRESS + 1];
+    readMem(bufferMemory, (unsigned long *) 0x380000, ADDRESSES_READ_MEM * BYTES_PER_ADDRESS);
+    
+    newLine(window);
 
-    for(int i = 0; i < 32; i++){
-        putHex(buffer[i], window);
-        puts_("|",window);
-
+    for(int i = 0; i < ADDRESSES_READ_MEM * BYTES_PER_ADDRESS; i++) {
+        putc_(*(bufferMemory + i), window);
     }
     
-    puts_(buffer, window);
     newLine(window);
     exit();
 }
