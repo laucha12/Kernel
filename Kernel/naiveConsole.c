@@ -3,6 +3,8 @@
 static uint32_t uintToBase(uint64_t value, char *buffer, uint32_t base);
 
 static char buffer[64] = {'0'};
+//static uint8_t *const videoBegin = (uint8_t *)0xB8000;
+//static uint8_t *const video = (uint8_t *)0xB8000 + 160;
 static uint8_t *const video = (uint8_t *)0xB8000;
 static uint8_t *currentVideoFD0 = (uint8_t *)0xB8000;
 static uint8_t *currentVideoFD1 = (uint8_t *)0xB8000;
@@ -27,6 +29,13 @@ void ncPrintAtFD(const char *string, int fd){
 		ncPrintChar(string[i], fd);
 }
 
+void ncPrintAtFD_Format(const char *string, int fd, int format){
+	int i;
+
+	for (i = 0; string[i] != 0; i++)
+		ncPrintChar_Format(string[i], fd, format);
+}
+
 void ncPrintChar(char character, int fd){
 	
 	switch (fd)
@@ -45,6 +54,28 @@ void ncPrintChar(char character, int fd){
 
 	default:
 		ncPrintFD0Char(character);
+		break;
+	}
+}
+
+void ncPrintChar_Format(char character, int fd, int format){
+	
+	switch (fd)
+	{
+	case 0:
+		ncPrintFD0Char_Format(character, format);
+		break;
+	
+	case 1:
+		ncPrintFD1Char_Format(character, format);
+		break;
+
+	case 2:
+		ncPrintFD2Char_Format(character, format);
+		break;
+
+	default:
+		ncPrintFD0Char_Format(character, format);
 		break;
 	}
 }
@@ -361,8 +392,10 @@ void ncClear()
 {
 	int i;
 
-	for (i = 0; i < height * width; i++)
-		video[i * 2] = ' ';
+	for (i = 0; i < (height*2) * (width*2); i+=2){
+		video[i] = ' ';
+		video[i + 1] = BLACK_BACKGROUND;
+		}
 	currentVideoFD0 = video;
 	currentVideoFD1 = video;
 	currentVideoFD2 = video + 82;
@@ -384,15 +417,19 @@ void fdClear(int fd){
 
 void ncClearFD1(){
 	for (int i = 0; i < (height*2) * (width*2); i+=2){
-		if(i % 160 < OFFSET)
+		if(i % 160 < OFFSET){
 			video[i] = ' ';
+			video[i + 1] = BLACK_BACKGROUND;
+		}
 	}
 }
 
 void ncClearFD2(){
 	for (int i = 0; i < (height*2) * (width*2); i+=2){
-		if(i % 160 >= OFFSET)
+		if(i % 160 >= OFFSET){
 			video[i] = ' ';
+			video[i + 1] = BLACK_BACKGROUND;
+		}
 	}
 }
 

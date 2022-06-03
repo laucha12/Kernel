@@ -36,11 +36,11 @@ void exceptionDispatcher(int exception, long regs[],char * contextOwner) {
 }
 
 static void zero_division(long regs[],char fd) {
-	ncPrintAtFD("\n-- EXCEPTION - DIVIDE BY ZERO --n",fd);
+	ncPrintAtFD_Format("\n-- EXCEPTION - DIVIDE BY ZERO --\n",fd, LIGHT_RED_BACKGROUND | WHITE);
 	reportRegs(regs, fd);
 }
 
 static void invalid_opcode(long regs[],char fd) {
-	ncPrintAtFD("\n-- EXCEPTION - INVALID OPCODE --/n", fd);
+	ncPrintAtFD_Format("\n-- EXCEPTION - INVALID OPCODE --\n", fd, LIGHT_RED_BACKGROUND | WHITE);
 	reportRegs(regs, fd);
 }

@@ -4,11 +4,11 @@
 
 
 void welcomeScreen(Window window){
-    putsf_("____________________________________ GDH OS ____________________________________", CYAN, window);
+    putsf_("                                     GDH OS                                     ", CYAN_BACKGROUND | WHITE, window);
     puts_(" Bienvenido a GHD OS! \n \n", window);
     puts_(" Los comandos disponibes son: \n", window);
     commandsEngineDisplayCommands(window);
-    putsf_("________________________________________________________________________________", CYAN, window);
+    putsf_("\n                                                                                ", WHITE, window);
     puts_("\n", window);
 }
 
