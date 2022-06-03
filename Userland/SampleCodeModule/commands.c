@@ -7,7 +7,7 @@
 #define TIME_BUFFER 50
 
 #define ADDRESSES_READ_MEM 32
-#define BYTES_PER_ADDRESS 8
+#define BYTES_PER_ADDRESS 1
 
 
 

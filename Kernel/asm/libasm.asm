@@ -266,10 +266,10 @@ readMemory:
     push rbp        ; Stack frame
     mov rbp, rsp    ; Stack frame
 
-    push rdi
-    push rsi
-    push rdx
-    push rcx
+    push rdi        ; Preservar
+    push rsi        ; Preservar
+    push rdx        ; Preservar
+    push rcx        ; Preservar
 
     mov rcx, 0      
 
@@ -284,17 +284,17 @@ readMemory:
     add rdi, rcx
     mov [rdi], byte rbx              ; Muevo el dato en el registro al buffer
 
-    add rcx, 1                  ; apunto al siguiente byte
+    add rcx, 8                  ; apunto al siguiente byte
     dec rdx
 
     jmp .cicloReadMem           ; Repito
     
     .finReadMem:
 
-    pop rcx
-    pop rdx
-    pop rsi
-    pop rdi
+    pop rcx         ; Preservar
+    pop rdx         ; Preservar
+    pop rsi         ; Preservar
+    pop rdi         ; Preservar
 
     mov rsp, rbp    ; Stack frame
 	pop rbp         ; Stack frame
