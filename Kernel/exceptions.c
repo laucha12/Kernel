@@ -43,6 +43,6 @@ static void zero_division(long regs[],char fd) {
 }
 
 static void invalid_opcode(long regs[],char fd) {
-	ncPrintAtFD_Format("\n-- EXCEPTION - INVALID OPCODE --\n", fd, LIGHT_RED_BACKGROUND | WHITE);
+	ncPrintHeader("                                   EXCEPTION                                    ", LIGHT_RED_BACKGROUND | WHITE);
 	reportRegs(regs, fd);
 }
