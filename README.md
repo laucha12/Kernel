@@ -1,4 +1,4 @@
-# GHDos
+# GDHos
 
 This project is a basic kernel and OS for Intel 64 bits architecture designed as an interactive shell.
 
