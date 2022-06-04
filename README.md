@@ -1,8 +1,10 @@
-# Kernel
+# GHDos
 
-This project is a basic kernel for Intel 64 bits architecture designed as an interactive shell that allows to run commands simultaneously in split screen. 
+This project is a basic kernel and OS for Intel 64 bits architecture designed as an interactive shell.
 
-The main goal of the project is in the design, clearly defining a kernel and user space, managing the interaction between kernel/hardware and kernel/user through interruptions, and implementing an schedluer to manage context switching and thus running commands simultaneously.
+The main goal of the project is in the design, clearly defining a kernel and user space, managing the interaction between kernel/hardware and kernel/user through interruptions, and implementing an schedluer to manage context switching and thus running commands simultaneously. 
+
+The kernel in itself is based upon x64BareBones (can be found here https://bitbucket.org/RowDaBoat/x64barebones/wiki/Home), a basic kernel which defines the IDT table, starts the kernel in flat mode (without segmentation unit), as well as initialize basic hardware (but no more than that).
 
 ## Environment setup
 
