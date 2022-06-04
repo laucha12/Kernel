@@ -21,7 +21,7 @@
 
 #define DOUBLE_TAB "     "
 
-extern void printMemFrom(unsigned long * pos, Window window);
+extern void printMemFrom(unsigned int * pos, Window window);
 
 extern void sysWrite(int fd, char * buffer);
 extern void sysRead(int fd, char * buffer);
@@ -191,11 +191,6 @@ void getKey(Window window, char buffer[1]);
 */
 void getTime(char * buffer);
 
-/*
- * Retorna una copia de los primeros 32 bytes desde la posicion de memoria from 
- * como un arreglo de caractres.
- */
-void readMem(char * buffer, uint8_t * from, int cant);
 
 /*
  * Retorna una copia de los valores de los registros, 

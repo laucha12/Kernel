@@ -242,33 +242,16 @@ sysClearScreen:
 ; Sycall la cual la memoria desd
 ;--------------------------------------------------------
 ; Argumentos:
-;   rdi -> puntero al buffer de unsigned int donde copiar
-;   rsi -> posicion desde donde se comienza a copiar
-;   rdx -> cantidad de caracteres en copiar
+;   rdi -> posicion desde donde imprimir la memoria
+;   rsi -> file descriptor a donde imprimirla
 ;------------------------------------------------------
-sysReadMem:
-    push rbp        ; Stack frame
-    mov rbp, rsp    ; Stack frame
-
-    push rbx        ; Preservar rbx
-
-    mov rax, 123    ; Nuemro de syscall
-    int 80h         ; "Che Kernel"
-
-    pop rbx         ; Preservar rbx
-
-    mov rsp, rbp    ; Stack frame
-    pop rbp         ; Stack frame
-
-    ret
-
 printMemFrom:
     push rbp        ; Stack frame
     mov rbp, rsp    ; Stack frame
 
     push rbx        ; Preservar rbx
 
-    mov rax, 123    ; Nuemro de syscall
+    mov rax, 133    ; Nuemro de syscall
     int 80h         ; "Che Kernel"
 
     pop rbx         ; Preservar rbx

@@ -54,23 +54,3 @@ void itoa(char* string, int num, int digits){
 		string[i - 1] = (num % 10) + '0';
 	}
 }
-
-uint64_t regsSaved[200] = {0};
-
-#define REGS 18
-
-void regsSnapshot(uint64_t * regs){
-
-	for(int i = 0; i < REGS; i++){
-		regsSaved[i] = regs[i];
-	}
-
-}
-
-void getRegsSnapshot(uint64_t * buffer){
-
-	for(int i = 0; i < REGS; i++){
-		buffer[i] = regsSaved[i];
-	}
-
-}

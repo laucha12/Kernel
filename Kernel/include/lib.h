@@ -10,8 +10,4 @@ char *cpuVendor(char *result);
 
 void itoa(char* string, int num, int digits);
 
-void regsSnapshot(uint64_t * regs);
-
-void getRegsSnapshot(uint64_t * buffer);
-
 #endif

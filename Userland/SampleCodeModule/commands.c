@@ -10,16 +10,6 @@
 #define BYTES_PER_ADDRESS 1
 
 
-
-void printUnos(Window window, int argc, char argv[MAX_ARGUMENT_COUNT][MAX_ARGUMENT]) {
-    int i = 0;
-    while(1) {
-        if(!(i % 100000)) puts_("1", MAIN_WINDOW);
-        i++;
-    }
-    exit();
-}
-
 void man(Window window, int argc, char argv[MAX_ARGUMENT_COUNT][MAX_ARGUMENT]) {
     if(argc != 2) {
         puts_(INVALID_ARGUMENT_NUMBER, window);
@@ -114,8 +104,7 @@ void printMem(Window window, int argc, char argv[MAX_ARGUMENT_COUNT][MAX_ARGUMEN
     puts_(argv[1], window);
     newLine(window);
 
-    char bufferMemory[ADDRESSES_READ_MEM * BYTES_PER_ADDRESS + 1];
-    printMemFrom((unsigned long *) 0x380000, window);
+    printMemFrom((unsigned int *) atoi_(argv[1]), window);
     
     exit();
 }
