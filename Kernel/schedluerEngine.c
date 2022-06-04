@@ -78,6 +78,8 @@ int killProces(int pid){
     return processesRunning;
 }
 int reloadProcess(int pid){
+    // No indentifico si se pauso o termino
+    // Debemos hacer un flag para ver se pauso o termino el proceso
     if(!procesos[pid].flagRunning){
         procesos[pid].flagRunning = 1;
         processesRunning += 1;
