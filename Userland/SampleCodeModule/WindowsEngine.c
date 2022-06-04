@@ -1,15 +1,25 @@
 #include "include/WindowsEngine.h"
-#include "include/Windows.h"
-#include "include/argumentsEngine.h"
-
-#define MAX_WINDOWS 3
 
 
-void windowsEngineInitialize(int window, int argc, char argv[MAX_ARGUMENT_COUNT][MAX_ARGUMENT]){
+void windowsEngineInitialize(Window window, int argc, char argv[MAX_ARGUMENT_COUNT][MAX_ARGUMENT]){
   
     // Se inicia mi primera ventan
     windowStart(MAIN_WINDOW);
 
+}
+
+void windowsEngineDisplayControls(Window window) {
+
+    //obs. se podria modalurisar con los define pero no nos dio el tiempo
+
+     putsf_(" Sistema de ventanas:                                      \n"
+            "   - Suspender ventana principal o izquierda: PRESIONAR 1  \n"
+            "   - Reanudar  ventana principal o izquierda: PRESIONAR 3  \n"
+            "   - Suspender ventana derecha :              PRESIONAR 2  \n"
+            "   - Reanudar  vventana derecha:              PRESIONAR 4  \n"
+            "   - Para matar cualquier proceso:            ENTER        "
+     , MAGENTA_BACKGROUND | WHITE, window);
+    
 }
 
 void waitProcess(){
@@ -18,15 +28,15 @@ void waitProcess(){
 
     getKey(MAIN_WINDOW, &c);
 
-    while ( c != '\n'){
+    while ( c != '\n') {
     
-    if(c == '1')
+    if(c == LEFT_WINDOW_SUSPEND)
         sysKillProcess(LEFT_WINDOW);
-    else if(c == '2')
+    else if(c == RIGHT_WINDOW_SUSPEND)
         sysKillProcess(RIGHT_WINDOW);;
-    if (c == '3')
+    if (c == RESUME_LEFT_WINDOW)
         sysReloadProcess(LEFT_WINDOW);
-    if (c == '4')
+    if (c == RESUME_RIGHT_WINDOW)
         sysReloadProcess(RIGHT_WINDOW);
     
     
@@ -47,7 +57,7 @@ void waitProcessPipe(){
 
     while ( c != '\n'){
     
-    if(c == '1')
+    if(c == LEFT_WINDOW_SUSPEND)
         sysKillProcess(LEFT_WINDOW);
     else if(c == '2')
         sysKillProcess(RIGHT_WINDOW);;
@@ -75,7 +85,7 @@ void waitProcessMain(){
 
     while ( c != '\n' && SysProcesses()){
         
-        if(c == '1')
+        if(c == MAIN_WINDOW_SUSPEND)
             sysKillProcess(LEFT_WINDOW);
         if (c == '3')
             sysReloadProcess(LEFT_WINDOW);

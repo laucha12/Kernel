@@ -25,14 +25,6 @@ void man(Window window, int argc, char argv[MAX_ARGUMENT_COUNT][MAX_ARGUMENT]) {
             found = 1;
         }
     }
-    
-    //hago un chequeo a mano porque solo tengo un comando especial,
-    //sino haria otro for para los especiales
-    if(strcmp_(argv[1], "pipe") == 0) {
-        printCommand(window, PIPE_CMD, PIPE_DESCRIPTION);
-        putsf_(PIPE_MAN, MAGENTA, window);
-        found = 1;
-    }
 
     if(!found) 
         puts_("No se encontro el comando, intente de nuevo \n", window);
