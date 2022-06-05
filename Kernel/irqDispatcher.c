@@ -23,7 +23,9 @@ void irqDispatcher(uint64_t irq)
 		break;
 	case 1:
 		// Se llama a la funcion que debera ejecutar
-	   //  la interrupcion que se guardo en la posicion 21 del IDT
+	    // la interrupcion que se guardo en la posicion 21 del IDT
+
+		// La rutina es llamda directamente desde assembler
 		//int_21();
 		break;
 	}
