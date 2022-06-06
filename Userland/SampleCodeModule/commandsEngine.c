@@ -94,14 +94,16 @@ void printCommand(Window window, const char * name, const char * description) {
     putsf_(name, LIGHT_CYAN, window);
     puts_(" : ", window);
     puts_(description, window);
-    newLine(window);
+    //newLine(window);
 }
 
 void commandsEngineDisplayCommands(Window window) {
 
     //imprimo todos los comandos normales
-    for (int i = 0; i < commandsCount; ++i) 
+    for (int i = 0; i < commandsCount; ++i) {
         printCommand(window, commands[i].name, commands[i].description);
+        newLine(window);
+    }
 
     //imprimo todos los comandos especiales
     //como solo es uno lo hago asi, sino crearia otro arreglo con ellos

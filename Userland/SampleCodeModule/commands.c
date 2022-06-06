@@ -1,6 +1,7 @@
 #include "include/commands.h"
 #include "include/commandsEngine.h"
 #include "include/lib.h"
+#include "include/WindowsEngine.h"
 
 #define INVALID_ARGUMENT_NUMBER "No ingreso el numero de argumentos validos \n"
 #define INVALID_ARGUMENTS "No ingreso el tipo de argumentos validos \n"
@@ -41,6 +42,8 @@ void help(Window window, int argc, char argv[MAX_ARGUMENT_COUNT][MAX_ARGUMENT]) 
 
     puts_("La lista de los comandos disponibles es: \n", window);
     commandsEngineDisplayCommands(window);
+    windowsEngineDisplayControls(window);
+    newLine(window); 
 
     exit();
 }

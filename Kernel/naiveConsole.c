@@ -240,6 +240,7 @@ void resetVideo(int fd)
 	for (int i = 0; i < OFFSET; i++)
 	{
 		*(video + 3840 + i * 2) = ' ';
+		*(video + 3840 + i * 2 + 1) = BLACK_BACKGROUND | WHITE;
 	}
 	//if (actualFd)
 	//{
@@ -265,8 +266,10 @@ void resetVideoFD1()
 	// Limpio la ultima linea que sera donde comienza a escribir
 	for (int i = 0; i < OFFSET; i++)
 	{
-		if(i % 160 < OFFSET)
+		if(i % 160 < OFFSET){
 			*(video + 3840 + i * 2) = ' ';
+			*(video + 3840 + i * 2 + 1) = WHITE;
+		}
 	}
 	
 	currentVideoFD1 =  video + 3840; //currentVideoFD1 - OFFSET;
@@ -285,8 +288,10 @@ void resetVideoFD2()
 	// Limpio la ultima linea que sera donde comienza a escribir
 	for (int i = 0; i < OFFSET; i++)
 	{
-		if(i % 160 >= OFFSET)
+		if(i % 160 >= OFFSET){
 			*(video + 3840 + i * 2) = ' ';
+			*(video + 3840 + i * 2 + 1) = WHITE;
+		}
 	}
 	
 	currentVideoFD2 = video + 3840 + OFFSET + 2;
