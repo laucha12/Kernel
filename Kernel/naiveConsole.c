@@ -136,7 +136,7 @@ void ncPrintFD0Char_Format(char character, char format)
 		currentVideoFD0 += 2;
 	}
 
-	if ((currentVideoFD0 - video) >= 3840)
+	if ((currentVideoFD0 - video) >= (4000 - COLUMS))
 	{
 		resetVideo(0);
 	}
@@ -184,7 +184,7 @@ void ncPrintFD1Char_Format(char character, char format)
 		currentVideoFD1 += OFFSET;
 	}
 
-	if ((currentVideoFD1 - video) >= 3920)
+	if ((currentVideoFD1 - video) >= (3920 - COLUMS))
 	{
 		resetVideoFD1();
 	}
@@ -228,7 +228,7 @@ void ncPrintFD2Char_Format(char character, char format)
 		currentVideoFD2 += OFFSET + 2;
 	}
 
-	if ((currentVideoFD2 - video) >= 3840)
+	if ((currentVideoFD2 - video) >= (4000 - COLUMS))
 	{
 		resetVideoFD2();
 	}
@@ -265,7 +265,7 @@ void ncClearHeader(){
 void resetVideo(int fd)
 {
 	// Leer una linea y escribirla un renglon arriba
-	for (int i = 0; i < 3840; i++)
+	for (int i = 0; i < (3840 - COLUMS); i++)
 	{
 		*(video + i) = *(video + i + COLUMS);
 	}
@@ -273,7 +273,7 @@ void resetVideo(int fd)
 	// Limpio la ultima linea que sera donde comienza a escribir
 	for (int i = 0; i < OFFSET; i++)
 	{
-		*(video + 3840 + i * 2) = ' ';
+		*(video + (3840 - COLUMS) + i * 2) = ' ';
 	}
 	//if (actualFd)
 	//{
@@ -290,7 +290,7 @@ void resetVideoFD1()
 {
 
 	// Leer una linea y escribirla un renglon arriba
-	for (int i = 0; i < 3840; i++)
+	for (int i = 0; i < (3840 - COLUMS); i++)
 	{
 		if(i % 160 < OFFSET)
 			*(video + i) = *(video + i + COLUMS);
@@ -300,17 +300,17 @@ void resetVideoFD1()
 	for (int i = 0; i < OFFSET; i++)
 	{
 		if(i % 160 < OFFSET)
-			*(video + 3840 + i * 2) = ' ';
+			*(video + (3840 - COLUMS) + i * 2) = ' ';
 	}
 	
-	currentVideoFD1 =  video + 3840; //currentVideoFD1 - OFFSET;
+	currentVideoFD1 =  video + (3840 - COLUMS); //currentVideoFD1 - OFFSET;
 
 }
 
 void resetVideoFD2()
 {
 	// Leer una linea y escribirla un renglon arriba
-	for (int i = 0; i < 3840; i++)
+	for (int i = 0; i < (3840 - COLUMS); i++)
 	{
 		if(i % 160 >= OFFSET)
 			*(video + i) = *(video + i + COLUMS);
@@ -320,10 +320,10 @@ void resetVideoFD2()
 	for (int i = 0; i < OFFSET; i++)
 	{
 		if(i % 160 >= OFFSET)
-			*(video + 3840 + i * 2) = ' ';
+			*(video + (3840 - COLUMS) + i * 2) = ' ';
 	}
 	
-	currentVideoFD2 = video + 3840 + OFFSET + 2;
+	currentVideoFD2 = video + (3840 - COLUMS) + OFFSET + 2;
 }
 
 // -------------------------------------------------------------------------------
