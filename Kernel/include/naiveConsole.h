@@ -241,5 +241,20 @@ void open(int fd);
     Return: void
 */
 void close(int fd);
+/*
+    Funcion la cual imprime en el header de pantalla
+
+    Params: char* string, int format
+    Return: void
+*/
+void ncPrintHeader(char* string, int format);
+/*
+    Funcion la cual limpia el header de pantalla
+
+    Params: voi
+    Return: void
+*/
+void ncClearHeader();
+
 
 #endif

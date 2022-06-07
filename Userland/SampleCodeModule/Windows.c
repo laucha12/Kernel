@@ -7,8 +7,7 @@ A FUTURO HACER DOBLE TERMINAL
 **/
 
 void welcomeScreen(Window window){
-    putsf_("                                     GDH OS                                     ", CYAN_BACKGROUND | WHITE, window);
-    puts_("\n Bienvenido a GDH OS! \n \n", window);
+    puts_(" Bienvenido a GHD OS! \n \n", window);
     puts_(" Los comandos disponibes son: \n", window);
     commandsEngineDisplayCommands(window);
     windowsEngineDisplayControls(window);
@@ -17,6 +16,8 @@ void welcomeScreen(Window window){
 
 
 void listen(char * command, Window window){
+
+    printHeader("                                     GDH OS                                     ", CYAN_BACKGROUND | WHITE);
 
     // Contador de caracteres ingresados por el usuario
     int count = 0;

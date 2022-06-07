@@ -26,6 +26,7 @@ typedef struct {
 typedef struct {
     Context context;
     int flagRunning;
+    int flagPaused;
     int fileDescriptor;
     char stackFrame[MAX_STACK];
 } Process;

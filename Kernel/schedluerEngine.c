@@ -6,7 +6,10 @@
 
 
 void initialiseContextSchedluerEngine() {
-    for (int i = 0; i < MAX_PROCESSES; i++) procesos[i].flagRunning = 0;
+    for (int i = 0; i < MAX_PROCESSES; i++) {
+        procesos[i].flagRunning = 0;
+        procesos[i].flagPaused = 1;
+        }
 }
 
 int toSwitch() {
@@ -45,7 +48,7 @@ char  nextProcess(char * contextOwner ) {
     //corriendo, la shell (funciona como nuestro proceso idle)
 
     char  next =  (*contextOwner + 1) % MAX_PROCESSES;
-    while(!procesos[next].flagRunning) {
+    while(!(procesos[next].flagRunning && !procesos[next].flagPaused)) {
         next =  (next +  1) % MAX_PROCESSES;
     }
     return next;
@@ -63,23 +66,25 @@ static void popContext(long * contextHolder, char  contextOwner){
 }
 
 int exitProces(long * contextHolder,char * contextOwner){
-    killProces(*contextOwner);
+    procesos[*contextOwner].flagRunning = 0;
+    procesos[*contextOwner].flagPaused = 1;
+    processesRunning -= 1;
     *contextOwner = nextProcess(contextOwner);
     popContext(contextHolder, *contextOwner);
     return processesRunning;
 
 }
 int killProces(int pid){
-    if(procesos[pid].flagRunning){
-        procesos[pid].flagRunning = 0;
+    if(!procesos[pid].flagPaused){
+        procesos[pid].flagPaused = 1;
         processesRunning -= 1;   
     }
     
     return processesRunning;
 }
 int reloadProcess(int pid){
-    if(!procesos[pid].flagRunning){
-        procesos[pid].flagRunning = 1;
+    if(procesos[pid].flagPaused){
+        procesos[pid].flagPaused = 0;
         processesRunning += 1;
     }
     return processesRunning;
@@ -89,6 +94,7 @@ void loadFirstContext(long * contextHolder){
     pushContext(contextHolder, processesRunning);
     procesos[processesRunning].context.registers[RSP] = (procesos[processesRunning].stackFrame + MAX_STACK -1);
     procesos[processesRunning].flagRunning = 1;
+    procesos[processesRunning].flagPaused = 0;
     /*
         Lo que hago en la siguiente linea es tomar el valor guardado en RDI para tomar su primer parametro
         el cual por la firma de cada una de las funciones es el FD para luego utilizarlo

@@ -93,10 +93,10 @@ void printMem(Window window, int argc, char argv[MAX_ARGUMENT_COUNT][MAX_ARGUMEN
     }
 
     puts_("La informacion desde la posicion de memoria ", window);
-    puts_(argv[1], window);
+    putHex(atoh_(argv[1]), window);
     newLine(window);
 
-    printMemFrom((unsigned int *) atoi_(argv[1]), window);
+    printMemFrom((unsigned int *) atoh_(argv[1]), window);
     
     exit();
 }

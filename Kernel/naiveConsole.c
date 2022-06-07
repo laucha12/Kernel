@@ -3,10 +3,19 @@
 static uint32_t uintToBase(uint64_t value, char *buffer, uint32_t base);
 
 static char buffer[64] = {'0'};
-static uint8_t *const video = (uint8_t *)0xB8000;
-static uint8_t *currentVideoFD0 = (uint8_t *)0xB8000;
-static uint8_t *currentVideoFD1 = (uint8_t *)0xB8000;
-static uint8_t *currentVideoFD2 = (uint8_t *)0xB8000 + 82;
+
+//static uint8_t *const video = (uint8_t *)0xB8000;
+//static uint8_t *currentVideoFD0 = (uint8_t *)0xB8000;
+//static uint8_t *currentVideoFD1 = (uint8_t *)0xB8000;
+//static uint8_t *currentVideoFD2 = (uint8_t *)0xB8000 + 82;
+
+
+static uint8_t *const videoBegin = (uint8_t *)0xB8000;
+static uint8_t *const video = (uint8_t *)0xB8000 + COLUMS;
+static uint8_t *currentVideoFD0 = (uint8_t *)0xB8000 + COLUMS;
+static uint8_t *currentVideoFD1 = (uint8_t *)0xB8000 + COLUMS;
+static uint8_t *currentVideoFD2 = (uint8_t *)0xB8000 + COLUMS + 82;
+
 static int actualFd = 0;
 
 static const uint32_t width = 80;
@@ -127,7 +136,7 @@ void ncPrintFD0Char_Format(char character, char format)
 		currentVideoFD0 += 2;
 	}
 
-	if ((currentVideoFD0 - video) >= 4000)
+	if ((currentVideoFD0 - video) >= (4000 - COLUMS))
 	{
 		resetVideo(0);
 	}
@@ -175,7 +184,7 @@ void ncPrintFD1Char_Format(char character, char format)
 		currentVideoFD1 += OFFSET;
 	}
 
-	if ((currentVideoFD1 - video) >= 3920)
+	if ((currentVideoFD1 - video) >= (3920 - COLUMS))
 	{
 		resetVideoFD1();
 	}
@@ -219,11 +228,36 @@ void ncPrintFD2Char_Format(char character, char format)
 		currentVideoFD2 += OFFSET + 2;
 	}
 
-	if ((currentVideoFD2 - video) >= 4000)
+	if ((currentVideoFD2 - video) >= (4000 - COLUMS))
 	{
 		resetVideoFD2();
 	}
 }
+
+// -------------------------------------------------------------------------------
+// 	Header
+// -------------------------------------------------------------------------------
+
+void ncPrintHeader(char * string, int format){
+	int i = 0;
+	for(; i < 160  && string[i/2] != 0; i+=2){
+		videoBegin[i] = string[i/2];
+		videoBegin[i + 1] = format;
+	}
+
+	for(; i < 160; i+=2){
+		videoBegin[i] = ' ';
+		videoBegin[i + 1] = format;
+	}
+}
+
+void ncClearHeader(){
+	for(int i = 0; i < 160; i+=2){
+			videoBegin[i] = ' ';
+			videoBegin[i + 1] = WHITE;
+	}
+}
+
 
 // -------------------------------------------------------------------------------
 // 	reset video
@@ -231,7 +265,7 @@ void ncPrintFD2Char_Format(char character, char format)
 void resetVideo(int fd)
 {
 	// Leer una linea y escribirla un renglon arriba
-	for (int i = 0; i < 3840; i++)
+	for (int i = 0; i < (3840 - COLUMS); i++)
 	{
 		*(video + i) = *(video + i + COLUMS);
 	}
@@ -239,8 +273,8 @@ void resetVideo(int fd)
 	// Limpio la ultima linea que sera donde comienza a escribir
 	for (int i = 0; i < OFFSET; i++)
 	{
-		*(video + 3840 + i * 2) = ' ';
-		*(video + 3840 + i * 2 + 1) = BLACK_BACKGROUND | WHITE;
+		*(video + (3840 - COLUMS) + i * 2) = ' ';
+		*(video + (3840 - COLUMS) + i * 2 + 1) = BLACK_BACKGROUND | WHITE;
 	}
 	//if (actualFd)
 	//{
@@ -257,7 +291,7 @@ void resetVideoFD1()
 {
 
 	// Leer una linea y escribirla un renglon arriba
-	for (int i = 0; i < 3840; i++)
+	for (int i = 0; i < (3840 - COLUMS); i++)
 	{
 		if(i % 160 < OFFSET)
 			*(video + i) = *(video + i + COLUMS);
@@ -267,19 +301,19 @@ void resetVideoFD1()
 	for (int i = 0; i < OFFSET; i++)
 	{
 		if(i % 160 < OFFSET){
-			*(video + 3840 + i * 2) = ' ';
-			*(video + 3840 + i * 2 + 1) = WHITE;
+			*(video + (3840 - COLUMS) + i * 2) = ' ';
+			*(video + (3840 - COLUMS) + i * 2 + 1) = WHITE;
 		}
 	}
 	
-	currentVideoFD1 =  video + 3840; //currentVideoFD1 - OFFSET;
+	currentVideoFD1 =  video + (3840 - COLUMS); //currentVideoFD1 - OFFSET;
 
 }
 
 void resetVideoFD2()
 {
 	// Leer una linea y escribirla un renglon arriba
-	for (int i = 0; i < 3840; i++)
+	for (int i = 0; i < (3840 - COLUMS); i++)
 	{
 		if(i % 160 >= OFFSET)
 			*(video + i) = *(video + i + COLUMS);
@@ -289,12 +323,12 @@ void resetVideoFD2()
 	for (int i = 0; i < OFFSET; i++)
 	{
 		if(i % 160 >= OFFSET){
-			*(video + 3840 + i * 2) = ' ';
-			*(video + 3840 + i * 2 + 1) = WHITE;
+			*(video + (3840 - COLUMS) + i * 2) = ' ';
+			*(video + (3840 - COLUMS) + i * 2 + 1) = WHITE;
 		}
 	}
 	
-	currentVideoFD2 = video + 3840 + OFFSET + 2;
+	currentVideoFD2 = video + (3840 - COLUMS) + OFFSET + 2;
 }
 
 // -------------------------------------------------------------------------------

@@ -55,6 +55,7 @@ void commandsEngineRunPipe(const char *command, Window window) {
     commandsEngineRun(cmd2, RIGHT_WINDOW);
     
     //espero a las interrupciones de teclado del usuario 
+
     waitProcessPipe();
 }
 

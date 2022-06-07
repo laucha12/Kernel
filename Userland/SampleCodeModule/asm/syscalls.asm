@@ -10,6 +10,7 @@ GLOBAL sysOpen
 GLOBAL sysClose
 GLOBAL sysClearScreen
 GLOBAL sysWriteFormat
+GLOBAL sysWriteHeaderFormat
 GLOBAL sysReadMem
 GLOBAL SysProcesses
 GLOBAL loadSO
@@ -110,6 +111,34 @@ sysWriteFormat:
 
     ret    
 
+;------------------------------
+;   Rutina de asm que realiza 
+;   la syscall write de header
+;   de pantalla con formato.
+;------------------------------
+sysWriteHeaderFormat:
+    push rbp        ; Stack frame
+    mov rbp, rsp    ; Stack frame
+
+    push rbx        ; Preservar rbx
+
+    ;push rdi        ; buffer
+    ;push rsi        ; fd
+
+    
+    
+    mov rax,125       ; Numero de syscall
+;   
+    mov rdx, rsi    ; 2 arg -> formato
+    mov rsi, rdi    ; 1 arg -> buffer
+    int 80h         ; "Che kernel"
+    
+    pop rbx         ; Preservar rbx
+
+    mov rsp, rbp    ; Stack frame
+    pop rbp         ; Stack frame
+
+    ret    
 
 ;------------------------------
 ; Rutina de asm que realiza 

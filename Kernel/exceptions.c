@@ -20,6 +20,10 @@ static void reportRegs(long regs[], char fd){
 void exceptionDispatcher(int exception, long regs[],char * contextOwner) {
 	int fd = getFD(*contextOwner);
 	fdClear(fd);
+
+	ncClearHeader();
+	ncPrintHeader("                                   EXCEPTION                                    ", LIGHT_RED_BACKGROUND | WHITE);
+
 	switch (exception)
 	{
 		case ZERO_EXCEPTION_ID:
@@ -36,11 +40,9 @@ void exceptionDispatcher(int exception, long regs[],char * contextOwner) {
 }
 
 static void zero_division(long regs[],char fd) {
-	ncPrintAtFD_Format("\n-- EXCEPTION - DIVIDE BY ZERO --\n",fd, LIGHT_RED_BACKGROUND | WHITE);
 	reportRegs(regs, fd);
 }
 
 static void invalid_opcode(long regs[],char fd) {
-	ncPrintAtFD_Format("\n-- EXCEPTION - INVALID OPCODE --\n", fd, LIGHT_RED_BACKGROUND | WHITE);
 	reportRegs(regs, fd);
 }

@@ -1,4 +1,7 @@
 #include "include/WindowsEngine.h"
+#include "include/Windows.h"
+#include "include/argumentsEngine.h"
+#include "include/lib.h"
 
 
 void windowsEngineInitialize(Window window, int argc, char argv[MAX_ARGUMENT_COUNT][MAX_ARGUMENT]){
@@ -56,14 +59,16 @@ void waitProcess(){
     getKey(MAIN_WINDOW, &c);
     }
 
-    sysKillProcess(LEFT_WINDOW);
-    sysKillProcess(RIGHT_WINDOW);
+    exit(LEFT_WINDOW);
+    exit(RIGHT_WINDOW);
     sysClearScreen(LEFT_WINDOW);
     sysClearScreen(RIGHT_WINDOW);
 }
 
 void waitProcessPipe(){
     
+    printHeader("1: Pause left  2: Pause right   3: Restart left   4: Restart right   ENTER: exit", GREEN_BACKGROUND | WHITE);
+
     char c;
     //leo la key
     getKey(MAIN_WINDOW, &c);
@@ -91,6 +96,8 @@ void waitProcessPipe(){
 
 
 void waitProcessMain(){
+    
+    printHeader(" ENTER: exit                                                                    ", GREEN_BACKGROUND | WHITE);
     
     char c;
     //leo la key
