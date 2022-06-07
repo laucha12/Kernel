@@ -127,7 +127,7 @@ sysWriteHeaderFormat:
 
     
     
-    mov rax,124       ; Numero de syscall
+    mov rax,125       ; Numero de syscall
 ;   
     mov rdx, rsi    ; 2 arg -> formato
     mov rsi, rdi    ; 1 arg -> buffer

@@ -273,8 +273,8 @@ void resetVideo(int fd)
 	// Limpio la ultima linea que sera donde comienza a escribir
 	for (int i = 0; i < OFFSET; i++)
 	{
-		*(video + 3840 + i * 2) = ' ';
-		*(video + 3840 + i * 2 + 1) = BLACK_BACKGROUND | WHITE;
+		*(video + (3840 - COLUMS) + i * 2) = ' ';
+		*(video + (3840 - COLUMS) + i * 2 + 1) = BLACK_BACKGROUND | WHITE;
 	}
 	//if (actualFd)
 	//{

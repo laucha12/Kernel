@@ -89,11 +89,13 @@ void syscalls(int fd, char *sysBuffer, int count, int num)
 	//	break;
 
 	case 124:
+		// Si es la syscall 124 se hara una copia de los registros capturados 
+		// previamente al buffer.
 		getRegsSnapshot(sysBuffer);
 		break;
 
-	case 124:
-		// Si es la syscall 124 se ira al driver de pantalla para un print 
+	case 125:
+		// Si es la syscall 125 se ira al driver de pantalla para un print 
 		// con FORMATO del Header de pantalla.
 		ncPrintHeader(sysBuffer, count);
 		break;
