@@ -102,6 +102,7 @@ void printCommand(Window window, const char * name, const char * description) {
     putsf_(name, LIGHT_CYAN, window);
     puts_(" : ", window);
     puts_(description, window);
+    newLine(window);
 }
 
 void commandsEngineDisplayCommands(Window window) {
@@ -109,7 +110,6 @@ void commandsEngineDisplayCommands(Window window) {
     //imprimo todos los comandos normales
     for (int i = 0; i < COMMANDS_COUNT; ++i) {
         printCommand(window, commands[i].name, commands[i].description);
-        newLine(window);
     }
 
     //imprimo todos los comandos especiales
