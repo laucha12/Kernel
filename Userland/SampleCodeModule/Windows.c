@@ -2,6 +2,9 @@
 #include "include/lib.h"
 #include "include/commandsEngine.h"
 
+/*
+A FUTURO HACER DOBLE TERMINAL
+**/
 
 void welcomeScreen(Window window){
     putsf_("                                     GDH OS                                     ", CYAN_BACKGROUND | WHITE, window);
@@ -36,6 +39,7 @@ void listen(char * command, Window window){
                 deleteChar(window);
                 count--;}
         }
+
          // En caso contrario, si leimos algo del buffer, se agrega la letra al comando y se la imprime en pantalla
          // En caso contrario, se agrega la letra al comando y se la imprime en pantalla
         else if(c != NULL_) { 

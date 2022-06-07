@@ -1,8 +1,7 @@
 #ifndef COMMANDS_ENGINE_H
 #define COMMANDS_ENGINE_H
 
-/*
-
+/*********************************************************************************************************************
     La idea de este engine es poder manejar el mapeo de una input del usuario a la lista de comandos
     definidas. La verdad que para hacerlo bien se necesitaria una maquina de estados, sin embargo lo que proponemos
     aqui nos parece acertado.
@@ -20,8 +19,7 @@
     Por ultimo, utilizamos una array de Commands para hacer el matching, sin embargo consideramos oportuno
     mencionar como la estructura de datos seria un Trie, que logramos implementar pero con la ayuda de malloc,
     cosa que no soporta de manera robusta nuestro sistema operativo actualmente.
-
-*/
+**********************************************************************************************************************/
 
 #include "Windows.h"
 #include "commands.h"
@@ -31,33 +29,44 @@
 
 #define MAX_NAME 100
 #define MAX_DESCRIPTION 300
+#define COMMANDS_COUNT 10
 
-//defino CommandPtr como un puntero a funcion de mis comandos
-//(su signature siempre debe ser el mismo void que toman una window y
-//una string con sus argumentos)
+/* Defino CommandPtr como un puntero a funcion de mis comandos
+ * (su signature siempre debe ser el mismo void que toman una window y
+ * una string con sus argumentos)
+ */
 typedef void (*CommandPtr)(Window, int, char[MAX_ARGUMENT_COUNT][MAX_ARGUMENT]);
 
+/*
+ * Defino a un command como un struct que almacena todo lo que define a un comando de mi shell,
+ * su nombre (para poder imprimirlo y mapearlo con lo que ingresa el usuario), su descripcion 
+ * (asi modularizar los comandos de man y help y de paso proveer extra documentacion al desarollador
+ * sobre el comando en cuestion), y por ultimo el puntero a funcion de la implementacion presentada
+ * del comando
+ */
 typedef struct {
     char name[MAX_NAME];
     char description[MAX_DESCRIPTION];
     CommandPtr apply;
 } Command;
 
-
-static Command commands[] = {{"help",          HELP_DESCRIPTION,           help},
-                             {"diaYHora",      DIA_Y_HORA_DESCRIPTION,     diaYHora},
-                             {"divideByZero",  DIVIDE_BY_ZERO_DESCRIPTION, divideByZero},
-                             {"invalidOpCode", INVALID_OPCODE_DESCRIPTION, invalidOpCode},
-                             {"printMem",      PRINT_MEM_DESCRIPTION,      printMem},
-                             {"infoReg",       INFO_REG_DESCRIPTION,       infoReg},
-                             {"primos",        PRIMOS_DESCRIPTION,         primos},
-                             {"fibonacci",     FIBONACCI_DESCRIPTION,      fibonacci},
-                             {"man",           MAN_DESCRIPTION,            man},
-                             {"clear",         CLEAR_DESCRIPTION,          clear}};
-
-
-//OJO AL AGREGAR A LA LISTA DE ACTUALIZAR LA CANTIDAD DE COMANDOS
-static int commandsCount = 10;
+/*
+ * Definimos la manera de implementar nuestra tabla de comandos como un arreglo, sin embargo consideramos
+ * oportuno mencionar que existen mejores estructuras de datos. Un ejemplo clarisimo si tuvisiemos soporte
+ * para memoria dinamica seria el uso de un Trie y asi al hacer la busqueda de un comando no tendriamos que
+ * hacer el KMP de la string ingresada por el usuario con cada entrada de nuestro arreglo de comandos, sino
+ *  que hariamos directamente la busqueda en el  (para un bosquejo ver en Trie.h)
+ */
+static Command commands[COMMANDS_COUNT] = { {"help",          HELP_DESCRIPTION,           help},
+                                            {"diaYHora",      DIA_Y_HORA_DESCRIPTION,     diaYHora},
+                                            {"divideByZero",  DIVIDE_BY_ZERO_DESCRIPTION, divideByZero},
+                                            {"invalidOpCode", INVALID_OPCODE_DESCRIPTION, invalidOpCode},
+                                            {"printMem",      PRINT_MEM_DESCRIPTION,      printMem},
+                                            {"infoReg",       INFO_REG_DESCRIPTION,       infoReg},
+                                            {"primos",        PRIMOS_DESCRIPTION,         primos},
+                                            {"fibonacci",     FIBONACCI_DESCRIPTION,      fibonacci},
+                                            {"man",           MAN_DESCRIPTION,            man},
+                                            {"clear",         CLEAR_DESCRIPTION,          clear}};
 
 
 /*

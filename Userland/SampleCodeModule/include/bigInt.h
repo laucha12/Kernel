@@ -1,5 +1,16 @@
 
 #include "include/lib.h"
+
+
+/******************************************************************************************************
+ * Este ADT modela a un entero como un array de caracteres y asi maneja una cantidad arbitraria de digitos,
+ * no existe el concepto de overflow como tal, simplemente es salirse del tamanio de la array que internamente
+ * representa al entero (pero ese error es catcheable por la funcion bigIntOverflow).
+ * 
+ * En si dejamos un bosquejo del ADT minimo para lo que necesitariamos para el fibonacci, asi como un
+ * ejemplo del codigo de la implementacion
+ *
+ *****************************************************************************************************/
 #define BIG_INT_SIZE 200
 
 typedef char BigInt[BIG_INT_SIZE];
@@ -59,3 +70,32 @@ void addBigIntInto(string str1, string str2, BigInt str)
     reverse(str.begin(), str.end());
 }
 */
+
+/*  Ejemplo de implementacion para el fibonacci:
+
+    BigInt previousToLast[BIG_INT_SIZE];
+    initBigInt(previousToLast);
+    putBigInt(previousToLast, window);
+    newLine(window);
+    
+    BigInt last[BIG_INT_SIZE];
+    initBigInt(last);
+    putBigInt(last, window);
+    newLine(window);
+
+    BigInt current[BIG_INT_SIZE];
+    initBigInt(current);
+
+
+    while(!bigIntOverflow(previousToLast, last)) {
+        addBigIntInto(previousToLast, last, current);
+        copyBigIntTo(last, previousToLast);
+        copyBigIntTo(current, last);
+        putBigInt(current, window);
+        newLine(window);
+    }
+
+    if(bigIntOverflow(previousToLast, last)) 
+        puts_("Se corta el fibonacci porque se hubiese generado un overflow", window);
+
+ */

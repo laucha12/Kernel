@@ -3,12 +3,16 @@
 
 #include "argumentsEngine.h"
 
-/*
+/**********************************************************************************************************
  * La idea de mi definicion de comandos es que funcionen similar a como el SO maneja la shell, lee todos
  * lo entrado como input despues de su nombre al comando! De esa manera podemos manejar todos los tipos de
  * argumentos de la forma COMANDO ARG1, ARG2, ... ARGN
- *
- * */
+ * 
+ * Por lo tanto, todas las funciones de comandos ejecutables por el usuario estan definidas con el mismo 
+ * signature que las funciones de C con el agregado de la ventana a escribir.
+ * 
+ * void cmd(Window window, int argc, char argv[MAX_ARGUMENT_COUNT][MAX_ARGUMENT]);
+ ***********************************************************************************************************/
 
 #define PIPE_CMD "CMD1 | CMD2 "
 #define PIPE_DESCRIPTION "Corre CMD1 a la izquierda y CMD2 a la derecha de la screen. " 

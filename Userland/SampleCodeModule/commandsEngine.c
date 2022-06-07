@@ -6,9 +6,11 @@
 void commandsEngineHandle(char *command, Window window) {
 
     //chequeo default de NULL_ y el tamaño del comando a leer
+    //obs. utilizo isLongerThan y no un strlen por el hecho que no se el 
+    //size del input y podria presentar una vulnerabilidad de overflow
     if (command == NULL_ || isLongerThan(command, MAX_COMMAND_SIZE)) return;
 
-    //chequeo si tiene un pipe, analogo al manejo de "<" para comandos especiales.
+    //como el pipe es un comando especial, se maneja diferente
     if (isPipeCommand(command)) commandsEngineRunPipe(command, window);
 
     //le digo al engine de comandos que lo corra en la window
@@ -42,12 +44,17 @@ void commandsEngineRunPipe(const char *command, Window window) {
 
     //copio hasta el final de la string al segundo comando
     while (command[i] != NULL_) cmd2[dim2++] = command[i++];
-    sysClearScreen(MAIN_WINDOW);
 
+    //limpio la pantalla porque voy a dividirla
+    sysClearScreen(window);
+
+    //el motor se encarga de levantar el cmd1 en la ventana izquierda
     commandsEngineRun(cmd1, LEFT_WINDOW);
 
+    //el motor se encarga de levantar el cmd2 en la ventana derecha
     commandsEngineRun(cmd2, RIGHT_WINDOW);
     
+    //espero a las interrupciones de teclado del usuario 
     waitProcessPipe();
 }
 
@@ -61,8 +68,9 @@ void commandsEngineRun(char *command, Window window) {
     //voy por todos los comandos y chequeo que comando lo tengo
     //como una substring de lo pasado como argumento que pase,
     //ejemplo command: "printMem 500", chequeo si "printMem"
-    //es una substring comenzando en indice cero
-    for (int i = 0; i < commandsCount; i++) {
+    //es una substring comenzando en indice cero (aca entraria
+    //un trie)
+    for (int i = 0; i < COMMANDS_COUNT; i++) {
         if (substring(command, commands[i].name) == 0) {
 
             found = 1;
@@ -77,12 +85,9 @@ void commandsEngineRun(char *command, Window window) {
             char args[MAX_ARGUMENT_COUNT][MAX_ARGUMENT];
             int argc = argumentsEngineHandle(window, command, args);
 
-            //hago la syscall de manejo de context switching, ojo
-            //que tengo que manejar los argumentos, que tambien deben
-            //ir copiados sobre la posicion de memoria de la funcion.
+            //Por ultimo, copio 
             CommandPtr cmd = commands[i].apply;
             loadProcess(cmd, window, argc, args);
-            //cmd(window, argc, args); //(por ahora simplemente la llamo)
         }
     }
 
@@ -100,7 +105,7 @@ void printCommand(Window window, const char * name, const char * description) {
 void commandsEngineDisplayCommands(Window window) {
 
     //imprimo todos los comandos normales
-    for (int i = 0; i < commandsCount; ++i) {
+    for (int i = 0; i < COMMANDS_COUNT; ++i) {
         printCommand(window, commands[i].name, commands[i].description);
         newLine(window);
     }

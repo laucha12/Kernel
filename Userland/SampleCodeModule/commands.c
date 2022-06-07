@@ -7,9 +7,6 @@
 #define INVALID_ARGUMENTS "No ingreso el tipo de argumentos validos \n"
 #define TIME_BUFFER 50
 
-#define ADDRESSES_READ_MEM 32
-#define BYTES_PER_ADDRESS 1
-
 
 void man(Window window, int argc, char argv[MAX_ARGUMENT_COUNT][MAX_ARGUMENT]) {
     if(argc != 2) {
@@ -20,7 +17,7 @@ void man(Window window, int argc, char argv[MAX_ARGUMENT_COUNT][MAX_ARGUMENT]) {
 
     int found = 0;
 
-    for(int i = 0; i < commandsCount && !found; i++) {
+    for(int i = 0; i < COMMANDS_COUNT && !found; i++) {
         if(strcmp_(argv[1], commands[i].name) == 0) {
             printCommand(window, commands[i].name, commands[i].description);
             found = 1;
@@ -124,7 +121,6 @@ void infoReg(Window window, int argc, char argv[MAX_ARGUMENT_COUNT][MAX_ARGUMENT
     sysGetRegsSnapshot(buffer);
 
 
-
     for(int i = 0; i < REGS_CANT; i++){
         //if(i%6 == 0 && i !=0)
             //puts_("\n", window);
@@ -175,36 +171,9 @@ void fibonacci(Window window, int argc, char argv[MAX_ARGUMENT_COUNT][MAX_ARGUME
         return;
     }
 
-    //Para el mejor manejo de overflow podriamos almacenar los numeros como strings,
+    //Observacion: el mejor manejo de overflow podriamos almacenar los numeros como strings,
     //definiendo digamos 300 digitos, y asi poder evitar cualquier tipo de overflow.
-    //como manejo
-
-    /*
-    BigInt previousToLast[BIG_INT_SIZE];
-    initBigInt(previousToLast);
-    putBigInt(previousToLast, window);
-    newLine(window);
-    
-    BigInt last[BIG_INT_SIZE];
-    initBigInt(last);
-    putBigInt(last, window);
-    newLine(window);
-
-    BigInt current[BIG_INT_SIZE];
-    initBigInt(current);
-
-
-    while(!bigIntOverflow(previousToLast, last)) {
-        addBigIntInto(previousToLast, last, current);
-        copyBigIntTo(last, previousToLast);
-        copyBigIntTo(current, last);
-        putBigInt(current, window);
-        newLine(window);
-    }
-
-    if(bigIntOverflow(previousToLast, last)) 
-        puts_("Se corta el fibonacci porque se hubiese generado un overflow", window);
-    */
+    //como manejo.
 
     long previousToLast = 0;
     putInteger(previousToLast, window);
