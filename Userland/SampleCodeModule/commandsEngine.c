@@ -85,7 +85,9 @@ void commandsEngineRun(char *command, Window window) {
             char args[MAX_ARGUMENT_COUNT][MAX_ARGUMENT];
             int argc = argumentsEngineHandle(window, command, args);
 
-            //Por ultimo, copio 
+            //Por ultimo, cargo el puntero a funcion a la tabla de
+            //context switching del kernel a traves de la syscall
+            //que ejecuta loadProcess
             CommandPtr cmd = commands[i].apply;
             loadProcess(cmd, window, argc, args);
         }
@@ -99,7 +101,6 @@ void printCommand(Window window, const char * name, const char * description) {
     putsf_(name, LIGHT_CYAN, window);
     puts_(" : ", window);
     puts_(description, window);
-    //newLine(window);
 }
 
 void commandsEngineDisplayCommands(Window window) {
