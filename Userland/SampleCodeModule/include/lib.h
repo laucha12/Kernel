@@ -95,6 +95,8 @@ int longOverflowAddition(unsigned long long a, unsigned long long b);
 
 int atoi_(char * str);
 
+int atoh_(char * str);
+
 /*
  * Devuelve el tamanño de una string
  */
