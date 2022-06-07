@@ -1,4 +1,5 @@
-#include <Windows.h>
+#ifndef STRING_H
+#define STRING_H
 #define IS_DIGIT(c)  ((c) >= '0' && (c)<='9')
 #define IS_LETTER(c) (((c) >= 'a' && (c)<='z') || ((c) >= 'A' && (c)<='Z'))
 
@@ -42,3 +43,5 @@ int strcmp_(const char * str1, const char * str2);
  * NO PUEDE SER UNA STRING LITERAL
  */
 int removeTrailingSpaces(char * str);
+int atoh_(char * str);
+#endif

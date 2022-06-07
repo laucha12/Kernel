@@ -298,15 +298,13 @@ void resetVideoFD1()
 	}
 	
 	// Limpio la ultima linea que sera donde comienza a escribir
-	for (int i = 0; i < OFFSET; i++)
+	currentVideoFD1 = videoBegin + ((height-1)*width*2) ;
+	// Limpio la ultima linea que sera donde comienza a escribir
+	for (int i = 0; i < OFFSET; i+=2)
 	{
-		if(i % 160 < OFFSET){
-			*(video + (3840 - COLUMS) + i * 2) = ' ';
-			*(video + (3840 - COLUMS) + i * 2 + 1) = WHITE;
-		}
+			*(currentVideoFD1 + i ) = ' ';
+			*(currentVideoFD1+ i + 1) = WHITE;
 	}
-	
-	currentVideoFD1 =  video + (3840 - COLUMS); //currentVideoFD1 - OFFSET;
 
 }
 
@@ -319,16 +317,14 @@ void resetVideoFD2()
 			*(video + i) = *(video + i + COLUMS);
 	}
 	
+	currentVideoFD2 = videoBegin + ((height-1)*width*2) + OFFSET + 2;
 	// Limpio la ultima linea que sera donde comienza a escribir
-	for (int i = 0; i < OFFSET; i++)
+	for (int i = 0; i < OFFSET; i+=2)
 	{
-		if(i % 160 >= OFFSET){
-			*(video + (3840 - COLUMS) + i * 2) = ' ';
-			*(video + (3840 - COLUMS) + i * 2 + 1) = WHITE;
-		}
+			*(currentVideoFD2 + i ) = ' ';
+			*(currentVideoFD2+ i + 1) = WHITE;
 	}
 	
-	currentVideoFD2 = video + (3840 - COLUMS) + OFFSET + 2;
 }
 
 // -------------------------------------------------------------------------------

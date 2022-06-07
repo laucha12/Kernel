@@ -1,4 +1,5 @@
-
+#ifndef SYSCALL_H
+#define SYSCALL_H
 #include <stdint.h>
 
 #include "Windows.h"
@@ -34,3 +35,4 @@ extern void generateInvalidOpCode();
 extern void divideByZeroAsm();
 
 extern int SysProcesses();
+#endif

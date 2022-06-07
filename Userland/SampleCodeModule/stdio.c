@@ -47,7 +47,9 @@ void putBin(int num, Window window){
     uintToBase(num, numToStr, 2);
     puts_(numToStr, window);
 }
-
+void printHeader(char * string, int format){
+    sysWriteHeaderFormat(string, format);
+}
 
 
 void newLine(Window window) {

@@ -1,4 +1,5 @@
-
+#ifndef STDIO_H
+#define STDIO_H
 #include "Windows.h"
 #include "math.h"
 
@@ -46,3 +47,5 @@ void deleteChar(Window window);
  * haber nada, lo esperara.
  */
 void getKey(Window window, char buffer[1]);
+void printHeader(char * string, int format);
+#endif

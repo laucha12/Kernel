@@ -20,79 +20,6 @@ int atoi_(char * str) {
   return (result * puiss);
 }
 
-int atoh_(char * str) {
-  int result;
-  int puiss;
-
-  result = 0;
-  puiss = 1;
-  while (('-' == (*str)) || ((*str) == '+'))
-  {
-      if (*str == '-')
-        puiss = puiss * -1;
-      str++;
-  }
-  while ((*str >= '0') && (*str <= '9') || ((*str) >= 'a' && (*str) <= 'f') || ((*str) >= 'A' && (*str) <= 'F'))
-  {
-      switch (*str)
-      {
-        case 'a':
-            result = (result * 16) + 10;
-            break;
-        case 'A':
-            result = (result * 16) + 10;
-            break;
-        case 'b':
-            result = (result * 16) + 11;
-            break;
-        case 'B':
-            result = (result * 16) + 11;
-            break;            
-        case 'c':
-            result = (result * 16) + 12;
-            break;
-        case 'C':
-            result = (result * 16) + 12;
-            break;    
-        case 'd':
-            result = (result * 16) + 13;
-            break;
-        case 'D':
-            result = (result * 16) + 13;
-            break;
-        case 'e':
-            result = (result * 16) + 14;
-            break;
-        case 'E':
-            result = (result * 16) + 14;
-            break;            
-        case 'f':
-            result = (result * 16) + 15;
-            break;
-        case 'F':
-            result = (result * 16) + 15;
-            break;
-      
-        default:
-            result = (result * 16) + ((*str) - '0');
-            break;
-      }
-      str++;
-  }
-  return (result * puiss);
-}
-
-void puts_(char * string, Window window){
-    sysWrite(window, string);
-}
-
-void putsf_(char * string, char format, Window window){
-    sysWriteFormat(window, string, format);
-}
-
-void printHeader(char * string, int format){
-    sysWriteHeaderFormat(string, format);
-}
 
 int strlen_(const char *str) {
     const char *s;
@@ -186,4 +113,65 @@ int strcmp_(const char *str1, const char *str2) {
     while (*p1 && *p1 == *p2) ++p1, ++p2;
 
     return (*p1 > *p2) - (*p2 > *p1);
+}
+int atoh_(char * str) {
+  int result;
+  int puiss;
+
+  result = 0;
+  puiss = 1;
+  while (('-' == (*str)) || ((*str) == '+'))
+  {
+      if (*str == '-')
+        puiss = puiss * -1;
+      str++;
+  }
+  while ((*str >= '0') && (*str <= '9') || ((*str) >= 'a' && (*str) <= 'f') || ((*str) >= 'A' && (*str) <= 'F'))
+  {
+      switch (*str)
+      {
+        case 'a':
+            result = (result * 16) + 10;
+            break;
+        case 'A':
+            result = (result * 16) + 10;
+            break;
+        case 'b':
+            result = (result * 16) + 11;
+            break;
+        case 'B':
+            result = (result * 16) + 11;
+            break;            
+        case 'c':
+            result = (result * 16) + 12;
+            break;
+        case 'C':
+            result = (result * 16) + 12;
+            break;    
+        case 'd':
+            result = (result * 16) + 13;
+            break;
+        case 'D':
+            result = (result * 16) + 13;
+            break;
+        case 'e':
+            result = (result * 16) + 14;
+            break;
+        case 'E':
+            result = (result * 16) + 14;
+            break;            
+        case 'f':
+            result = (result * 16) + 15;
+            break;
+        case 'F':
+            result = (result * 16) + 15;
+            break;
+      
+        default:
+            result = (result * 16) + ((*str) - '0');
+            break;
+      }
+      str++;
+  }
+  return (result * puiss);
 }
