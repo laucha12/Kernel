@@ -301,8 +301,8 @@ void resetVideoFD1()
 	for (int i = 0; i < OFFSET; i++)
 	{
 		if(i % 160 < OFFSET){
-			*(video + 3840 + i * 2) = ' ';
-			*(video + 3840 + i * 2 + 1) = WHITE;
+			*(video + (3840 - COLUMS) + i * 2) = ' ';
+			*(video + (3840 - COLUMS) + i * 2 + 1) = WHITE;
 		}
 	}
 	
@@ -323,8 +323,8 @@ void resetVideoFD2()
 	for (int i = 0; i < OFFSET; i++)
 	{
 		if(i % 160 >= OFFSET){
-			*(video + 3840 + i * 2) = ' ';
-			*(video + 3840 + i * 2 + 1) = WHITE;
+			*(video + (3840 - COLUMS) + i * 2) = ' ';
+			*(video + (3840 - COLUMS) + i * 2 + 1) = WHITE;
 		}
 	}
 	
