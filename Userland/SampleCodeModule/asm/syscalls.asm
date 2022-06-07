@@ -19,7 +19,7 @@ GLOBAL exit
 GLOBAL sysKillProcess
 GLOBAL sysReloadProcess
 GLOBAL printMemFrom
-
+GLOBAL sysPauseProcess
 section .text
 
 
@@ -69,11 +69,11 @@ exit:
 
 
 ;------------------------------
-; sysKillProcess - hace la syscall de matar un proceso
+; sysPause - hace la syscall de pausar un proceso
 ;------------------------------
-; Parametro: el fd del programa a matar
+; Parametro: el fd del programa a pausar
 ;------------------------------
-sysKillProcess:
+sysPauseProcess:
     push rbp
     mov rbp,rsp
 
@@ -83,7 +83,21 @@ sysKillProcess:
 
     leave
     ret
+;------------------------------
+; sysKillProcess - hace la syscall de matar un proceso
+;------------------------------
+; Parametro: el fd del programa a matar
+;------------------------------
+sysKillProcess:
+    push rbp
+    mov rbp,rsp
 
+    mov rax, 96
+    ; rdi -> fd
+    int 80h
+
+    leave
+    ret
 ;------------------------------
 ;   Rutina de asm que realiza 
 ;   la syscall write con formato

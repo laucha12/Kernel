@@ -48,6 +48,7 @@ static int ticks = 0;
     * Obs: siempre tiene que ser menor que MAX_PROCESES
 */
 int processesRunning = 0;
+int processesPaused = 0;
 
 /*
  * Devuelve si hay que hacer un switch de contexto o no
@@ -81,11 +82,17 @@ int exitProces(long * contextHolder,char * contextOwner);
 void loadFirstContext(long * contextHolder);
 char  nextProcess(char * contextOwner ) ;
 /*
-    * Funcion la cual cierra un proceso
+    * Funcion la cual pausa un proceso
 
     *Args: int PID
 */
-int killProces(int pid);
+int pauseProces(int pid);
+/*
+    *Funcion la cual elimina un proceso
+    *Args: pint PID
+*/
+int killProcess(int pid);
+
 /*
     *Funcion la cual hace que vuelva a correr un proceso
 

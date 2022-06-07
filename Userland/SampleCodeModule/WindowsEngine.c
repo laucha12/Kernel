@@ -76,9 +76,9 @@ void waitProcessPipe(){
     while ( c != '\n'){
     
     if(c == LEFT_WINDOW_SUSPEND)
-        sysKillProcess(LEFT_WINDOW);
+        sysPauseProcess(LEFT_WINDOW);
     else if(c == '2')
-        sysKillProcess(RIGHT_WINDOW);;
+        sysPauseProcess(RIGHT_WINDOW);;
     if (c == '3')
         sysReloadProcess(LEFT_WINDOW);
     if (c == '4')
@@ -97,16 +97,15 @@ void waitProcessPipe(){
 
 void waitProcessMain(){
     
-    printHeader(" ENTER: exit                                                                    ", GREEN_BACKGROUND | WHITE);
     
     char c;
     //leo la key
     getKey(MAIN_WINDOW, &c);
 
-    while ( c != '\n' && SysProcesses()){
-        
+    while ( c != '\n' && (SysProcesses()>1)){
+        printHeader(" ENTER: exit   1:pausar", GREEN_BACKGROUND | WHITE);
         if(c == MAIN_WINDOW_SUSPEND)
-            sysKillProcess(LEFT_WINDOW);
+            sysPauseProcess(LEFT_WINDOW);
         if (c == '3')
             sysReloadProcess(LEFT_WINDOW);
             

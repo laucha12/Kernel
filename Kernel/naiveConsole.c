@@ -265,7 +265,7 @@ void ncClearHeader(){
 void resetVideo(int fd)
 {
 	// Leer una linea y escribirla un renglon arriba
-	for (int i = 0; i < (3840 - COLUMS); i++)
+	for (int i = 0; i < ( ((height-1)*width*2) - COLUMS); i++)
 	{
 		*(video + i) = *(video + i + COLUMS);
 	}
@@ -283,7 +283,7 @@ void resetVideoFD1()
 {
 
 	// Leer una linea y escribirla un renglon arriba
-	for (int i = 0; i < (3840 - COLUMS); i++)
+	for (int i = 0; i < ( ((height-1)*width*2) - COLUMS); i++)
 	{
 		if(i % 160 < OFFSET)
 			*(video + i) = *(video + i + COLUMS);

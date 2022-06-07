@@ -19,7 +19,7 @@ extern void sysClose(int fd);
 extern void exit();
 
 extern void sysKillProcess(int fd);
-
+extern void sysPauseProcess(int fd);
 extern void sysReadMem(char * buffer, uint8_t * from, int cant);
 
 extern void sysReloadProcess(int PID);

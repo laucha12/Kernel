@@ -20,7 +20,8 @@ GLOBAL _exception0Handler
 GLOBAL _exception06Handler
 
 EXTERN reloadProcess
-EXTERN killProces
+EXTERN pauseProces
+EXTERN killProcess
 EXTERN int_21
 EXTERN ncPrintFD0
 EXTERN irqDispatcher
@@ -275,8 +276,18 @@ loadSO:
 ;---------------------------------------------
 ;	@arguments: PID
 ;----------------------------------------------
+sysPauseProces:
+	call pauseProces
+	mov [aux],rax
+	popState
+	iretq
+;------------------------------------------------
+;	Syscall la cual mata un programa
+;------------------------------------------------
+; 	@argumentos: PID
+;------------------------------------------------
 sysKillProcess:
-	call killProces
+	call killProcess
 	mov [aux],rax
 	popState
 	iretq
@@ -334,9 +345,11 @@ printMemory:
 	cmp rax,99					; si es 99 es la de exit
 	je exitSyscall
 	cmp rax,98					; si es 98 es la syscall de exitear un process
-	je sysKillProcess
+	je sysPauseProces
 	cmp rax,97					; si es la 97 es la syscall de reloudear un proceso
 	je sysReloadProcess		
+	cmp rax,96					; si es la 96 es la syscall de killprocess
+	je sysKillProcess
 	cmp rax,133					; si es 133 syscall de imprimir memoria desde una posicion
 	je printMemory
 	mov rcx,rax					; si es otro entonces voy al switch de C

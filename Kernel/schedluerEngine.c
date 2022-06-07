@@ -74,10 +74,18 @@ int exitProces(long * contextHolder,char * contextOwner){
     return processesRunning;
 
 }
-int killProces(int pid){
+int killProcess(int pid){
+    if(procesos[pid].flagRunning){
+        procesos[pid].flagRunning = 0;
+        processesRunning -= 1;   
+    }
+    return processesRunning;
+}
+
+int pauseProces(int pid){
     if(!procesos[pid].flagPaused){
         procesos[pid].flagPaused = 1;
-        processesRunning -= 1;   
+        processesPaused += 1;   
     }
     
     return processesRunning;
@@ -85,7 +93,7 @@ int killProces(int pid){
 int reloadProcess(int pid){
     if(procesos[pid].flagPaused){
         procesos[pid].flagPaused = 0;
-        processesRunning += 1;
+        processesPaused -= 1;
     }
     return processesRunning;
 }
