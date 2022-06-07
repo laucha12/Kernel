@@ -67,6 +67,7 @@ static void popContext(long * contextHolder, char  contextOwner){
 
 int exitProces(long * contextHolder,char * contextOwner){
     procesos[*contextOwner].flagRunning = 0;
+    procesos[*contextOwner].flagPaused = 1;
     processesRunning -= 1;
     *contextOwner = nextProcess(contextOwner);
     popContext(contextHolder, *contextOwner);

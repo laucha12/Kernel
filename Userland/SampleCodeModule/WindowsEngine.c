@@ -34,8 +34,8 @@ void waitProcess(){
     getKey(MAIN_WINDOW, &c);
     }
 
-    sysKillProcess(LEFT_WINDOW);
-    sysKillProcess(RIGHT_WINDOW);
+    exit(LEFT_WINDOW);
+    exit(RIGHT_WINDOW);
     sysClearScreen(LEFT_WINDOW);
     sysClearScreen(RIGHT_WINDOW);
 }
