@@ -276,15 +276,7 @@ void resetVideo(int fd)
 		*(video + (3840 - COLUMS) + i * 2) = ' ';
 		*(video + (3840 - COLUMS) + i * 2 + 1) = BLACK_BACKGROUND | WHITE;
 	}
-	//if (actualFd)
-	//{
-	//	currentVideoFD1 =  video + 3840; //currentVideoFD1 - OFFSET;
-	//	currentVideoFD2 = video + 3840 + OFFSET + 2;
-	//}
-	//else
-	//{
-		currentVideoFD0 = currentVideoFD0 - COLUMS;
-	//}
+	currentVideoFD0 = currentVideoFD0 - COLUMS;
 }
 
 void resetVideoFD1()
