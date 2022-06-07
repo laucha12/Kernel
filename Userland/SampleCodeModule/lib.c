@@ -195,6 +195,12 @@ void putHex(int num, Window window){
     puts_(numToStr, window);
 }
 
+void putBin(int num, Window window){
+    char numToStr[11];
+    uintToBase(num, numToStr, 2);
+    puts_(numToStr, window);
+}
+
 int isPrime(int num) {
     int i;
 
@@ -248,9 +254,8 @@ void getTime(char * buffer){
     sysTime(buffer);
 }
 
-void readMem(char * buffer, unsigned long * from, int cant){
-    sysReadMem(buffer, from, cant);
-}
-
-
 extern void getRegs(long * buffer);
+
+void getRegsSnapshot(uint64_t * buffer){
+    sysGetRegsSnapshot(buffer);
+}

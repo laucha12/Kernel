@@ -1,3 +1,4 @@
+GLOBAL sysGetRegsSnapshot
 GLOBAL sysWrite
 GLOBAL sysRead
 GLOBAL sysTime
@@ -17,7 +18,11 @@ GLOBAL loadProcess
 GLOBAL exit
 GLOBAL sysKillProcess
 GLOBAL sysReloadProcess
+GLOBAL printMemFrom
+
 section .text
+
+
 
 
 ;------------------------------
@@ -266,17 +271,16 @@ sysClearScreen:
 ; Sycall la cual la memoria desd
 ;--------------------------------------------------------
 ; Argumentos:
-;   rdi -> puntero al buffer de unsigned int donde copiar
-;   rsi -> posicion desde donde se comienza a copiar
-;   rdx -> cantidad de caracteres en copiar
+;   rdi -> posicion desde donde imprimir la memoria
+;   rsi -> file descriptor a donde imprimirla
 ;------------------------------------------------------
-sysReadMem:
+printMemFrom:
     push rbp        ; Stack frame
     mov rbp, rsp    ; Stack frame
 
     push rbx        ; Preservar rbx
 
-    mov rax, 123    ; Nuemro de syscall
+    mov rax, 133    ; Nuemro de syscall
     int 80h         ; "Che Kernel"
 
     pop rbx         ; Preservar rbx
@@ -314,4 +318,17 @@ sysReloadProcess:
 
     mov rsp,rbp
     pop rbp
+    ret
+
+
+sysGetRegsSnapshot:
+    push rbp                ; Stack frame
+    mov rbp,rsp             ; Stack frame
+
+    mov rax,124             ; Numero de syscall
+    mov rsi, rdi            ; Le paso como 2 argumento mi 1 argumento (buffer)
+    int 80h                 ; "Che kernel"
+
+    mov rsp,rbp             ; Stack frame
+    pop rbp                 ; Stack frame
     ret

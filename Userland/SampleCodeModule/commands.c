@@ -1,24 +1,15 @@
 #include "include/commands.h"
 #include "include/commandsEngine.h"
 #include "include/lib.h"
+#include "include/WindowsEngine.h"
 
 #define INVALID_ARGUMENT_NUMBER "No ingreso el numero de argumentos validos \n"
 #define INVALID_ARGUMENTS "No ingreso el tipo de argumentos validos \n"
 #define TIME_BUFFER 50
 
 #define ADDRESSES_READ_MEM 32
-#define BYTES_PER_ADDRESS 8
+#define BYTES_PER_ADDRESS 1
 
-
-
-void printUnos(Window window, int argc, char argv[MAX_ARGUMENT_COUNT][MAX_ARGUMENT]) {
-    int i = 0;
-    while(1) {
-        if(!(i % 100000)) puts_("1", MAIN_WINDOW);
-        i++;
-    }
-    exit();
-}
 
 void man(Window window, int argc, char argv[MAX_ARGUMENT_COUNT][MAX_ARGUMENT]) {
     if(argc != 2) {
@@ -34,14 +25,6 @@ void man(Window window, int argc, char argv[MAX_ARGUMENT_COUNT][MAX_ARGUMENT]) {
             printCommand(window, commands[i].name, commands[i].description);
             found = 1;
         }
-    }
-    
-    //hago un chequeo a mano porque solo tengo un comando especial,
-    //sino haria otro for para los especiales
-    if(strcmp_(argv[1], "pipe") == 0) {
-        printCommand(window, PIPE_CMD, PIPE_DESCRIPTION);
-        putsf_(PIPE_MAN, MAGENTA, window);
-        found = 1;
     }
 
     if(!found) 
@@ -59,6 +42,8 @@ void help(Window window, int argc, char argv[MAX_ARGUMENT_COUNT][MAX_ARGUMENT]) 
 
     puts_("La lista de los comandos disponibles es: \n", window);
     commandsEngineDisplayCommands(window);
+    windowsEngineDisplayControls(window);
+    newLine(window); 
 
     exit();
 }
@@ -114,16 +99,8 @@ void printMem(Window window, int argc, char argv[MAX_ARGUMENT_COUNT][MAX_ARGUMEN
     puts_(argv[1], window);
     newLine(window);
 
-    char bufferMemory[ADDRESSES_READ_MEM * BYTES_PER_ADDRESS + 1];
-    readMem(bufferMemory, (unsigned long *) 0x380000, ADDRESSES_READ_MEM * BYTES_PER_ADDRESS);
+    printMemFrom((unsigned int *) atoi_(argv[1]), window);
     
-    newLine(window);
-
-    for(int i = 0; i < ADDRESSES_READ_MEM * BYTES_PER_ADDRESS; i++) {
-        putc_(*(bufferMemory + i), window);
-    }
-    
-    newLine(window);
     exit();
 }
 
@@ -136,23 +113,36 @@ void infoReg(Window window, int argc, char argv[MAX_ARGUMENT_COUNT][MAX_ARGUMENT
         return;
     }
 
-    static const char *registerNames[REGS_CANT] = {
+    static const char *registerNames[REGS_CANT + 1] = {
             "RAX", "RBX", "RCX", "RDX", "RSI", "RDI", "RBP", "RSP", "R8 ", "R9 ", "R10", "R11", "R12", "R13",
-            "R14", "R15", "RIP"
+            "R14", "R15", "RIP", "FLAGS"
     };
 
     puts_("Los registros tienen los valores: \n", window);
 
-    long * buffer = getRegs();
+    uint64_t buffer[18];
+    sysGetRegsSnapshot(buffer);
+
+
 
     for(int i = 0; i < REGS_CANT; i++){
-        puts_("    -", window);
+        //if(i%6 == 0 && i !=0)
+            //puts_("\n", window);
         puts_(registerNames[i], window);
         puts_(": ", window);
         putHex(buffer[i], window);
-        puts_("h\n", window);
+        puts_("h", window);
+        puts_("\n", window);
+        
     }
-    
+
+    puts_(registerNames[REGS_CANT], window);
+    puts_(": ", window);
+    putBin(buffer[REGS_CANT], window);
+    puts_("b", window);
+    puts_("\n", window);
+
+
     puts_("\n", window);
     exit();
 }

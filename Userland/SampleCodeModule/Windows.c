@@ -7,8 +7,8 @@ void welcomeScreen(Window window){
     puts_(" Bienvenido a GHD OS! \n \n", window);
     puts_(" Los comandos disponibes son: \n", window);
     commandsEngineDisplayCommands(window);
+    windowsEngineDisplayControls(window);
     putsf_("\n                                                                                ", WHITE, window);
-    puts_("\n", window);
 }
 
 

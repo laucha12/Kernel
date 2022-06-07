@@ -2,6 +2,7 @@
 #define LIB_H
 
 #include "Windows.h"
+#include <stdint.h>
 
 #define IS_DIGIT(c)  ((c) >= '0' && (c)<='9')
 #define IS_LETTER(c) (((c) >= 'a' && (c)<='z') || ((c) >= 'A' && (c)<='Z'))
@@ -14,11 +15,13 @@
 #define ENTER '\n'
 #define TAB '\t'
 #define SPACE ' '
-#define PIPE '['
+#define PIPE '|'
 
 #define REGS_CANT 17
 
 #define DOUBLE_TAB "     "
+
+extern void printMemFrom(unsigned int * pos, Window window);
 
 extern void sysWrite(int fd, char * buffer);
 extern void sysRead(int fd, char * buffer);
@@ -27,11 +30,12 @@ extern void sysOpen(int fd);
 extern void sysClose(int fd);
 extern void exit();
 extern void sysKillProcess(int fd);
-extern void sysReadMem(char * buffer, unsigned long * from, int cant);
+extern void sysReadMem(char * buffer, uint8_t * from, int cant);
 extern void sysReloadProcess(int PID);
 extern void sysClearScreen(int fd);
 extern void sysWriteFormat(int fd, char * buffer, char format);
 extern void sysWriteHeaderFormat(char * buffer, char format);
+extern void sysGetRegsSnapshot(uint64_t * buffer);
 /*
 extern void sysRegs(char * buffer);
 extern void sysMemFrom(char * buffer, int * from);*/
@@ -167,6 +171,10 @@ void putsf_(char * string, char format, Window window);
  */
 void putcf_(char c, char format, Window window);
 
+void putHex(int num, Window window);
+
+void putBin(int num, Window window);
+
 /*
  * Recibe una ventana a la cual borrara el ultimo caracter
  */
@@ -189,11 +197,6 @@ void getKey(Window window, char buffer[1]);
 */
 void getTime(char * buffer);
 
-/*
- * Retorna una copia de los primeros 32 bytes desde la posicion de memoria from 
- * como un arreglo de caractres.
- */
-void readMem(char * buffer, unsigned long * from, int cant);
 
 /*
  * Retorna una copia de los valores de los registros, 
@@ -203,5 +206,12 @@ void readMem(char * buffer, unsigned long * from, int cant);
  */
 void readRegs(long * buffer);
 
+/*
+ * Retorna un snapshot de los registros en un momento previo
+ * como un arreglo de unit64.
+ *  ??ORDEN??{"RIP", "RAX", "RBX", "RCX", "RDX", "RSI", "RDI", "RBP", "RSP",
+ *  "R8 ", "R9 ", "R10", "R11", "R12", "R13", "R14", "R15"};
+ */
+void getRegsSnapshot(uint64_t * buffer);
 
 #endif

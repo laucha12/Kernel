@@ -30,6 +30,7 @@ EXTERN loadFirstContext
 EXTERN exitProces
 EXTERN switchContext
 EXTERN initialiseContextSchedluerEngine
+EXTERN readMemoryTo
 
 SECTION .text
 
@@ -299,6 +300,16 @@ processRunning:
 	mov rax,[aux]
 	iretq
 
+;------------------------------------------------------------------------------------
+;	syscall que imprime a pantalla posiciones de memoria
+;------------------------------------------------------------------------------------
+; @argumentos:
+;-----------------------------------------------------------------------------------
+printMemory:
+	call readMemoryTo
+	popState
+	iretq
+
 ;-------------------------------------------------------------------------------
 ; Recibe un numero que determina el numero de interrupcion por hardware y mapea
 ; a la funcion que maneja esa interrupcion
@@ -326,6 +337,8 @@ processRunning:
 	je sysKillProcess
 	cmp rax,97					; si es la 97 es la syscall de reloudear un proceso
 	je sysReloadProcess		
+	cmp rax,133					; si es 133 syscall de imprimir memoria desde una posicion
+	je printMemory
 	mov rcx,rax					; si es otro entonces voy al switch de C
 	call syscalls						
 	endSoftwareInterrupt						
@@ -410,7 +423,10 @@ processRunning:
 ;--------------------------------------------------------
 %macro keyBoardHandler 1
 	cli
+	pushContext regsStore
+	mov rdi, regsStore			; Le paso un puntero al arreglo de resgistros
 	call int_21
+	popContext regsStore
 	sti
 	mov al, 20h
 	out 20h, al
@@ -573,3 +589,8 @@ SECTION .bss
 	;	al momento de una excepcion.
 	;-----------------------------------------------------
 	regsArray resq 18
+	;-----------------------------------------------------
+	;	Arreglo que guarda una copia de los registros 
+	;	al momento de pedir que saque un snapshot de regs.
+	;-----------------------------------------------------
+	regsStore resq 18

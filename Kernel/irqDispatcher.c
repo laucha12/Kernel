@@ -4,10 +4,12 @@
 #include <lib.h>
 #include <timeDriver.h>
 
- extern void readMemory(unsigned int * buffer, int  * from, int qty);
+//extern void readMemory(unsigned int * buffer, int * from, int qty);
 
- void int_20(); 
- void int_21();
+
+void int_20(); 
+void int_21(uint64_t * regs);
+
 
 void irqDispatcher(uint64_t irq)
 {
@@ -21,20 +23,27 @@ void irqDispatcher(uint64_t irq)
 		break;
 	case 1:
 		// Se llama a la funcion que debera ejecutar
-	   //  la interrupcion que se guardo en la posicion 21 del IDT
-		int_21();
+	    // la interrupcion que se guardo en la posicion 21 del IDT
+
+		// La rutina es llamda directamente desde assembler
+		//int_21();
 		break;
 	}
 	return;
 }
 
-void int_21()
+void int_21(uint64_t * regs)
 {	// Llamamos al driver del teclado para que guarde en su buffer
 	// la tecla leida desde la interrupcion del mismo
 	char c = readKey();
+	
+	// Si la tecla presionada es '=' se guarda un snapshot de los registros.
+	if(scancodeLToAscii[c] == '='){
+		regsSnapshot(regs);
+	}
+
 	saveBuffer(c);
 }
-
 void int_20()
 {
 	// timer_handler();
@@ -72,6 +81,15 @@ void syscalls(int fd, char *sysBuffer, int count, int num)
 
 	case 123:
 		readMemory(sysBuffer, fd, count);
+	//case 123:
+		// Si es la syscall 123 tenemos que devolver en buffer lo leido en 
+		// n (parametro) posiciones de memoria a partir de una direccion 
+		// recibida como parametro.
+	//	readMemoryTo((uint64_t *)fd, count);
+	//	break;
+
+	case 124:
+		getRegsSnapshot(sysBuffer);
 		break;
 
 	case 124:

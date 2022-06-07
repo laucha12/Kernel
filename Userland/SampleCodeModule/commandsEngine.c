@@ -94,22 +94,20 @@ void printCommand(Window window, const char * name, const char * description) {
     putsf_(name, LIGHT_CYAN, window);
     puts_(" : ", window);
     puts_(description, window);
-    newLine(window);
+    //newLine(window);
 }
 
 void commandsEngineDisplayCommands(Window window) {
 
     //imprimo todos los comandos normales
-    for (int i = 0; i < commandsCount; ++i) 
+    for (int i = 0; i < commandsCount; ++i) {
         printCommand(window, commands[i].name, commands[i].description);
-
-    newLine(window);
+        newLine(window);
+    }
 
     //imprimo todos los comandos especiales
-    puts_("Comandos especiales tenemos: \n", window);
-   
     //como solo es uno lo hago asi, sino crearia otro arreglo con ellos
-    printCommand(window, PIPE_CMD, PIPE_DESCRIPTION PIPE_MORE_INFO);
+    printCommand(window, PIPE_CMD, PIPE_DESCRIPTION);
 }
 
 int isPipeCommand(const char *command) {
