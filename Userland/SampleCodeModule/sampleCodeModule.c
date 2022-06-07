@@ -19,27 +19,6 @@ extern void sysExit(int fd);
 extern void loadSO(CommandPtr func, Window window, int argc,  char argv[MAX_ARGUMENT_COUNT][MAX_ARGUMENT]);
 
 int main() {
-	//All the following code may be removed 
-	*v = 'X';
-	*(v+1) = 0x74;
-
- /*	char date[24];
-	sysTimeTest(date);	
-	sysWriteTest(date);
-
-*/
-	/*char c[] = "hola omo te va";
-	
-	sysOpen(2);
-	sysWriteTest(1,c);*/
-
-/*	while (1){		
-		sysReadTest(c);
-		if (c != 0) {
-			sysWriteTest(1,c);
-		}
-
-	} */
 
 	char argv[MAX_ARGUMENT_COUNT][MAX_ARGUMENT];
 	loadSO((CommandPtr) &windowsEngineInitialize, MAIN_WINDOW, 0, argv);

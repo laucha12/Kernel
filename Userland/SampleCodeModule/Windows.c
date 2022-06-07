@@ -5,7 +5,7 @@
 
 void welcomeScreen(Window window){
     putsf_("                                     GDH OS                                     ", CYAN_BACKGROUND | WHITE, window);
-    puts_("\n Bienvenido a GHD OS! \n \n", window);
+    puts_("\n Bienvenido a GDH OS! \n \n", window);
     puts_(" Los comandos disponibes son: \n", window);
     commandsEngineDisplayCommands(window);
     windowsEngineDisplayControls(window);
@@ -37,7 +37,8 @@ void listen(char * command, Window window){
                 count--;}
         }
          // En caso contrario, si leimos algo del buffer, se agrega la letra al comando y se la imprime en pantalla
-        else if(c != NULL_) { // En caso contrario, se agrega la letra al comando y se la imprime en pantalla
+         // En caso contrario, se agrega la letra al comando y se la imprime en pantalla
+        else if(c != NULL_) { 
             command[count++] = c;
             putc_(c, window);
         }
