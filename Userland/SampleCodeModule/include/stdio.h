@@ -1,5 +1,6 @@
 
 #include "Windows.h"
+#include "math.h"
 
 /*
  * Recibe un entero y lo imprime

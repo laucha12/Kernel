@@ -1,5 +1,8 @@
 
+#define IS_DIGIT(c)  ((c) >= '0' && (c)<='9')
+#define IS_LETTER(c) (((c) >= 'a' && (c)<='z') || ((c) >= 'A' && (c)<='Z'))
 
+#define NULL_ 0L
 #define BACKSPACE '\b'
 #define ENTER '\n'
 #define TAB '\t'

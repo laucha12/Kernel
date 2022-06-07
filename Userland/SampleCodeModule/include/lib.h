@@ -1,25 +1,24 @@
 #ifndef LIB_H
 #define LIB_H
 
-/**/
+/* Definiciones de colores propias al manejo de la placa de video */
 #include "vga.h"
 
-/**/
+/* Definiciones de las funciones de assembler que ejecutan las syscalls */
 #include "syscalls.h"
 
-#include "math.h"
-
+/* Definiciones de funciones especificas al modo protegido de intel */
 #include "mmu.h"
 
+/* Definiciones de funciones propias que asemejan a math.h de C*/
+#include "math.h"
+
+/* Definiciones de funciones propias que asemejan a stdio.h de C*/
 #include "stdio.h"
 
+/* Definiciones de funciones propias que asemejan a string.h de C*/
 #include "string.h"
 
-#define IS_DIGIT(c)  ((c) >= '0' && (c)<='9')
-#define IS_LETTER(c) (((c) >= 'a' && (c)<='z') || ((c) >= 'A' && (c)<='Z'))
 
-#define MAX_UNSIGNED_LONG_LONG 18446744073709551615l 
-#define MAX_INT 2147483647 
-#define NULL_ 0L 
 
 #endif
