@@ -34,5 +34,9 @@ void time_syscall(char *buffer)
 	itoa(buffer + 12, minutes, 2);
 	buffer[14] = ':';
 	itoa(buffer + 15, seconds, 2);
-	buffer[17] = '\0';
+	buffer[17] = ' ';
+	buffer[18] = 'U';
+	buffer[19] = 'T';
+	buffer[20] = 'C';		
+	buffer[21] = '\0';		
 }

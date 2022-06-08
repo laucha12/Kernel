@@ -103,7 +103,7 @@ void waitProcessMain(){
     getKey(MAIN_WINDOW, &c);
 
     while ( c != '\n' && (SysProcesses()>1)){
-        printHeader(" ENTER: exit   1:pausar", GREEN_BACKGROUND | WHITE);
+        printHeader(" ENTER: exit   1: Pause   3: Restart", GREEN_BACKGROUND | WHITE);
         if(c == MAIN_WINDOW_SUSPEND)
             sysPauseProcess(LEFT_WINDOW);
         if (c == '3')
